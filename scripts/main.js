@@ -1,20 +1,21 @@
 function runScript(e) {
   if (e.keyCode == 13) {
-      var tb = document.getElementById("income");
+      let tb = document.getElementById("income");
       return false;
   }
 }
 
-var amount = document.getElementById("income").value;
-var period = "";
-var taxOption = "";
+let amount = document.getElementById("income").value;
+let period = "";
+let taxOption = "";
 
 function setAmount(){
   amount = document.getElementById("income").value;
   document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;   
 }
 
-document.getElementById("income").addEventListener("keyup", function(event) {
+document.getElementById("income").addEventListener("keyup", 
+function(event) {
   if (event.keyCode === 13) {   
     setAmount();
     return true;
@@ -22,13 +23,13 @@ document.getElementById("income").addEventListener("keyup", function(event) {
 });
 
 function optionsCheckbox() {  
-  var yearly = document.getElementById("yearly");  
-  var monthly = document.getElementById("monthly");
-  var fortnightly = document.getElementById("fortnightly");
-  var weekly = document.getElementById("weekly");
-  var daily = document.getElementById("daily");
-  var boxes = {"year": yearly.checked, "month": monthly.checked, "fortnight": fortnightly.checked, "week": weekly.checked, "day":daily.checked};
-  var true_count = 0;
+  let yearly = document.getElementById("yearlybox");  
+  let monthly = document.getElementById("monthlybox");
+  let fortnightly = document.getElementById("fortnightlybox");
+  let weekly = document.getElementById("weeklybox");
+  let daily = document.getElementById("dailybox");
+  let boxes = {"year": yearly.checked, "monthbox": monthly.checked, "fortnight": fortnightly.checked, "week": weekly.checked, "day":daily.checked};
+  let true_count = 0;
   for (const [key, value] of Object.entries(boxes)) 
   { 
     if (value){
@@ -50,10 +51,10 @@ function optionsCheckbox() {
 }  
 
 function taxCheckbox() {  
-  var beforeTax = document.getElementById("beforeTax");  
-  var afterTax = document.getElementById("afterTax");
-  var boxes = {"before tax": beforeTax.checked, "after tax": afterTax.checked};
-  var true_count = 0;
+  let beforeTax = document.getElementById("beforeTax");  
+  let afterTax = document.getElementById("afterTax");
+  let boxes = {"before tax": beforeTax.checked, "after tax": afterTax.checked};
+  let true_count = 0;
   for (const [key, value] of Object.entries(boxes)) 
   { 
     if (value){
@@ -74,13 +75,12 @@ function taxCheckbox() {
   } 
 }  
 
-
 function calculateIncome(){
-  var yearly;
-  var monthly;
-  var fortnightly;
-  var weekly;
-  var daily;
+  let yearly;
+  let monthly;
+  let fortnightly;
+  let weekly;
+  let daily;
   setAmount();
   let amountF = parseFloat(amount);
   if (period == " per year"){
@@ -114,4 +114,11 @@ function calculateIncome(){
     weekly = amountF * 7;
     daily = amountF;
   } 
+  document.getElementById("yearly").innerHTML += " $" + Math.round(yearly);
+  document.getElementById("monthly").innerHTML += " $" + Math.round(monthly);
+  document.getElementById("fortnightly").innerHTML += " $" + Math.round(fortnightly);
+  document.getElementById("weekly").innerHTML += " $" + Math.round(weekly);
+  document.getElementById("daily").innerHTML += " $" + Math.round(daily);
 }
+
+income.focus();
