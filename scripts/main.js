@@ -8,10 +8,14 @@ function runScript(e) {
 var amount = document.getElementById("income").value;
 var period = "";
 
+function setAmount(){
+  amount = document.getElementById("income").value;
+  document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period;   
+}
+
 document.getElementById("income").addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {   
-    amount = document.getElementById("income").value;
-    document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period;   
+    setAmount();
     return true;
   }
 });
@@ -44,3 +48,44 @@ function optionsCheckbox() {
   } 
 }  
 
+function calculateIncome(){
+  var yearly;
+  var monthly;
+  var fortnightly;
+  var weekly;
+  var daily;
+  setAmount();
+  let amountF = parseFloat(amount);
+  if (period == " per year"){
+    yearly = amountF;
+    monthly = amountF/12;
+    fortnightly = amountF/26;
+    weekly = amountF/52;
+    daily = amountF/365;
+  } else if (period == " per month"){
+    yearly = amountF * 12;
+    monthly = amountF;
+    fortnightly = amountF/2;
+    weekly = amountF/4;
+    daily = amountF/30;
+  } else if (period == " per fortnight"){
+    yearly = amountF * 26;
+    monthly = amountF * 2;
+    fortnightly = amountF;
+    weekly = amountF/2;
+    daily = amountF/14;
+  } else if (period == " per week"){
+    yearly = amountF * 52;
+    monthly = amountF * 4;
+    fortnightly = amountF * 2;
+    weekly = amountF;
+    daily = amountF/7;
+  } else if (period == " per day"){
+    yearly = amountF * 365;
+    monthly = amountF * 30;
+    fortnightly = amountF * 14;
+    weekly = amountF * 7;
+    daily = amountF;
+  } 
+  alert(yearly);
+}
