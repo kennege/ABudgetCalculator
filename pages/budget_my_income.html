@@ -30,8 +30,12 @@
 		<section>
 		<div class="incomebox">
 			<form>
-				<input placeholder="After tax income" id="income" onkeypress="return runScript(event)">
+				<input placeholder="Income" id="income" onkeypress="return runScript(event)">
 			</form>
+			<div>
+				<li><input type="checkbox" id="beforeTax" onclick="taxCheckbox()">Before tax</li>
+				<li><input type="checkbox" id="afterTax" onclick="taxCheckbox()">After tax</li>
+			</div>
 			<p>
 				What time period have you entered your income for?
 			</p>

@@ -7,10 +7,11 @@ function runScript(e) {
 
 var amount = document.getElementById("income").value;
 var period = "";
+var taxOption = "";
 
 function setAmount(){
   amount = document.getElementById("income").value;
-  document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period;   
+  document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;   
 }
 
 document.getElementById("income").addEventListener("keyup", function(event) {
@@ -42,11 +43,37 @@ function optionsCheckbox() {
     { 
       if (value){
         period = " per " + key;
-        document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period;  
+        document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;  
       }
     }
   } 
 }  
+
+function taxCheckbox() {  
+  var beforeTax = document.getElementById("beforeTax");  
+  var afterTax = document.getElementById("afterTax");
+  var boxes = {"before tax": beforeTax.checked, "after tax": afterTax.checked};
+  var true_count = 0;
+  for (const [key, value] of Object.entries(boxes)) 
+  { 
+    if (value){
+      true_count +=1;
+    }
+  }
+  if (true_count > 1){
+    alert("Please select only one box.")
+  }
+  else if (true_count === 1){
+    for (const [key, value] of Object.entries(boxes)) 
+    { 
+      if (value){
+        taxOption = ", " + key;
+        document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;  
+      }
+    }
+  } 
+}  
+
 
 function calculateIncome(){
   var yearly;
@@ -87,5 +114,4 @@ function calculateIncome(){
     weekly = amountF * 7;
     daily = amountF;
   } 
-  alert(yearly);
 }
