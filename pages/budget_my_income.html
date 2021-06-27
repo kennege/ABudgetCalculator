@@ -1,0 +1,104 @@
+ <!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>BudgetBuckets</title>
+		<link href="../styles/style.css" rel="stylesheet">
+		<link href="../styles/income_style.css" rel="stylesheet">
+		<meta name="description" content="A simple website that allows you
+		to create a budget based on the concepts of splitting your income into 'buckets'
+		that each have a different purpose.">
+		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
+		<link rel="icon" href="bucket.ico" type="image/x-icon">
+		<script src="../scripts/main.js" defer></script>
+	</head>
+	<body> 
+		<div class="header">
+			<h1><a href="../index.html">BudgetBuckets</a></h1>
+			<img src="../images/bucket.ico" alt="logo">
+		</div>
+		<div class="topnav">
+			<ul>
+				<a href="../index.html">Home</a>
+				<a href="budget_my_income.html">Budget my income</a>
+				<a href="budget_my_time.html">Budget my time</a>
+			</ul>
+		</div>
+		<p>
+			On this page you can choose from a range of possible categories and apply weightings to them, so that you can find an income budget that works for you.
+		</p>
+		<section>
+		<div class="incomebox">
+			<form>
+				<input placeholder="After tax income" id="income" onkeypress="return runScript(event)">
+			</form>
+			<p>
+				What time period have you entered your income for?
+			</p>
+			<div class=options>
+				<ul>
+					<li><input type="checkbox" id="yearly"> Yearly</li>
+					<li><input type="checkbox" id="monthly"> Monthly</li>
+					<li><input type="checkbox" id="fortnightly"> Fortnightly</li>
+					<li><input type="checkbox" id="weekly"> Weekly</li>
+					<li><input type="checkbox" id="daily"> Daily</li>
+				</ul>
+			</div>  
+			<p id="setincome">Your income is not set.</p>      
+		</div>
+		<br>
+		<div class="treebox">
+			<p>Choose your buckets (3-6 recommended)</p>
+			<ul class="tree">
+				<li> <span><input type="checkbox"> Income</span>
+					<ul>
+						<li> <span><input type="checkbox"> Savings</span>
+						<ul>
+						<li> <span><input type="checkbox"> Investing</span>
+						  <ul>
+							<li><span><input type="checkbox"> Shares</span></li>
+							<li><span><input type="checkbox"> Bonds</span></li>
+							<li><span><input type="checkbox"> Real Estate</span></li>
+							<li> <span><input type="checkbox"><form><input name="n" placeholder="New category"></form></span></li>	
+						  </ul>
+						</li>
+						<li> <span><input type="checkbox"> Long-term savings</span>
+						  <ul>
+							<li><span><input type="checkbox"> Retirement</span></li>
+							<li><span><input type="checkbox"> House Deposit/Mortgage</span></li>
+							<li><span><input type="checkbox"> Emergencies</span></li>
+							<li> <span><input type="checkbox"><form><input name="n" placeholder="New category"></form></span></li>	
+						  </ul>
+						</li>
+						<li> <span><input type="checkbox"> Short-term savings</span>
+						  <ul>
+							<li><span><input type="checkbox"> Travel</span></li>
+							<li><span><input type="checkbox"> New vehicle</span></li>
+							<li> <span><input type="checkbox"><form><input name="n" placeholder="New category"></form></span></li>	
+						  </ul>
+						</li>	
+						<li> <span><input type="checkbox"><form><input name="n" placeholder="New category"></form></span></li>						
+					  </ul>
+					</li>
+					<li> <span><input type="checkbox"> Spending</span>
+					  <ul>
+						<li> <span><input type="checkbox"> Basics</span></li>
+						<li> <span><input type="checkbox"> Splurge</span></li>
+						<li> <span><input type="checkbox"><form><input name="n" placeholder="New category"></form></span></li>	
+					  </ul>
+					</li>
+					<li> <span><input type="checkbox"><form><input name="n" placeholder="New category"></form></span></li>					
+				  </ul>
+				</li>
+			</ul>
+			<ul>
+				<li><span><input type="checkbox"><form><input name="n" placeholder="New category"></form></span></li>
+			</ul>
+			<button type="button">Done</button>
+		</div>
+	</section> 
+</body>
+	<footer>
+		<p>©Copyright 2050 by nobody. All rights reversed.</p>
+	</footer>
+</html>
