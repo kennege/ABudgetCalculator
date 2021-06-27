@@ -37,14 +37,15 @@
 			</p>
 			<div class=options>
 				<ul>
-					<li><input type="checkbox" id="yearly"> Yearly</li>
-					<li><input type="checkbox" id="monthly"> Monthly</li>
-					<li><input type="checkbox" id="fortnightly"> Fortnightly</li>
-					<li><input type="checkbox" id="weekly"> Weekly</li>
-					<li><input type="checkbox" id="daily"> Daily</li>
+					<li><input type="checkbox" id="yearly" onclick="optionsCheckbox()"> Yearly</li>
+					<li><input type="checkbox" id="monthly" onclick="optionsCheckbox()"> Monthly</li>
+					<li><input type="checkbox" id="fortnightly" onclick="optionsCheckbox()"> Fortnightly</li>
+					<li><input type="checkbox" id="weekly" onclick="optionsCheckbox()"> Weekly</li>
+					<li><input type="checkbox" id="daily" onclick="optionsCheckbox()"> Daily</li>
 				</ul>
 			</div>  
-			<p id="setincome">Your income is not set.</p>      
+			<p id="setincome">Your income is set to $0</p> 
+			<button type="button" id="done_options">Done</button>     
 		</div>
 		<br>
 		<div class="treebox">

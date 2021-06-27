@@ -5,10 +5,13 @@ function runScript(e) {
   }
 }
 
+var amount = document.getElementById("income").value;
+var period = "";
+
 document.getElementById("income").addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-    var amount = document.getElementById("income").value;
-    document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount;
+  if (event.keyCode === 13) {   
+    amount = document.getElementById("income").value;
+    document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period;   
     return true;
   }
 });
@@ -19,18 +22,25 @@ function optionsCheckbox() {
   var fortnightly = document.getElementById("fortnightly");
   var weekly = document.getElementById("weekly");
   var daily = document.getElementById("daily");
-  if (yes.checked == true && no.checked == true){  
-    return document.getElementById("error").innerHTML = "Please mark only one checkbox either Yes or No";  
-  }  
-  else if (yes.checked == true){  
-    var y = document.getElementById("myCheck1").value;  
-    return document.getElementById("result").innerHTML = y;   
-  }   
-  else if (no.checked == true){  
-    var n = document.getElementById("myCheck2").value;  
-    return document.getElementById("result").innerHTML = n;  
-  }  
-  else {  
-    return document.getElementById("error").innerHTML = "*Please mark any of checkbox";  
-  }  
+  var boxes = {"year": yearly.checked, "month": monthly.checked, "fortnight": fortnightly.checked, "week": weekly.checked, "day":daily.checked};
+  var true_count = 0;
+  for (const [key, value] of Object.entries(boxes)) 
+  { 
+    if (value){
+      true_count +=1;
+    }
+  }
+  if (true_count > 1){
+    alert("Please select only one box.")
+  }
+  else if (true_count === 1){
+    for (const [key, value] of Object.entries(boxes)) 
+    { 
+      if (value){
+        period = " per " + key;
+        document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period;  
+      }
+    }
+  } 
 }  
+
