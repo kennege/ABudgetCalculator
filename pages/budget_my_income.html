@@ -30,7 +30,7 @@
 		<section>
 		<article class=box>
 			<form>
-				<input placeholder="Income" id="income" onkeypress="return runScript(event)">
+				<input placeholder="Income" id="income" onkeypress="return saveIncome(event)">
 			</form>
 			<div class=options>
 				<ul>
@@ -69,51 +69,55 @@
 	<article class=box>
 		<p>Choose your buckets (3-6 recommended)</p>
 		<ul class="tree">
-			<li> <input type="checkbox"> Income
+			<li id="l7"> <input name="bucket" value="Income" type="checkbox"> Income
 				<ul>
-					<li> <input type="checkbox"> Savings
+					<li> <input name="bucket" value="Savings" type="checkbox"> Savings
 					<ul>
-					<li> <input type="checkbox"> Investing
+					<li> <input name="bucket" value="Investing" type="checkbox"> Investing
 						<ul>
-						<li><input type="checkbox"> Shares</li>
-						<li><input type="checkbox"> Bonds</li>
-						<li><input type="checkbox"> Real Estate</li>
-						<li> <input type="checkbox"><form><input name="n" placeholder="New category"></form></li>	
+						<li><input name="bucket" value="Shares" type="checkbox"> Shares</li>
+						<li><input name="bucket" value="Bonds" type="checkbox"> Bonds</li>
+						<li id="l1"><input name="bucket" value="Real Estate" type="checkbox"> Real Estate</li>
+						<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i1" onkeypress="return addEntry(event,'l1','i1')"></form></li>
 						</ul>
 					</li>
-					<li> <input type="checkbox"> Long-term savings
+					<li> <input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings
 						<ul>
-						<li><input type="checkbox"> Retirement</li>
-						<li><input type="checkbox"> House Deposit/Mortgage</li>
-						<li><input type="checkbox"> Emergencies</li>
-						<li> <input type="checkbox"><form><input name="n" placeholder="New category"></form></li>	
+						<li><input name="bucket" value="Retirement" type="checkbox"> Retirement</li>
+						<li><input name="bucket" value="House Deposit/Mortgage" type="checkbox"> House Deposit/Mortgage</li>
+						<li id="l2"><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</li>
+						<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i2" onkeypress="return addEntry(event,'l2','i2')"></form></li>	
 						</ul>
 					</li>
-					<li> <input type="checkbox"> Short-term savings
+					<li id="l4"> <input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings
 						<ul>
-						<li><input type="checkbox"> Travel</li>
-						<li><input type="checkbox"> New vehicle</li>
-						<li> <input type="checkbox"><form><input name="n" placeholder="New category"></form></li>	
+						<li><input name="bucket" value="Travel" type="checkbox"> Travel</li>
+						<li id="l3"><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</li>
+						<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i3" onkeypress="return addEntry(event,'l3','i3')"></form></li>	
 						</ul>
 					</li>	
-					<li> <input type="checkbox"><form><input name="n" placeholder="New category"></form></li>						
+					<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i4" onkeypress="return addEntry(event,'l4','i4')"></form></li>						
 					</ul>
 				</li>
-				<li> <input type="checkbox"> Spending
+				<li id="l6"> <input name="bucket" value="Spending" type="checkbox"> Spending
 					<ul>
-					<li> <input type="checkbox"> Basics</li>
-					<li> <input type="checkbox"> Splurge</li>
-					<li> <input type="checkbox"><form><input name="n" placeholder="New category"></form></li>	
+					<li> <input name="bucket" value="Basics" type="checkbox"> Basics</li>
+					<li id="l5"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
+					<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i5" onkeypress="return addEntry(event,'l5','i5')"></form></li>	
 					</ul>
 				</li>
-				<li> <input type="checkbox"><form><input name="n" placeholder="New category"></form></li>					
+				<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i6" onkeypress="return addEntry(event,'l6','i6')"></form></li>					
 				</ul>
 			</li>
 		</ul>
 		<ul class="tree">
-			<li><input type="checkbox"><form><input name="n" placeholder="New category"></form></li>
+			<li class="newcategory"><input name="bucket" type="checkbox"><form><input placeholder="New category" id="i7" onkeypress="return addEntry(event,'l7','i7')"></form></li>
 		</ul>
-		<button type="button">Done</button>
+		<button type="button" onclick="getBuckets()">Done</button>
+	</article>
+	<article class="box">
+		<ul id="bucketList">
+		</ul>
 	</article>
 </section>
 </body>

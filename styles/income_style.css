@@ -9,3 +9,7 @@
 .options li {
   float: left;
 }
+
+.newcategory input {
+  float: left; 
+}

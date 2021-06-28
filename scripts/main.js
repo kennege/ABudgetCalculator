@@ -1,26 +1,12 @@
-function runScript(e) {
-  if (e.keyCode == 13) {
-      let tb = document.getElementById("income");
-      return false;
-  }
-}
-
 let amount = document.getElementById("income").value;
 let period = "";
 let taxOption = "";
 
-function setAmount(){
-  amount = document.getElementById("income").value;
-  document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;   
-}
-
-document.getElementById("income").addEventListener("keyup", 
-function(event) {
-  if (event.keyCode === 13) {   
-    setAmount();
-    return true;
+function saveIncome(e) {
+  if (e.keyCode == 13) {
+      return false;
   }
-});
+}
 
 function optionsCheckbox() {  
   let yearly = document.getElementById("yearlybox");  
@@ -44,7 +30,6 @@ function optionsCheckbox() {
     { 
       if (value){
         period = " per " + key;
-        document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;  
       }
     }
   } 
@@ -69,7 +54,6 @@ function taxCheckbox() {
     { 
       if (value){
         taxOption = ", " + key;
-        document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;  
       }
     }
   } 
@@ -81,7 +65,10 @@ function calculateIncome(){
   let fortnightly;
   let weekly;
   let daily;
-  setAmount();
+
+  amount = document.getElementById("income").value;
+  document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;   
+
   let amountF = parseFloat(amount);
   if (period == " per year"){
     yearly = amountF;
@@ -120,5 +107,41 @@ function calculateIncome(){
   document.getElementById("weekly").innerHTML += " $" + Math.round(weekly);
   document.getElementById("daily").innerHTML += " $" + Math.round(daily);
 }
+
+function addEntry(e,lid,fid) {
+  if (e.keyCode == 13) {
+    let li = document.getElementById(lid);
+    let input = document.getElementById(fid).value;
+    let node = document.createElement("div");
+    node.innerHTML = '<li> <input name="bucket" value="' + input + '" type="checkbox">' +  input + '</li>'; 
+    li.appendChild(node);    
+    return false;
+  }
+}
+
+function getBuckets() {
+  let checkboxes = document.getElementsByName('bucket');
+  let buckets = [];
+  for (let i=0; i<checkboxes.length; i++) {
+     if (checkboxes[i].checked) {
+        buckets.push(checkboxes[i].value);
+     }
+  }
+  createBucketList(buckets);
+  return False;
+}
+
+function createBucketList(buckets) { 
+  let bl = document.getElementById("bucketList");  
+  let para = document.createElement("div");
+  para.innerHTML = "<p>Input weights so the total equals 1. </p>";
+  bl.appendChild(para);
+  for (let i=0; i<buckets.length; i++) {
+    let node = document.createElement("div");
+    node.innerHTML = '<li> <input name="bucket" placeholder="Add weight"> ' +  buckets[i] + '</li>'; 
+    bl.appendChild(node);
+  }
+}
+
 
 income.focus();
