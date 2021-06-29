@@ -1,12 +1,7 @@
 let amount = document.getElementById("income").value;
 let period = "";
 let taxOption = "";
-
-function saveIncome(e) {
-  if (e.keyCode == 13) {
-      return false;
-  }
-}
+let bucketWeightPairs = [];
 
 function optionsCheckbox() {  
   let yearly = document.getElementById("yearlybox");  
@@ -101,11 +96,11 @@ function calculateIncome(){
     weekly = amountF * 7;
     daily = amountF;
   } 
-  document.getElementById("yearly").innerHTML += " $" + Math.round(yearly);
-  document.getElementById("monthly").innerHTML += " $" + Math.round(monthly);
-  document.getElementById("fortnightly").innerHTML += " $" + Math.round(fortnightly);
-  document.getElementById("weekly").innerHTML += " $" + Math.round(weekly);
-  document.getElementById("daily").innerHTML += " $" + Math.round(daily);
+  document.getElementById("yearly").innerHTML = "Yearly: $" + Math.round(yearly);
+  document.getElementById("monthly").innerHTML = "Monthly: $" + Math.round(monthly);
+  document.getElementById("fortnightly").innerHTML = "Fortnightly: $" + Math.round(fortnightly);
+  document.getElementById("weekly").innerHTML = "Weekly: $" + Math.round(weekly);
+  document.getElementById("daily").innerHTML = "Daily: $" + Math.round(daily);
 }
 
 function addEntry(e,lid,fid) {
@@ -134,12 +129,34 @@ function getBuckets() {
 function createBucketList(buckets) { 
   let bl = document.getElementById("bucketList");  
   let para = document.createElement("div");
+  while(bl.firstChild ){
+    bl.removeChild(bl.firstChild );
+  }
   para.innerHTML = "<p>Input weights so the total equals 1. </p>";
   bl.appendChild(para);
   for (let i=0; i<buckets.length; i++) {
     let node = document.createElement("div");
-    node.innerHTML = '<li> <input name="bucket" placeholder="Add weight"> ' +  buckets[i] + '</li>'; 
+    node.innerHTML = '<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight"> ' +  buckets[i] + '</li>'; 
     bl.appendChild(node);
+  }
+  let chosenBuckets = document.getElementsByClassName("newBucket");
+  for (let i=0;i<chosenBuckets.length;i++){
+    chosenBuckets[i].style.listStyleType = "none";
+  }
+  let button = document.createElement("button");
+  button.innerHTML = "Done";
+  button.onclick = function() {saveWeightBucketPairs(buckets);}
+  bl.appendChild(button);
+}
+
+function saveWeightBucketPairs(buckets) {
+  let weights = document.getElementsByName("chosenBucket");  
+  for (let i=0;i<weights.length;i++){
+    let pair = {
+      bucket: buckets[i],
+      weight: weights[i].value
+    };
+    bucketWeightPairs.push(pair);
   }
 }
 
