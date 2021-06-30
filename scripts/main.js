@@ -2,6 +2,11 @@ let amount = document.getElementById("income").value;
 let period = "";
 let taxOption = "";
 let bucketWeightPairs = [];
+let yearly = 0;
+let monthly = 0;
+let fortnightly = 0;
+let weekly = 0;
+let daily = 0;
 
 function optionsCheckbox() {  
   let yearly = document.getElementById("yearlybox");  
@@ -55,14 +60,19 @@ function taxCheckbox() {
 }  
 
 function calculateIncome(){
-  let yearly;
-  let monthly;
-  let fortnightly;
-  let weekly;
-  let daily;
 
   amount = document.getElementById("income").value;
   document.getElementById("setincome").innerHTML = "Your income is set to: $" + amount + period + taxOption;   
+
+  let b1 = document.getElementById("b1");
+  b1.style.position = 'absolute';
+  b1.style.right = '10px';
+  b1.style.top = '250px';
+
+  let b2 = document.getElementById("b2");
+  b2.style.position = 'absolute';
+  b2.style.right = '10px';
+  b2.style.top = '540px';
 
   let amountF = parseFloat(amount);
   if (period == " per year"){
@@ -96,11 +106,20 @@ function calculateIncome(){
     weekly = amountF * 7;
     daily = amountF;
   } 
-  document.getElementById("yearly").innerHTML = "Yearly: $" + Math.round(yearly);
-  document.getElementById("monthly").innerHTML = "Monthly: $" + Math.round(monthly);
-  document.getElementById("fortnightly").innerHTML = "Fortnightly: $" + Math.round(fortnightly);
-  document.getElementById("weekly").innerHTML = "Weekly: $" + Math.round(weekly);
-  document.getElementById("daily").innerHTML = "Daily: $" + Math.round(daily);
+  yearly = yearly.toFixed(2);
+  monthly = monthly.toFixed(2);
+  fortnightly = fortnightly.toFixed(2);
+  weekly = weekly.toFixed(2);
+  daily = daily.toFixed(2);
+
+  document.getElementById("yearly").innerHTML = "Yearly: $" + yearly;
+  document.getElementById("monthly").innerHTML = "Monthly: $" + monthly;
+  document.getElementById("fortnightly").innerHTML = "Fortnightly: $" + fortnightly;
+  document.getElementById("weekly").innerHTML = "Weekly: $" + weekly;
+  document.getElementById("daily").innerHTML = "Daily: $" + daily;
+
+  document.getElementById("b2").style.display = "block";
+  document.getElementById("b3").style.display = "block";
 }
 
 function addEntry(e,lid,fid) {
@@ -115,6 +134,13 @@ function addEntry(e,lid,fid) {
 }
 
 function getBuckets() {
+  document.getElementById("b4").style.display = "block";
+
+  let b3 = document.getElementById("b3");
+  b3.style.position = 'absolute';
+  b3.style.left = '10px';
+  b3.style.top = '250px';
+
   let checkboxes = document.getElementsByName('bucket');
   let buckets = [];
   for (let i=0; i<checkboxes.length; i++) {
@@ -122,6 +148,7 @@ function getBuckets() {
         buckets.push(checkboxes[i].value);
      }
   }
+
   createBucketList(buckets);
   return False;
 }
@@ -136,7 +163,7 @@ function createBucketList(buckets) {
   bl.appendChild(para);
   for (let i=0; i<buckets.length; i++) {
     let node = document.createElement("div");
-    node.innerHTML = '<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight"> ' +  buckets[i] + '</li>'; 
+    node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight. Eg. 0.3"> ${buckets[i]}</li>`; 
     bl.appendChild(node);
   }
   let chosenBuckets = document.getElementsByClassName("newBucket");
@@ -150,15 +177,66 @@ function createBucketList(buckets) {
 }
 
 function saveWeightBucketPairs(buckets) {
+  bucketWeightPairs = []
+  let b4 = document.getElementById("b4");
+  b4.style.position = 'absolute';
+  b4.style.right = '10px';
+  b4.style.top = '790px';
+
   let weights = document.getElementsByName("chosenBucket");  
   for (let i=0;i<weights.length;i++){
     let pair = {
       bucket: buckets[i],
-      weight: weights[i].value
+      weight: parseFloat(weights[i].value)
     };
     bucketWeightPairs.push(pair);
   }
+  populateTable();
 }
 
+function populateTable() {
+  let table = document.getElementById("tbody");
+  table.innerHTML = "";
+  for (let i=0;i<bucketWeightPairs.length;i++){
+    let row = table.insertRow();
+
+    let b = row.insertCell(0);
+    let d = row.insertCell(1);
+    let w = row.insertCell(2);
+    let f = row.insertCell(3);
+    let m = row.insertCell(4);
+    let y = row.insertCell(5);
+    let y2 = row.insertCell(6);
+    let y5 = row.insertCell(7);
+    let y10 = row.insertCell(8);
+    let y20 = row.insertCell(9);
+    let y30 = row.insertCell(10);
+
+    let btxt = document.createTextNode(bucketWeightPairs[i].bucket);
+    let dtxt = document.createTextNode((daily * bucketWeightPairs[i].weight).toFixed(2));
+    let wtxt = document.createTextNode((weekly * bucketWeightPairs[i].weight).toFixed(2));
+    let ftxt = document.createTextNode((fortnightly * bucketWeightPairs[i].weight).toFixed(2));
+    let mtxt = document.createTextNode((monthly * bucketWeightPairs[i].weight).toFixed(2));
+    let ytxt = document.createTextNode(Math.round(yearly * bucketWeightPairs[i].weight));
+    let y2txt = document.createTextNode(Math.round(2 * yearly * bucketWeightPairs[i].weight));
+    let y5txt = document.createTextNode(Math.round(5 * yearly * bucketWeightPairs[i].weight));
+    let y10txt = document.createTextNode(Math.round(10 * yearly * bucketWeightPairs[i].weight));
+    let y20txt = document.createTextNode(Math.round(20 * yearly * bucketWeightPairs[i].weight));
+    let y30txt = document.createTextNode(Math.round(30 * yearly * bucketWeightPairs[i].weight));
+
+    b.appendChild(btxt);
+    d.appendChild(dtxt);
+    w.appendChild(wtxt);
+    f.appendChild(ftxt);
+    m.appendChild(mtxt);
+    y.appendChild(ytxt);
+    y2.appendChild(y2txt);
+    y5.appendChild(y5txt);
+    y10.appendChild(y10txt);
+    y20.appendChild(y20txt);
+    y30.appendChild(y30txt);
+
+  }
+}
 
 income.focus();

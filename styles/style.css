@@ -14,7 +14,14 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-direction: column;
 }
+
+/* .box1 {
+    position: absolute;
+    right: 10px;
+    top: 250px; 
+} */
 
 .header img {
     position: absolute;

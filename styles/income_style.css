@@ -13,3 +13,7 @@
 .newcategory input {
   float: left; 
 }
+
+.table {
+  display:block;
+}
