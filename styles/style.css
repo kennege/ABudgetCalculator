@@ -17,12 +17,6 @@ section {
     flex-direction: column;
 }
 
-/* .box1 {
-    position: absolute;
-    right: 10px;
-    top: 250px; 
-} */
-
 .header img {
     position: absolute;
     width: 100px;

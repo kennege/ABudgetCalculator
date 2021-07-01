@@ -134,7 +134,6 @@ function addEntry(e,lid,fid) {
 }
 
 function getBuckets() {
-  document.getElementById("b4").style.display = "block";
 
   let b3 = document.getElementById("b3");
   b3.style.position = 'absolute';
@@ -148,15 +147,16 @@ function getBuckets() {
         buckets.push(checkboxes[i].value);
      }
   }
-
-  createBucketList(buckets);
+  generateLists(buckets);
   return False;
 }
 
 function createBucketList(buckets) { 
+  document.getElementById("b4").style.display = "block";
+
   let bl = document.getElementById("bucketList");  
   let para = document.createElement("div");
-  while(bl.firstChild ){
+  while(bl.firstChild){
     bl.removeChild(bl.firstChild );
   }
   para.innerHTML = "<p>Input weights so the total equals 1. </p>";
@@ -172,9 +172,10 @@ function createBucketList(buckets) {
   }
   let button = document.createElement("button");
   button.innerHTML = "Done";
-  button.onclick = function() {saveWeightBucketPairs(buckets);}
+  button.onclick = function() {saveWeightBucketPairs(buckets)}
   bl.appendChild(button);
 }
+
 
 function saveWeightBucketPairs(buckets) {
   bucketWeightPairs = []
@@ -194,7 +195,47 @@ function saveWeightBucketPairs(buckets) {
   populateTable();
 }
 
+function generateLists(buckets){
+  let listArea = document.getElementById("listblock");
+  listArea.style.display = "block";
+  let para = document.createElement("p");
+  para.style.textAlign = "left";
+  para.innerHTML = "<p>To help figure out your weights, here are some option lists that you can use to tally <br>\
+                    expected spending over a time period.<br>\
+                    Eg. tally basic expenses for a week to work out what % of your income you have left.</p>";
+  while(listArea.firstChild ){
+    listArea.removeChild(listArea.firstChild );
+  }
+  listArea.appendChild(para);
+  let listFlex = document.createElement("div");
+  listFlex.style.display = "flex";
+  for (let i=0;i<buckets.length;i++){
+    let list=document.createElement('div');
+    list.innerHTML = buckets[i];
+    listFlex.appendChild(list);
+    let listEntry = document.createElement("ul");
+    listEntry.innerHTML = `<li class=newentry><div class=listEntry><input placeholder="Item" size="10"> \
+                          <input placeholder="$" size="1">	<button type="button">Done</button></div></li>`;
+    listEntry.style.listStylePosition="inside";    
+    list.appendChild(listEntry);
+    listFlex.appendChild(list);
+  }
+  listArea.appendChild(listFlex);
+
+  listEntries = document.getElementsByClassName("listEntries");
+  for (let i=0;i<listEntries.length;i++){
+    listEntries[i].style.textAlign = "center";
+    listEntries[i].style.display = "inline-block";
+  }
+
+  let button = document.createElement("button");
+  button.innerHTML = "Ready/Skip";
+  button.onclick = function() {createBucketList(buckets)};
+  listArea.appendChild(button);
+}
+
 function populateTable() {
+  document.getElementById("tableblock").style.display = "block";
   let table = document.getElementById("tbody");
   table.innerHTML = "";
   for (let i=0;i<bucketWeightPairs.length;i++){

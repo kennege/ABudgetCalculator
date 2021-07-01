@@ -77,7 +77,7 @@
 						<li><input name="bucket" value="Shares" type="checkbox"> Shares</li>
 						<li><input name="bucket" value="Bonds" type="checkbox"> Bonds</li>
 						<li id="l1"><input name="bucket" value="Real Estate" type="checkbox"> Real Estate</li>
-						<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i1" onkeypress="return addEntry(event,'l1','i1')"></form></li>
+						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i1" onkeypress="return addEntry(event,'l1','i1')"></li>
 						</ul>
 					</li>
 					<li> <input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings
@@ -85,32 +85,32 @@
 						<li><input name="bucket" value="Retirement" type="checkbox"> Retirement</li>
 						<li><input name="bucket" value="House Deposit/Mortgage" type="checkbox"> House Deposit/Mortgage</li>
 						<li id="l2"><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</li>
-						<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i2" onkeypress="return addEntry(event,'l2','i2')"></form></li>	
+						<li class="newcategory"> <input name="bucket" type="checkbox"></form><input placeholder="New category" id="i2" onkeypress="return addEntry(event,'l2','i2')"></li>	
 						</ul>
 					</li>
 					<li id="l4"> <input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings
 						<ul>
 						<li><input name="bucket" value="Travel" type="checkbox"> Travel</li>
 						<li id="l3"><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</li>
-						<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i3" onkeypress="return addEntry(event,'l3','i3')"></form></li>	
+						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i3" onkeypress="return addEntry(event,'l3','i3')"></li>	
 						</ul>
 					</li>	
-					<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i4" onkeypress="return addEntry(event,'l4','i4')"></form></li>						
+					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i4" onkeypress="return addEntry(event,'l4','i4')"></li>						
 					</ul>
 				</li>
-				<li id="l6"> <input name="bucket" value="Spending" type="checkbox"> Spending
+				<li id="l6"> <input name="bucket" value="Spending" type="checkbox" class="spending"> Spending
 					<ul>
 					<li> <input name="bucket" value="Basics" type="checkbox"> Basics</li>
 					<li id="l5"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
-					<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i5" onkeypress="return addEntry(event,'l5','i5')"></form></li>	
+					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i5" onkeypress="return addEntry(event,'l5','i5')"></li>	
 					</ul>
 				</li>
-				<li class="newcategory"> <input name="bucket" type="checkbox"><form><input placeholder="New category" id="i6" onkeypress="return addEntry(event,'l6','i6')"></form></li>					
+				<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i6" onkeypress="return addEntry(event,'l6','i6')"></li>					
 				</ul>
 			</li>
 		</ul>
 		<ul class="tree">
-			<li class="newcategory"><input name="bucket" type="checkbox"><form><input placeholder="New category" id="i7" onkeypress="return addEntry(event,'l7','i7')"></form></li>
+			<li class="newcategory"><input name="bucket" type="checkbox"><input placeholder="New category" id="i7" onkeypress="return addEntry(event,'l7','i7')"></li>
 		</ul>
 		<button type="button" onclick="getBuckets()">Done</button>
 	</article>
@@ -119,8 +119,11 @@
 		<ul id="bucketList">
 		</ul>
 	</article>
+	<article class=box id="listblock" style="display:none">
 
-	<article class=table>
+	</article>
+	<br>
+	<article class=box id="tableblock" style="display:none">
 		<table id=table style="width:100%">
 			<thead>
 			<tr>
