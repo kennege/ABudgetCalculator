@@ -106,18 +106,11 @@ function calculateIncome(){
     weekly = amountF * 7;
     daily = amountF;
   } 
-  yearly = yearly.toFixed(2);
-  monthly = monthly.toFixed(2);
-  fortnightly = fortnightly.toFixed(2);
-  weekly = weekly.toFixed(2);
-  daily = daily.toFixed(2);
-
-  document.getElementById("yearly").innerHTML = "Yearly: $" + yearly;
-  document.getElementById("monthly").innerHTML = "Monthly: $" + monthly;
-  document.getElementById("fortnightly").innerHTML = "Fortnightly: $" + fortnightly;
-  document.getElementById("weekly").innerHTML = "Weekly: $" + weekly;
-  document.getElementById("daily").innerHTML = "Daily: $" + daily;
-
+  document.getElementById("yearly").innerHTML = "Yearly: $" + yearly.toFixed(2);
+  document.getElementById("monthly").innerHTML = "Monthly: $" + monthly.toFixed(2);
+  document.getElementById("fortnightly").innerHTML = "Fortnightly: $" + fortnightly.toFixed(2);
+  document.getElementById("weekly").innerHTML = "Weekly: $" + weekly.toFixed(2);
+  document.getElementById("daily").innerHTML = "Daily: $" + daily.toFixed(2);
   document.getElementById("b2").style.display = "block";
   document.getElementById("b3").style.display = "block";
 }
@@ -148,12 +141,12 @@ function getBuckets() {
      }
   }
   generateLists(buckets);
+  createBucketList(buckets)
   return False;
 }
 
 function createBucketList(buckets) { 
   document.getElementById("b4").style.display = "block";
-
   let bl = document.getElementById("bucketList");  
   let para = document.createElement("div");
   while(bl.firstChild){
@@ -176,7 +169,6 @@ function createBucketList(buckets) {
   bl.appendChild(button);
 }
 
-
 function saveWeightBucketPairs(buckets) {
   bucketWeightPairs = []
   let b4 = document.getElementById("b4");
@@ -198,40 +190,48 @@ function saveWeightBucketPairs(buckets) {
 function generateLists(buckets){
   let listArea = document.getElementById("listblock");
   listArea.style.display = "block";
-  let para = document.createElement("p");
-  para.style.textAlign = "left";
-  para.innerHTML = "<p>To help figure out your weights, here are some option lists that you can use to tally <br>\
-                    expected spending over a time period.<br>\
-                    Eg. tally basic expenses for a week to work out what % of your income you have left.</p>";
-  while(listArea.firstChild ){
-    listArea.removeChild(listArea.firstChild );
-  }
-  listArea.appendChild(para);
-  let listFlex = document.createElement("div");
+  let listFlex = document.createElement("article");
   listFlex.style.display = "flex";
+  listFlex.style.flexDirection = "row";
+  listFlex.style.flexWrap = "wrap";
+  listArea.style.width = "45%";
   for (let i=0;i<buckets.length;i++){
-    let list=document.createElement('div');
-    list.innerHTML = buckets[i];
-    listFlex.appendChild(list);
-    let listEntry = document.createElement("ul");
-    listEntry.innerHTML = `<li class=newentry><div class=listEntry><input placeholder="Item" size="10"> \
-                          <input placeholder="$" size="1">	<button type="button">Done</button></div></li>`;
-    listEntry.style.listStylePosition="inside";    
+    let listBox=document.createElement('div'); 
+    let listName=document.createElement('p');
+    listName.innerHTML = buckets[i];
+    listBox.appendChild(listName);
+    listBox.id = buckets[i];
+    let list = document.createElement("ul");
+    list.id = "tally" + i;
+    let listEntry = document.createElement("li");
+    listEntry.className = "newentry";
+    listEntry.innerHTML = `<div><input placeholder="Item" size="10"> \
+                          <input placeholder="$" size="1"><button type="button" onclick="addTallyEntry('tally${i}')">Add</button></div>`;
     list.appendChild(listEntry);
-    listFlex.appendChild(list);
+    listBox.appendChild(list);
+    listFlex.appendChild(listBox);
   }
   listArea.appendChild(listFlex);
-
-  listEntries = document.getElementsByClassName("listEntries");
-  for (let i=0;i<listEntries.length;i++){
-    listEntries[i].style.textAlign = "center";
-    listEntries[i].style.display = "inline-block";
-  }
-
   let button = document.createElement("button");
   button.innerHTML = "Ready/Skip";
-  button.onclick = function() {createBucketList(buckets)};
+  button.onclick = function() {populateTable()};
   listArea.appendChild(button);
+}
+
+function addTallyEntry(ulID){
+  let list = document.getElementById(ulID);
+  let listEntry = document.createElement("li");
+  listEntry.className = "newentry";
+  listEntry.innerHTML = `<div><input placeholder="Item" size="10"> \
+  <input placeholder="$" size="1"><button type="button" onclick="addTallyEntry('${ulID}')">Add</button></div>`;
+  list.appendChild(listEntry);
+  return false;
+}
+
+
+function insertTableEntry(row, column, amount) {
+  let entry = row.insertCell(column);
+  entry.append(amount);
 }
 
 function populateTable() {
@@ -241,42 +241,17 @@ function populateTable() {
   for (let i=0;i<bucketWeightPairs.length;i++){
     let row = table.insertRow();
 
-    let b = row.insertCell(0);
-    let d = row.insertCell(1);
-    let w = row.insertCell(2);
-    let f = row.insertCell(3);
-    let m = row.insertCell(4);
-    let y = row.insertCell(5);
-    let y2 = row.insertCell(6);
-    let y5 = row.insertCell(7);
-    let y10 = row.insertCell(8);
-    let y20 = row.insertCell(9);
-    let y30 = row.insertCell(10);
-
-    let btxt = document.createTextNode(bucketWeightPairs[i].bucket);
-    let dtxt = document.createTextNode((daily * bucketWeightPairs[i].weight).toFixed(2));
-    let wtxt = document.createTextNode((weekly * bucketWeightPairs[i].weight).toFixed(2));
-    let ftxt = document.createTextNode((fortnightly * bucketWeightPairs[i].weight).toFixed(2));
-    let mtxt = document.createTextNode((monthly * bucketWeightPairs[i].weight).toFixed(2));
-    let ytxt = document.createTextNode(Math.round(yearly * bucketWeightPairs[i].weight));
-    let y2txt = document.createTextNode(Math.round(2 * yearly * bucketWeightPairs[i].weight));
-    let y5txt = document.createTextNode(Math.round(5 * yearly * bucketWeightPairs[i].weight));
-    let y10txt = document.createTextNode(Math.round(10 * yearly * bucketWeightPairs[i].weight));
-    let y20txt = document.createTextNode(Math.round(20 * yearly * bucketWeightPairs[i].weight));
-    let y30txt = document.createTextNode(Math.round(30 * yearly * bucketWeightPairs[i].weight));
-
-    b.appendChild(btxt);
-    d.appendChild(dtxt);
-    w.appendChild(wtxt);
-    f.appendChild(ftxt);
-    m.appendChild(mtxt);
-    y.appendChild(ytxt);
-    y2.appendChild(y2txt);
-    y5.appendChild(y5txt);
-    y10.appendChild(y10txt);
-    y20.appendChild(y20txt);
-    y30.appendChild(y30txt);
-
+    insertTableEntry(row,0,bucketWeightPairs[i].bucket) // bucket name
+    insertTableEntry(row,1,(daily * bucketWeightPairs[i].weight).toFixed(2)) // daily
+    insertTableEntry(row,2,(weekly * bucketWeightPairs[i].weight).toFixed(2)) // weekly
+    insertTableEntry(row,3,(fortnightly * bucketWeightPairs[i].weight).toFixed(2)) // fortnightly
+    insertTableEntry(row,4,(monthly * bucketWeightPairs[i].weight).toFixed(2)) // monthly
+    insertTableEntry(row,5,Math.round(yearly * bucketWeightPairs[i].weight)) // yearly
+    insertTableEntry(row,6,Math.round(2 * yearly * bucketWeightPairs[i].weight)) // 2 yearly
+    insertTableEntry(row,7,Math.round(5 * yearly * bucketWeightPairs[i].weight)) // 5 yearly
+    insertTableEntry(row,8,Math.round(10 * yearly * bucketWeightPairs[i].weight)) // 10 yearly
+    insertTableEntry(row,9,Math.round(20 * yearly * bucketWeightPairs[i].weight)) // 20 yearly
+    insertTableEntry(row,10,Math.round(30 * yearly * bucketWeightPairs[i].weight)) // 30 yearly
   }
 }
 
