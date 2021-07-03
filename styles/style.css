@@ -73,3 +73,34 @@ section {
     padding: 9px;
     text-align: center;
 } 
+
+.listbox {
+    border: 3px solid;
+    border-color: #375e97;
+    box-shadow: 5px 10px #888888;
+    border-radius: 25px;
+    padding: 9px;
+    text-align: center;
+    margin: auto 25%;
+} 
+
+.listblock {
+    width: 99%;
+    overflow: hidden;
+    justify-content: space-around;
+}
+
+.listflex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;  
+    justify-content: space-around; 
+}
+
+.flexitem {
+    background-color: #375e97;
+    border-radius: 0.5em;
+    padding-left: 0;
+    padding-right: 1em;
+    box-shadow: 2px 4px #888888;
+}

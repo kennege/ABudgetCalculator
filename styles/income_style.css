@@ -16,7 +16,7 @@
 
 .newentry {
   text-align: left;
-  display: block;
+  color: ivory;
 }
 
 .newentry div {
@@ -26,4 +26,4 @@
 
 table, th, td {
   border: 1px solid black;
-}s
+}

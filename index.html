@@ -46,19 +46,19 @@
 			<p id=setincome>Your income is set to $0</p>
 			<div id=t1div style="display:none">
 				<table style="width:100%">
-				<thead>
-				<tr>
-					<th id="daycol">Daily</th>
-					<th id="weekcol">Weekly</th>
-					<th id="fortnightcol">Fortnightly</th>
-					<th id="monthcol">Monthly</th>
-					<th id="yearcol">Yearly</th>
-  			</tr>
-			</thead>
-			<tbody id="tbody1">
-			</tbody>
-			</table>
-		</div>
+                    <thead>
+                        <tr>
+                            <th id="daycol">Daily</th>
+                            <th id="weekcol">Weekly</th>
+                            <th id="fortnightcol">Fortnightly</th>
+                            <th id="monthcol">Monthly</th>
+                            <th id="yearcol">Yearly</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody1">
+                    </tbody>
+			    </table>
+		    </div>
 			<button type="button" id="done_options" onclick="calculateIncome(event)">Ready</button>     
 		</article>
 		<br>
@@ -85,20 +85,20 @@
 						<li class="newcategory"> <input name="bucket" type="checkbox"></form><input placeholder="New category" id="i2" onkeypress="return addEntry(event,'l2','i2')"></li>	
 						</ul>
 					</li>
-					<li id="l4"> <input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings
+					<li id="l4"> <input name="bucket" value="Short-term savings" type="checkbox" checked> Short-term savings
 						<ul>
 						<li><input name="bucket" value="Travel" type="checkbox"> Travel</li>
 						<li id="l3"><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</li>
 						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i3" onkeypress="return addEntry(event,'l3','i3')"></li>	
 						</ul>
 					</li>	
-					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i4" onkeypress="return addEntry(event,'l4','i4')"></li>						
+					<li class="newcategory"> <input name="bucket" type="checkbox" checked><input placeholder="New category" id="i4" onkeypress="return addEntry(event,'l4','i4')"></li>						
 					</ul>
 				</li>
-				<li id="l6"> <input name="bucket" value="Spending" type="checkbox" class="spending"> Spending
+				<li id="l6"> <input name="bucket" value="Spending" type="checkbox" class="spending" checked> Spending
 					<ul>
 					<li> <input name="bucket" value="Basics" type="checkbox" checked> Basics</li>
-					<li id="l5"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
+					<li id="l5"> <input name="bucket" value="Splurge" type="checkbox" checked> Splurge</li>
 					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i5" onkeypress="return addEntry(event,'l5','i5')"></li>	
 					</ul>
 				</li>
@@ -112,13 +112,13 @@
 		<button type="button" onclick="getBuckets()">Done</button>
 	</article>
 	<br>
-	<article class=box id="b4" style="display:none">
+	<article class=listbox id="b4" style="display:none">
 		<p style="text-align: left">
 			To help figure out your weights, here are some optional lists that you can use to tally <br>
-			 expected spending over a FORTNIGHT.<br>
+			 expected spending over a <b>week</b>.<br>
 			Eg. tally basic expenses (food, rent, petrol, etc) to work out what weight to apply to this category.
 		</p>
-		<section id=listblock>
+		<section id=listblock class=listblock>
 		</section>
 	</article>	
 	<br>
@@ -150,7 +150,4 @@
 	</article>
 </section>
 </body>
-	<!-- <footer>
-		<p>©Copyright 2050 by nobody. All rights reversed.</p>
-	</footer> -->
 </html>

@@ -173,27 +173,22 @@ function generateTallies(buckets){
   listBox.style.display = "block";
   let listArea = document.getElementById("listblock");
   let listFlex = document.createElement("article");
-  listFlex.style.display = "flex";
-  listFlex.style.flexDirection = "row";
-  listFlex.style.flexWrap = "wrap";
-  listArea.style.width = "90%";
+  listFlex.className = "listflex";
   while(listArea.firstChild){
     listArea.removeChild(listArea.firstChild);
   }
   for (let i=0;i<buckets.length;i++){
     let listBox=document.createElement('div'); 
-    listBox.style.backgroundColor = "#375e97";
-    listBox.style.padding = "3px";
-    listBox.style.right = "5px";
-    listBox.style.borderRadius = "5px";
-    listBox.style.boxShadow = "2px 4px #888888"
+    listBox.className = "flexitem";
     let listName=document.createElement('p');
     listName.innerHTML = buckets[i] + ": $0";
+    listName.id = "title" + i;
+    listName.style.color = "ivory";
     listBox.appendChild(listName);
     let list = document.createElement("ul");
     list.id = "tally" + i;
     let listEntry = document.createElement("li");
-    listEntry.style.listStyle = "decimal-inside";
+
     listEntry.className = "newentry";
     listEntry.innerHTML = `<div><input placeholder="Item" id='item${i}' size="10"> \
                           <input placeholder="$" id='val${i}' size="1"><button type="button" \
@@ -211,8 +206,9 @@ function addTallyEntry(liID,ulID){
   let item = document.getElementById('item'+liID).value;
   let value = document.getElementById('val'+liID).value;
   let listEntry = document.createElement("li");
+  listEntry.style.color = "ivory";
   listEntry.innerHTML = item + ': $' + value;
-  list.insertBefore(listEntry,list.firstChild);
+  list.insertBefore(listEntry,list.lastChild);
 
   // update total tally and weight
   let listPara = document.getElementById('title'+liID);
@@ -220,8 +216,8 @@ function addTallyEntry(liID,ulID){
   let ind = listTitle.indexOf("$");
   let currentTotal = parseFloat(listTitle.slice(ind+1));
   currentTotal = currentTotal + parseFloat(value);
-  listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/fortnightly).toFixed(2);
-
+  listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/weekly).toFixed(2);
+  
   // reset form
   document.getElementById('item'+liID).value = "";
   document.getElementById('val'+liID).value = "";
