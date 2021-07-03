@@ -83,6 +83,8 @@ function calculateIncome(e){
         weekly = amountF * 7;
         daily = amountF;
     } 
+
+    // fill out income table
     document.getElementById("setincome").innerHTML = "Your income is set to:"
     let tab = document.getElementById("tbody1");
     tab.innerHTML = "";
@@ -93,7 +95,7 @@ function calculateIncome(e){
     insertTableEntry(row, 3, "$" + commas(monthly.toFixed(2))); 
     insertTableEntry(row, 4, "$" + commas(yearly.toFixed(2))); 
     
-    // display table and block 3
+    // display income table and block 3
     document.getElementById("t1div").style.display = "block";
     document.getElementById("b3").style.display = "block";
     return false;
@@ -204,7 +206,7 @@ function generateTallies(buckets){
 }
 
 function addTallyEntry(liID,ulID){
-  // add entry to tally
+  // add item to tally
   let list = document.getElementById(ulID);
   let item = document.getElementById('item'+liID).value;
   let value = document.getElementById('val'+liID).value;
@@ -226,8 +228,8 @@ function addTallyEntry(liID,ulID){
   return false;
 }
 
-
 function populateTable() {
+  // generate bucket/income table
   document.getElementById("tableblock").style.display = "block";
   let table = document.getElementById("tbody");
   table.innerHTML = "";
