@@ -30,14 +30,8 @@
 		<section>
 		<article class=box id="b1">
 			<form>
-				<input placeholder="Income" id="income" onkeypress="return calculateIncome(event)">
+				<input placeholder="Income after tax" id="income" onkeypress="return calculateIncome(event)">
 			</form>
-			<div class="options">
-				<ul>
-					<li><input type="checkbox" id="beforeTax" onclick="taxCheckbox()">Before tax</li>
-					<li><input type="checkbox" id="afterTax" onclick="taxCheckbox()">After tax</li>
-				</ul>
-			</div>
 			<p>
 				What time period have you entered your income for?
 			</p>
@@ -50,22 +44,26 @@
 					<li><input type="checkbox" id="dailybox" onclick="optionsCheckbox()"> Daily</li>
 				</ul>
 			</div>  
-			<p id=setincome>Your income is set to $0</p> 
-			<button type="button" id="done_options" onclick="calculateIncome()">Ready</button>     
+			<p id=setincome>Your income is set to $0</p>
+			<div id=t1div style="display:none">
+				<table style="width:100%">
+				<thead>
+				<tr>
+					<th id="daycol">Daily</th>
+					<th id="weekcol">Weekly</th>
+					<th id="fortnightcol">Fortnightly</th>
+					<th id="monthcol">Monthly</th>
+					<th id="yearcol">Yearly</th>
+  			</tr>
+			</thead>
+			<tbody id="tbody1">
+			</tbody>
+			</table>
+		</div>
+			<button type="button" id="done_options" onclick="calculateIncome(event)">Ready</button>     
 		</article>
 		<br>
-		<article class=box id="b2" style="display:none">
-			<p>After tax income:</p>
-			<ul>
-				<li id="yearly">Yearly: </li>
-				<li id="monthly">Monthly: </li>
-				<li id="fortnightly">Fortnightly: </li>
-				<li id="weekly">Weekly: </li>
-				<li id="daily">Daily: </li>
-			</ul>
-		</article>
-		<br>
-	<article class=box id="b3" style="display:none">
+		<article class=box id="b3" style="display:none">
 		<p>Choose your buckets (3-6 recommended)</p>
 		<ul class="tree">
 			<li id="l7"> <input name="bucket" value="Income" type="checkbox"> Income
@@ -100,7 +98,7 @@
 				</li>
 				<li id="l6"> <input name="bucket" value="Spending" type="checkbox" class="spending"> Spending
 					<ul>
-					<li> <input name="bucket" value="Basics" type="checkbox"> Basics</li>
+					<li> <input name="bucket" value="Basics" type="checkbox" checked> Basics</li>
 					<li id="l5"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
 					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i5" onkeypress="return addEntry(event,'l5','i5')"></li>	
 					</ul>
@@ -115,16 +113,19 @@
 		<button type="button" onclick="getBuckets()">Done</button>
 	</article>
 	<br>
-	<article class="box" id="b4" style="display:none">
-		<ul id="bucketList">
-		</ul>
-	</article>
-	<article class=box id="listblock" style="display:none">
+	<article class=box id="b4" style="display:none">
 		<p style="text-align: left">
 			To help figure out your weights, here are some optional lists that you can use to tally <br>
-			 expected spending over a time period.<br>
-			Eg. tally basic expenses for a week to work out what % of your income you have left.
+			 expected spending over a FORTNIGHT.<br>
+			Eg. tally basic expenses (food, rent, petrol, etc) to work out what weight to apply to this category.
 		</p>
+		<section id=listblock>
+		</section>
+	</article>	
+	<br>
+	<article class="box" id="b5" style="display:none">
+		<ul id="bucketList">
+		</ul>
 	</article>
 	<br>
 	<article class=box id="tableblock" style="display:none">
@@ -136,7 +137,7 @@
 				<th id="weekcol">Weekly</th>
 				<th id="fortnightcol">Fortnightly</th>
 				<th id="monthcol">Monthly</th>
-				<th id="yearcol">Year</th>
+				<th id="yearcol">Yearly</th>
 				<th id="2yearcol">2 years</th>
 				<th id="5yearcol">5 years</th>
 				<th id="10yearcol">10 years</th>

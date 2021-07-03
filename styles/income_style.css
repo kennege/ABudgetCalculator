@@ -17,11 +17,13 @@
 .newentry {
   text-align: left;
   display: block;
-  /* list-style-position: inside; */
 }
 
 .newentry div {
   float: left;
   text-align: left;
-
 }
+
+table, th, td {
+  border: 1px solid black;
+}s
