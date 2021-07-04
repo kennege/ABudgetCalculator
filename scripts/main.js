@@ -10,7 +10,8 @@ function insertTableEntry(row, column, amount) {
   entry.append(amount);
 }
   
-function optionsCheckbox(id) {  
+function optionsCheckbox(id) { 
+  // only let one income period option to be checked 
   for (let i = 1;i <= 5; i++)
   {
     document.getElementById("o" + i).checked = false;
@@ -95,55 +96,6 @@ document.getElementById("chosenbuckets").addEventListener("click", function(){
   return False;
 });
 
-function createBucketList(buckets) { 
-  // generate bucket list for choosing weights
-  let block = document.getElementById("b4"); 
-  block.style.display = "block" // display bucket/weight list box
-  let bl = document.getElementById("bucketList");  
-  let para = document.createElement("div");
-  while(bl.firstChild){
-    bl.removeChild(bl.firstChild );
-  }
-  para.innerHTML = "<p>Input weights so the sum equals 1. </p>";
-  para.id = "weightpara";
-  bl.appendChild(para);
-  for (let i=0; i<buckets.length; i++) {
-    let node = document.createElement("div");
-    node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight. Eg. 0.3"> ${buckets[i]}</li>`; 
-    bl.appendChild(node);
-  }
-  let chosenBuckets = document.getElementsByClassName("newBucket");
-  for (let i=0;i<chosenBuckets.length;i++){
-    chosenBuckets[i].style.listStyleType = "none";
-  }
-  if (!document.getElementById('donebutton')){
-    let button = document.createElement("button");
-    button.innerHTML = "Done";
-    button.id = "donebutton";
-    button.onclick = function() {saveWeightBucketPairs(buckets)}
-    block.appendChild(button);
-  }
-}
-
-function saveWeightBucketPairs(buckets) {
-  // save chosen weights for chosen buckets
-  bucketWeightPairs = [];
-  let totalweight = 0;
-  let weights = document.getElementsByName("chosenBucket");  
-  for (let i=0;i<weights.length;i++){
-    let pair = {
-      bucket: buckets[i],
-      weight: parseFloat(weights[i].value)
-    };
-    totalweight = totalweight + parseFloat(weights[i].value);
-    bucketWeightPairs.push(pair);
-  }
-  let para = document.getElementById("weightpara");
-  para.innerText = "Weight sum = " + totalweight;
-  populateTable();
-  drawPlot();
-}
-
 function generateTallies(buckets){
   // generate optional tallies to aid in choosing weights
   let listBox = document.getElementById("b5");
@@ -165,7 +117,6 @@ function generateTallies(buckets){
     let list = document.createElement("ul");
     list.id = "tally" + i;
     let listEntry = document.createElement("li");
-
     listEntry.className = "newentry";
     listEntry.innerHTML = `<div><input placeholder="Item" id='item${i}' size="10"> \
                           <input placeholder="$" id='val${i}' size="1"><button type="button" \
@@ -188,6 +139,7 @@ function generateTallies(buckets){
 }
 
 function resetTallies(buckets){
+  // remove items from tallies and reset
   for (let i=0;i<buckets.length;i++){
     let tallyID = 'tally' + i;
     let titleID = 'title' + i;
@@ -236,6 +188,55 @@ function deleteTallyEntry(liID,value,titleID) {
   let currentTotal = parseFloat(listTitle.slice(ind+1));
   currentTotal = currentTotal - parseFloat(value);
   listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(income/52)).toFixed(2);
+}
+
+function createBucketList(buckets) { 
+  // generate bucket list for choosing weights
+  let block = document.getElementById("b4"); 
+  block.style.display = "block" // display bucket/weight list box
+  let bl = document.getElementById("bucketList");  
+  let para = document.createElement("div");
+  while(bl.firstChild){
+    bl.removeChild(bl.firstChild );
+  }
+  para.innerHTML = "<p>Input weights so the sum equals 1. </p>";
+  para.id = "weightpara";
+  bl.appendChild(para);
+  for (let i=0; i<buckets.length; i++) {
+    let node = document.createElement("div");
+    node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight. Eg. 0.3"> ${buckets[i]}</li>`; 
+    bl.appendChild(node);
+  }
+  let chosenBuckets = document.getElementsByClassName("newBucket");
+  for (let i=0;i<chosenBuckets.length;i++){
+    chosenBuckets[i].style.listStyleType = "none";
+  }
+  if (!document.getElementById('donebutton')){
+    let button = document.createElement("button");
+    button.innerHTML = "Done";
+    button.id = "donebutton";
+    button.onclick = function() {saveWeightBucketPairs(buckets)}
+    block.appendChild(button);
+  }
+}
+
+function saveWeightBucketPairs(buckets) {
+  // save chosen weights for chosen buckets
+  bucketWeightPairs = [];
+  let totalweight = 0;
+  let weights = document.getElementsByName("chosenBucket");  
+  for (let i=0;i<weights.length;i++){
+    let pair = {
+      bucket: buckets[i],
+      weight: parseFloat(weights[i].value)
+    };
+    totalweight = totalweight + parseFloat(weights[i].value);
+    bucketWeightPairs.push(pair);
+  }
+  let para = document.getElementById("weightpara");
+  para.innerText = "Weight sum = " + totalweight;
+  populateTable();
+  drawPlot();
 }
 
 function populateTable() {
