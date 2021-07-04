@@ -9,6 +9,22 @@ function insertTableEntry(row, column, amount) {
   let entry = row.insertCell(column);
   entry.append(amount);
 }
+
+function convertIncome(income, factor) {
+  let incomes = [   
+    commas((factor * (income / 365)).toFixed(2)), // daily
+    commas((factor * (income / 52)).toFixed(2)), // weekly
+    commas((factor * (income / 26)).toFixed(2)), // fortnightly
+    commas((factor * (income / 12)).toFixed(2)), // monthly
+    commas(Math.round(factor * income)), // yearly
+    commas(Math.round(factor * 2 * income)), // 2 yearly
+    commas(Math.round(factor * 5 * income)), // 5 yearly
+    commas(Math.round(factor * 10 * income)), // 10 yearly
+    commas(Math.round(factor * 20 * income)), // 20 yearly
+    commas(Math.round(factor * 30 * income)) // 30 yearly
+];
+  return incomes;
+}
   
 function optionsCheckbox(id) { 
   // only let one income period option to be checked 
@@ -42,25 +58,20 @@ function calculateIncome(e){
       case " per day":
         income = income * 365;
     } 
-
     // fill out income table
     let tab1 = document.getElementById("tbody1");
     tab1.innerHTML = "";
     let row1 = tab1.insertRow();
-    insertTableEntry(row1, 0, "$" + commas((income / 365).toFixed(2))); // daily 
-    insertTableEntry(row1, 1, "$" + commas((income / 52).toFixed(2))); // weekly 
-    insertTableEntry(row1, 2, "$" + commas((income / 26).toFixed(2))); // fortnightly
-    insertTableEntry(row1, 3, "$" + commas((income / 12).toFixed(2))); // monthly
-    insertTableEntry(row1, 4, "$" + commas(Math.round(income))); // yearly 
+    for (let i=0;i<5;i++){
+      insertTableEntry(row1, i, "$" + convertIncome(income,1)[i]);  
+    }
     row1 = tab1.insertRow();
     let tab2 = document.getElementById("tbody2");
     tab2.innerHTML = "";
     let row2 = tab2.insertRow();
-    insertTableEntry(row2, 0, "$" + commas(Math.round(2 * income))); 
-    insertTableEntry(row2, 1, "$" + commas(Math.round(5 * income))); 
-    insertTableEntry(row2, 2, "$" + commas(Math.round(10 * income))); 
-    insertTableEntry(row2, 3, "$" + commas(Math.round(20 * income))); 
-    insertTableEntry(row2, 4, "$" + commas(Math.round(30 * income))); 
+    for (let i=0;i<5;i++){
+      insertTableEntry(row2, i, "$" + convertIncome(income,1)[i+5]);  
+    }
     row2 = tab2.insertRow();    
     
     // display income table and block 3
@@ -107,13 +118,13 @@ function generateTallies(buckets){
     listArea.removeChild(listArea.firstChild);
   }
   for (let i=0;i<buckets.length;i++){
-    let listBox=document.createElement('div'); 
-    listBox.className = "flexitem";
+    let listDiv=document.createElement('div'); 
+    listDiv.className = "flexitem";
     let listName=document.createElement('p');
     listName.innerHTML = buckets[i] + ": $0";
     listName.id = "title" + i;
     listName.style.color = "ivory";
-    listBox.appendChild(listName);
+    listDiv.appendChild(listName);
     let list = document.createElement("ul");
     list.id = "tally" + i;
     let listEntry = document.createElement("li");
@@ -122,8 +133,8 @@ function generateTallies(buckets){
                           <input placeholder="$" id='val${i}' size="1"><button type="button" \
                           onclick="addTallyEntry('${i}','tally${i}')">Add</button></div>`;
     list.appendChild(listEntry);
-    listBox.appendChild(list);
-    listFlex.appendChild(listBox);
+    listDiv.appendChild(list);
+    listFlex.appendChild(listDiv);
   }
   listArea.appendChild(listFlex);
 
@@ -247,20 +258,14 @@ function populateTable() {
   for (let i=0;i<bucketWeightPairs.length;i++){
     let row = table.insertRow();
     insertTableEntry(row, 0, bucketWeightPairs[i].bucket) // bucket name
-    insertTableEntry(row, 1, commas(((income/365) * bucketWeightPairs[i].weight).toFixed(2))) // daily
-    insertTableEntry(row, 2, commas(((income/52) * bucketWeightPairs[i].weight).toFixed(2))) // weekly
-    insertTableEntry(row, 3, commas(((income/26) * bucketWeightPairs[i].weight).toFixed(2))) // fortnightly
-    insertTableEntry(row, 4, commas(((income/12) * bucketWeightPairs[i].weight).toFixed(2))) // monthly
-    insertTableEntry(row, 5, commas(Math.round(income * bucketWeightPairs[i].weight))) // yearly
-    insertTableEntry(row, 6, commas(Math.round(2 * income * bucketWeightPairs[i].weight))) // 2 yearly
-    insertTableEntry(row, 7, commas(Math.round(5 * income * bucketWeightPairs[i].weight))) // 5 yearly
-    insertTableEntry(row, 8, commas(Math.round(10 * income * bucketWeightPairs[i].weight))) // 10 yearly
-    insertTableEntry(row, 9, commas(Math.round(20 * income * bucketWeightPairs[i].weight))) // 20 yearly
-    insertTableEntry(row, 10, commas(Math.round(30 * income * bucketWeightPairs[i].weight))) // 30 yearly
+    for (let j=0;j<10;j++){
+      insertTableEntry(row, j+1, (convertIncome(income,bucketWeightPairs[i].weight)[j])) 
+    }
   }
 }
 
 function plotCheckbox(id) {
+  // get latest checkbox and plot
   for (let i = 1;i <= 10; i++)
   {
       document.getElementById("ch" + i).checked = false;
@@ -283,15 +288,19 @@ function drawPlot() {
     }
   }
   let data = [];
+  let mult = 0;
   let colours = ['black','blue','brown','red','aqua','crimson','cyan','pink','orange','yellow','purple','grey','green'];
   for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
+    if ((i+1) % (colours.length+1) == 0){
+      mult+=colours.length;
+    }
     let pair = {};
     pair["label"] = bucketWeightPairs[i]["bucket"]
     pair["data"] = [];
     pair["data"].push([0,0]);
     pair["data"].push([unit, bucketWeightPairs[i]["weight"] * multiplier * income]);
     pair["points"] = {symbol: "circle"};
-    pair["color"] = colours[i];
+    pair["color"] = colours[i - mult];
     data.push(pair);
   }
   let xlabel = document.head.appendChild(document.createElement('style'));
