@@ -20,8 +20,8 @@ section {
 
 .header img {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     right: 30px;
     top: 2px;
 }
@@ -81,12 +81,11 @@ section {
     border-radius: 25px;
     padding: 9px;
     text-align: center;
-    margin: auto 25%;
+    width: 800px;
+    /* margin: auto 25%; */
 } 
 
 .listblock {
-    width: 99%;
-    overflow: hidden;
     justify-content: space-around;
 }
 
@@ -94,7 +93,7 @@ section {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;  
-    justify-content: space-around; 
+    justify-content: space-around;   
 }
 
 .flexitem {
@@ -103,4 +102,40 @@ section {
     padding-left: 0;
     padding-right: 1em;
     box-shadow: 2px 4px #888888;
+    margin: 15px 0 0 0;
+}
+
+.flotcontainer {
+    width: 600px;
+    height: 300px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#flotcontainer:after {
+    content: '$';
+    position: absolute;
+    top: 35%;
+    left: -30px;
+    font-weight: 600;
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+#flotcontainer:before {
+    content: 'Time';
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    font-weight: 600;
+}
+
+.plotbox {
+    border: 3px solid;
+    border-color: #375e97;
+    box-shadow: 5px 10px #888888;
+    border-radius: 25px;
+    padding: 40px;
+    text-align: center;  
+    display: none;
 }

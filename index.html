@@ -10,17 +10,21 @@
 		that each have a different purpose.">
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="icon" href="bucket.ico" type="image/x-icon">
-		<script src="../scripts/main.js" defer></script>
-	</head>
+		<script src="/scripts/main.js" defer></script>
+		<script src="/scripts/jquery-3.6.0.js"></script>
+		<script src="/scripts/jquery.flot.js"></script>				 
+		</head>
 	<body> 
+
 		<div class="header">
-			<h1><a href="index.html">A Simple Budget Calculator</a></h1>
+			<h1><a href="index.html">Simple Budget Calculator</a></h1>
 			<img src="../images/bucket.ico" alt="logo">
 		</div>
 		<div class="topnav">
 			<ul>
 				<a href="index.html">Home</a>
 				<a href="pages/how_to_use.html">How To Use</a>
+				<a href="pages/contact.html">Contact</a>
 			</ul>
 		</div>
 		<p>
@@ -36,34 +40,45 @@
 			</p>
 			<div class="options">
 				<ul>
-					<li><input type="checkbox" id="yearlybox" onclick="optionsCheckbox()"> Yearly</li>
-					<li><input type="checkbox" id="monthlybox" onclick="optionsCheckbox()"> Monthly</li>
-					<li><input type="checkbox" id="fortnightlybox" onclick="optionsCheckbox()"> Fortnightly</li>
-					<li><input type="checkbox" id="weeklybox" onclick="optionsCheckbox()"> Weekly</li>
-					<li><input type="checkbox" id="dailybox" onclick="optionsCheckbox()"> Daily</li>
+					<li><input type="checkbox" id="o1" name="year" onclick="optionsCheckbox(this.id)"> Yearly</li>
+					<li><input type="checkbox" id="o2" name="month" onclick="optionsCheckbox(this.id)"> Monthly</li>
+					<li><input type="checkbox" id="o3" name="fortnight" onclick="optionsCheckbox(this.id)" checked> Fortnightly</li>
+					<li><input type="checkbox" id="o4" name="week" onclick="optionsCheckbox(this.id)"> Weekly</li>
+					<li><input type="checkbox" id="o5" name="day" onclick="optionsCheckbox(this.id)"> Daily</li>
 				</ul>
 			</div>  
-			<p id=setincome>Your income is set to $0</p>
+			<p id=setincome>Your income is set to $0.00</p>
 			<div id=t1div style="display:none">
 				<table style="width:100%">
-                    <thead>
-                        <tr>
-                            <th id="daycol">Daily</th>
-                            <th id="weekcol">Weekly</th>
-                            <th id="fortnightcol">Fortnightly</th>
-                            <th id="monthcol">Monthly</th>
-                            <th id="yearcol">Yearly</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody1">
-                    </tbody>
-			    </table>
-		    </div>
+					<thead>
+							<tr>
+									<th>Daily</th>
+									<th>Weekly</th>
+									<th>Fortnightly</th>
+									<th>Monthly</th>
+									<th>Yearly</th>
+							</tr>
+					</thead>
+					<tbody id="tbody1">
+					</tbody>
+					<thead>
+						<tr>
+								<th>2 Years</th>
+								<th>5 Years</th>
+								<th>10 Years</th>
+								<th>20 Years</th>
+								<th>30 Years</th>
+						</tr>
+				</thead>	
+				<tbody id="tbody2">
+				</tbody>				
+				</table>
+			</div>
 			<button type="button" id="done_options" onclick="calculateIncome(event)">Ready</button>     
 		</article>
 		<br>
 		<article class=box id="b3" style="display:none">
-		<p>Choose your buckets (3-6 recommended)</p>
+		<p>Choose your categories (3-6 recommended)</p>
 		<ul class="tree">
 			<li id="l7"> <input name="bucket" value="Income" type="checkbox"> Income
 				<ul>
@@ -71,10 +86,8 @@
 					<ul>
 					<li> <input name="bucket" value="Investing" type="checkbox"> Investing
 						<ul>
-						<li><input name="bucket" value="Shares" type="checkbox"> Shares</li>
-						<li><input name="bucket" value="Bonds" type="checkbox"> Bonds</li>
-						<li id="l1"><input name="bucket" value="Real Estate" type="checkbox"> Real Estate</li>
-						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i1" onkeypress="return addEntry(event,'l1','i1')"></li>
+						<li id=l1><input name="bucket" value="Shares" type="checkbox"> Shares</li>
+						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i1" onkeypress="return addEntry(event,'l1',this.id)"></li>
 						</ul>
 					</li>
 					<li> <input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings
@@ -82,47 +95,48 @@
 						<li><input name="bucket" value="Retirement" type="checkbox"> Retirement</li>
 						<li><input name="bucket" value="House Deposit/Mortgage" type="checkbox"> House Deposit/Mortgage</li>
 						<li id="l2"><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</li>
-						<li class="newcategory"> <input name="bucket" type="checkbox"></form><input placeholder="New category" id="i2" onkeypress="return addEntry(event,'l2','i2')"></li>	
+						<li class="newcategory"> <input name="bucket" type="checkbox"></form><input placeholder="New category" id="i2" onkeypress="return addEntry(event,'l2',this.id)"></li>	
 						</ul>
 					</li>
-					<li id="l4"> <input name="bucket" value="Short-term savings" type="checkbox" checked> Short-term savings
+					<li id="l4"> <input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings
 						<ul>
 						<li><input name="bucket" value="Travel" type="checkbox"> Travel</li>
 						<li id="l3"><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</li>
-						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i3" onkeypress="return addEntry(event,'l3','i3')"></li>	
+						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i3" onkeypress="return addEntry(event,'l3',this.id)"></li>	
 						</ul>
 					</li>	
-					<li class="newcategory"> <input name="bucket" type="checkbox" checked><input placeholder="New category" id="i4" onkeypress="return addEntry(event,'l4','i4')"></li>						
+					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i4" onkeypress="return addEntry(event,'l4',this.id)"></li>						
 					</ul>
 				</li>
-				<li id="l6"> <input name="bucket" value="Spending" type="checkbox" class="spending" checked> Spending
+				<li id="l6"> <input name="bucket" value="Spending" type="checkbox" class="spending"> Spending
 					<ul>
 					<li> <input name="bucket" value="Basics" type="checkbox" checked> Basics</li>
-					<li id="l5"> <input name="bucket" value="Splurge" type="checkbox" checked> Splurge</li>
-					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i5" onkeypress="return addEntry(event,'l5','i5')"></li>	
+					<li id="l5"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
+					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i5" onkeypress="return addEntry(event,'l5',this.id)"></li>	
 					</ul>
 				</li>
-				<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i6" onkeypress="return addEntry(event,'l6','i6')"></li>					
+				<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" id="i6" onkeypress="return addEntry(event,'l6',this.id)"></li>					
 				</ul>
 			</li>
 		</ul>
 		<ul class="tree">
-			<li class="newcategory"><input name="bucket" type="checkbox"><input placeholder="New category" id="i7" onkeypress="return addEntry(event,'l7','i7')"></li>
+			<li class="newcategory"><input name="bucket" type="checkbox"><input placeholder="New category" id="i7" onkeypress="return addEntry(event,'l7',this.id)"></li>
 		</ul>
-		<button type="button" onclick="getBuckets()">Done</button>
+		<button id=chosenbuckets type="button">Done</button>
 	</article>
 	<br>
-	<article class=listbox id="b4" style="display:none">
+	<article class=listbox id="b5" style="display:none">
 		<p style="text-align: left">
 			To help figure out your weights, here are some optional lists that you can use to tally <br>
 			 expected spending over a <b>week</b>.<br>
-			Eg. tally basic expenses (food, rent, petrol, etc) to work out what weight to apply to this category.
+			Eg. tally basic expenses (food, rent, petrol, etc) to work out what weight to apply to this category. <br>
+			The weight (fraction of your weekly salary) for the tally is then calculated for you.
 		</p>
 		<section id=listblock class=listblock>
 		</section>
 	</article>	
 	<br>
-	<article class="box" id="b5" style="display:none">
+	<article class="box" id="b4" style="display:none">
 		<ul id="bucketList">
 		</ul>
 	</article>
@@ -148,6 +162,24 @@
 		</tbody>
 		</table>
 	</article>
+	<br>
+<article id=plotbox class=plotbox>
+	<div class="options">
+		<ul>
+			<li><input type="checkbox" id="ch1" name=hours value=24 title='1/365' onclick="plotCheckbox(this.id)"> Daily</li>
+			<li><input type="checkbox" id="ch2" name=days value=7 title='1/52' onclick="plotCheckbox(this.id)"> Weekly</li>
+			<li><input type="checkbox" id="ch3" name=days value=14 title='1/26' onclick="plotCheckbox(this.id)"> Fortnightly</li>
+			<li><input type="checkbox" id="ch4" name=days value=31 title='1/12' onclick="plotCheckbox(this.id)"> Monthly</li>
+			<li><input type="checkbox" id="ch5" name=months value=12 title='1' onclick="plotCheckbox(this.id)" checked> Yearly</li>
+			<li><input type="checkbox" id="ch6" name=months value=24 title='2' onclick="plotCheckbox(this.id)"> 2 Years</li>
+			<li><input type="checkbox" id="ch7" name=years value=5 title='5' onclick="plotCheckbox(this.id)"> 5 Years</li>
+			<li><input type="checkbox" id="ch8" name=years value=10 title='10' onclick="plotCheckbox(this.id)"> 10 Years</li>
+			<li><input type="checkbox" id="ch9" name=years value=20 title='20' onclick="plotCheckbox(this.id)"> 20 Years</li>
+			<li><input type="checkbox" id="ch10" name=years value=30 title='30' onclick="plotCheckbox(this.id)"> 30 Years</li>
+		</ul>
+	</div> 
+	<div id="flotcontainer" class="flotcontainer"></div>
+</article>
 </section>
 </body>
 </html>
