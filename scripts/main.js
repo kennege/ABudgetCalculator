@@ -1,5 +1,3 @@
-let income = 0;
-let bucketWeightPairs = [];
 
 function getCookie() {
   let cEntries = document.cookie.split(';');
@@ -7,7 +5,7 @@ function getCookie() {
   let cIncome = 0;
   for (let i=0; i<cEntries.length; i++){
     let cPair = cEntries[i].split("=");
-    if (cPair[0].search(/income/i) == 1){
+    if (cPair[0].includes('income') == 1){
       cIncome = parseFloat(cEntries[i].split('=')[1]);
     }
     else {
@@ -22,7 +20,8 @@ function getCookie() {
   }
 }
 
-function setCookie() {
+function setCookie(bucketWeightPairs) {
+  let income = sessionStorage.getItem('income');
   document.cookie = "income=" + income + ";";
   for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
     document.cookie = bucketWeightPairs[i]["bucket"] + "=" + bucketWeightPairs[i]["weight"] + ";";
@@ -30,9 +29,9 @@ function setCookie() {
 } 
 
 function applyCookie(cIncome, cBucketWeightPairs) {
-  income = cIncome;
+  sessionStorage.setItem('income',cIncome);
   bucketWeightPairs = cBucketWeightPairs;
-  document.getElementById('income').value = Math.round(income / 26).toFixed(2);
+  document.getElementById('income').value = Math.round(cIncome / 26).toFixed(2);
   document.getElementById('t1div').style.display = 'block';
   document.getElementById('b3').style.display = 'block';
   document.getElementById('b4').style.display = 'block';
@@ -42,6 +41,7 @@ function applyCookie(cIncome, cBucketWeightPairs) {
   let buckets = [];
   for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
     buckets.push(bucketWeightPairs[i]['bucket']);
+    sessionStorage.setItem(bucketWeightPairs[i]['bucket'],bucketWeightPairs[i]['weight']);
   }
   populateIncomeTable();
   generateTallies(buckets);
@@ -49,12 +49,6 @@ function applyCookie(cIncome, cBucketWeightPairs) {
   populateTable();
   drawPlot();
 }
-
-function deleteCookie() {
-  document.cookie = "income=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-}
-
-getCookie()
 
 function commas(str) {
   return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
@@ -113,7 +107,7 @@ function calculateIncome(e){
       case " per day":
         income = income * 365;
     } 
- 
+    sessionStorage.setItem("income",income);
     populateIncomeTable();
     // display income table and block 3
     $(function() {
@@ -125,21 +119,23 @@ function calculateIncome(e){
 }
 
 function populateIncomeTable() {
-    // fill out income table
-    let tab1 = document.getElementById("tbody1");
-    tab1.innerHTML = "";
-    let row1 = tab1.insertRow();
-    for (let i=0;i<5;i++){
-      insertTableEntry(row1, i, "$" + convertIncome(income,1)[i]);  
-    }
-    row1 = tab1.insertRow();
-    let tab2 = document.getElementById("tbody2");
-    tab2.innerHTML = "";
-    let row2 = tab2.insertRow();
-    for (let i=0;i<5;i++){
-      insertTableEntry(row2, i, "$" + convertIncome(income,1)[i+5]);  
-    }
-    row2 = tab2.insertRow();   
+  let income = parseFloat(sessionStorage.getItem('income'));
+
+  // fill out income table
+  let tab1 = document.getElementById("tbody1");
+  tab1.innerHTML = "";
+  let row1 = tab1.insertRow();
+  for (let i=0;i<5;i++){
+    insertTableEntry(row1, i, "$" + convertIncome(income,1)[i]);  
+  }
+  row1 = tab1.insertRow();
+  let tab2 = document.getElementById("tbody2");
+  tab2.innerHTML = "";
+  let row2 = tab2.insertRow();
+  for (let i=0;i<5;i++){
+    insertTableEntry(row2, i, "$" + convertIncome(income,1)[i+5]);  
+  }
+  row2 = tab2.insertRow();   
 }
 
 function addEntry(e,lid,fid) {
@@ -227,6 +223,7 @@ function resetTallies(buckets){
 }
 
 function addTallyEntry(liID,ulID){
+  let income = sessionStorage.getItem('income');
   // add item to tally
   let list = document.getElementById(ulID);
   let item = document.getElementById('item'+liID).value;
@@ -308,15 +305,34 @@ function saveWeightBucketPairs(buckets) {
     };
     totalweight = totalweight + parseFloat(weights[i].value);
     bucketWeightPairs.push(pair);
+    sessionStorage.setItem(buckets[i],weights[i].value);
   }
   let para = document.getElementById("weightpara");
   para.innerText = "Weight sum = " + totalweight;
-  setCookie();
+
+  setCookie(bucketWeightPairs);
   populateTable();
   drawPlot();
 }
 
+function getBucketWeightPairs() {
+  bucketWeightPairs = [];
+  let keys = Object.keys(sessionStorage); 
+  for(let key of keys) {
+    if (key.includes('income') != 1){
+      pair = {};
+      pair['bucket'] = key;
+      pair['weight'] = parseFloat(sessionStorage.getItem(key));
+      bucketWeightPairs.push(pair);
+    }
+  }
+  return bucketWeightPairs;
+} 
+
+
 function populateTable() {
+  let income = sessionStorage.getItem('income');
+  let bucketWeightPairs = getBucketWeightPairs();
   // generate bucket/income table
   $(function() {
     $("#tableblock").fadeIn(1000);
@@ -343,6 +359,7 @@ function plotCheckbox(id) {
 }
 
 function drawPlot() { 
+  let income = sessionStorage.getItem('income');
   $(function() {
     $("#plotbox").fadeIn(1000);
   }); 
@@ -381,8 +398,10 @@ function drawPlot() {
 }
 
 document.getElementById("resetall").addEventListener("click", function(){
-  deleteCookie();
+  document.cookie = "income=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
   location.reload();
 });
 
-income.focus();
+sessionStorage.clear();
+getCookie();
+document.getElementById('income').focus();
