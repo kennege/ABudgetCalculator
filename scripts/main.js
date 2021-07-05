@@ -1,6 +1,61 @@
 let income = 0;
 let bucketWeightPairs = [];
 
+function getCookie() {
+  let cEntries = document.cookie.split(';');
+  let cBucketWeightPairs = [];
+  let cIncome = 0;
+  for (let i=0; i<cEntries.length; i++){
+    let cPair = cEntries[i].split("=");
+    if (cPair[0].search(/income/i) == 1){
+      cIncome = parseFloat(cEntries[i].split('=')[1]);
+    }
+    else {
+      let pair = {};
+      pair['bucket'] = cPair[0];
+      pair['weight'] = parseFloat(cPair[1]);
+      cBucketWeightPairs.push(pair);
+    }
+  }
+  if (cIncome != 0){ // cookie found!
+    applyCookie(cIncome,cBucketWeightPairs);
+  }
+}
+
+function setCookie() {
+  document.cookie = "income=" + income + ";";
+  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
+    document.cookie = bucketWeightPairs[i]["bucket"] + "=" + bucketWeightPairs[i]["weight"] + ";";
+  }
+} 
+
+function applyCookie(cIncome, cBucketWeightPairs) {
+  income = cIncome;
+  bucketWeightPairs = cBucketWeightPairs;
+  document.getElementById('income').value = Math.round(income / 26).toFixed(2);
+  document.getElementById('t1div').style.display = 'block';
+  document.getElementById('b3').style.display = 'block';
+  document.getElementById('b4').style.display = 'block';
+  document.getElementById('b5').style.display = 'block';
+  document.getElementById('plotbox').style.display = 'block';
+  document.getElementById('tableblock').style.display = 'block';
+  let buckets = [];
+  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
+    buckets.push(bucketWeightPairs[i]['bucket']);
+  }
+  populateIncomeTable();
+  generateTallies(buckets);
+  createBucketList(buckets);
+  populateTable();
+  drawPlot();
+}
+
+function deleteCookie() {
+  document.cookie = "income=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+}
+
+getCookie()
+
 function commas(str) {
   return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
 }
@@ -58,6 +113,18 @@ function calculateIncome(e){
       case " per day":
         income = income * 365;
     } 
+ 
+    populateIncomeTable();
+    // display income table and block 3
+    $(function() {
+      $("#b3").fadeIn(1000);
+      $("#t1div").fadeIn(1000);
+    });
+    return false;
+  }
+}
+
+function populateIncomeTable() {
     // fill out income table
     let tab1 = document.getElementById("tbody1");
     tab1.innerHTML = "";
@@ -72,13 +139,7 @@ function calculateIncome(e){
     for (let i=0;i<5;i++){
       insertTableEntry(row2, i, "$" + convertIncome(income,1)[i+5]);  
     }
-    row2 = tab2.insertRow();    
-    
-    // display income table and block 3
-    document.getElementById("t1div").style.display = "block"; // display income table
-    document.getElementById("b3").style.display = "block"; // display bucket tree
-    return false;
-  }
+    row2 = tab2.insertRow();   
 }
 
 function addEntry(e,lid,fid) {
@@ -110,7 +171,9 @@ document.getElementById("chosenbuckets").addEventListener("click", function(){
 function generateTallies(buckets){
   // generate optional tallies to aid in choosing weights
   let listBox = document.getElementById("b5");
-  listBox.style.display = "block";
+  $(function() {
+    $("#b5").fadeIn(1000);
+  });
   let listArea = document.getElementById("listblock");
   let listFlex = document.createElement("article");
   listFlex.className = "listflex";
@@ -204,7 +267,9 @@ function deleteTallyEntry(liID,value,titleID) {
 function createBucketList(buckets) { 
   // generate bucket list for choosing weights
   let block = document.getElementById("b4"); 
-  block.style.display = "block" // display bucket/weight list box
+  $(function() {
+    $("#b4").fadeIn(1000);
+  });
   let bl = document.getElementById("bucketList");  
   let para = document.createElement("div");
   while(bl.firstChild){
@@ -246,13 +311,16 @@ function saveWeightBucketPairs(buckets) {
   }
   let para = document.getElementById("weightpara");
   para.innerText = "Weight sum = " + totalweight;
+  setCookie();
   populateTable();
   drawPlot();
 }
 
 function populateTable() {
   // generate bucket/income table
-  document.getElementById("tableblock").style.display = "block"; // display table box
+  $(function() {
+    $("#tableblock").fadeIn(1000);
+  });
   let table = document.getElementById("tbody");
   table.innerHTML = "";
   for (let i=0;i<bucketWeightPairs.length;i++){
@@ -275,7 +343,9 @@ function plotCheckbox(id) {
 }
 
 function drawPlot() { 
-  document.getElementById("plotbox").style.display = "block";  // display plot box
+  $(function() {
+    $("#plotbox").fadeIn(1000);
+  }); 
   let unit = 1;
   let time = "";
   let multiplier = 1;
@@ -306,6 +376,13 @@ function drawPlot() {
   let xlabel = document.head.appendChild(document.createElement('style'));
   xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;
   $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
+
+  document.getElementById('resetall').style.display = 'block';
 }
+
+document.getElementById("resetall").addEventListener("click", function(){
+  deleteCookie();
+  location.reload();
+});
 
 income.focus();
