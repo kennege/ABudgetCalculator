@@ -1,3 +1,6 @@
+let income = 0;
+let bucketWeightPairs = [];
+getCookie();
 
 function getCookie() {
   let cEntries = document.cookie.split(';');
@@ -8,20 +11,20 @@ function getCookie() {
     if (cPair[0].includes('income') == 1){
       cIncome = parseFloat(cEntries[i].split('=')[1]);
     }
-    else {
-      let pair = {};
-      pair['bucket'] = cPair[0];
-      pair['weight'] = parseFloat(cPair[1]);
+    else if (cPair[0].includes('undefined') != 1){
+      let pair = {
+        bucket: cPair[0],
+        weight: parseFloat(cPair[1])
+      };
       cBucketWeightPairs.push(pair);
     }
   }
-  if (cIncome != 0){ // cookie found!
+  if ((cIncome != 0) && (!isNaN(cIncome))){ // cookie found!
     applyCookie(cIncome,cBucketWeightPairs);
   }
 }
 
-function setCookie(bucketWeightPairs) {
-  let income = sessionStorage.getItem('income');
+function setCookie() {
   document.cookie = "income=" + income + ";";
   for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
     document.cookie = bucketWeightPairs[i]["bucket"] + "=" + bucketWeightPairs[i]["weight"] + ";";
@@ -29,25 +32,29 @@ function setCookie(bucketWeightPairs) {
 } 
 
 function applyCookie(cIncome, cBucketWeightPairs) {
-  sessionStorage.setItem('income',cIncome);
+  income = cIncome;
   bucketWeightPairs = cBucketWeightPairs;
-  document.getElementById('income').value = Math.round(cIncome / 26).toFixed(2);
+  document.getElementById('income').value = Math.round(income / 26).toFixed(2);
+  document.getElementById('setincome').innerText = `Your income is set to $${Math.round(income / 26).toFixed(2)}`
   document.getElementById('t1div').style.display = 'block';
   document.getElementById('b3').style.display = 'block';
   document.getElementById('b4').style.display = 'block';
   document.getElementById('b5').style.display = 'block';
   document.getElementById('plotbox').style.display = 'block';
   document.getElementById('tableblock').style.display = 'block';
-  let buckets = [];
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
-    buckets.push(bucketWeightPairs[i]['bucket']);
-    sessionStorage.setItem(bucketWeightPairs[i]['bucket'],bucketWeightPairs[i]['weight']);
-  }
   populateIncomeTable();
-  generateTallies(buckets);
-  createBucketList(buckets);
+  generateTallies();
+  createBucketList();
   populateTable();
   drawPlot();
+}
+
+function deleteCookie() {
+  let cEntries = document.cookie.split(';');
+  for (let i=0; i<cEntries.length; i++){
+    let cPair = cEntries[i].split("=");
+    document.cookie = `${cPair[0]}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
 }
 
 function commas(str) {
@@ -107,20 +114,19 @@ function calculateIncome(e){
       case " per day":
         income = income * 365;
     } 
-    sessionStorage.setItem("income",income);
+    // fill out income table
     populateIncomeTable();
+    
     // display income table and block 3
-    $(function() {
-      $("#b3").fadeIn(1000);
-      $("#t1div").fadeIn(1000);
-    });
+    deleteCookie();
+    setCookie();
+    document.getElementById("t1div").style.display = "block"; // display income table
+    document.getElementById("b3").style.display = "block"; // display bucket tree
     return false;
   }
 }
 
 function populateIncomeTable() {
-  let income = parseFloat(sessionStorage.getItem('income'));
-
   // fill out income table
   let tab1 = document.getElementById("tbody1");
   tab1.innerHTML = "";
@@ -153,34 +159,37 @@ function addEntry(e,lid,fid) {
 document.getElementById("chosenbuckets").addEventListener("click", function(){
   // get chosen buckets from the bucket tree
   let checkboxes = document.getElementsByName('bucket');
-  let buckets = [];
+  bucketWeightPairs = [];
   for (let i=0; i<checkboxes.length; i++) {
      if (checkboxes[i].checked) {
-        buckets.push(checkboxes[i].value);
+      let pair = {
+         bucket: checkboxes[i].value,
+         weight: 0
+       };
+       
+        bucketWeightPairs.push(pair);
      }
   }
-  generateTallies(buckets);
-  createBucketList(buckets)
+  generateTallies();
+  createBucketList();
   return False;
 });
 
-function generateTallies(buckets){
+function generateTallies(){
   // generate optional tallies to aid in choosing weights
   let listBox = document.getElementById("b5");
-  $(function() {
-    $("#b5").fadeIn(1000);
-  });
+  listBox.style.display = "block";
   let listArea = document.getElementById("listblock");
   let listFlex = document.createElement("article");
   listFlex.className = "listflex";
   while(listArea.firstChild){
     listArea.removeChild(listArea.firstChild);
   }
-  for (let i=0;i<buckets.length;i++){
+  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
     let listDiv=document.createElement('div'); 
     listDiv.className = "flexitem";
     let listName=document.createElement('p');
-    listName.innerHTML = buckets[i] + ": $0";
+    listName.innerHTML = bucketWeightPairs[i].bucket + ": $0";
     listName.id = "title" + i;
     listName.style.color = "ivory";
     listDiv.appendChild(listName);
@@ -203,14 +212,14 @@ function generateTallies(buckets){
     let button = document.createElement("button");
     button.innerHTML = "Reset Tallies";
     button.id = "reset";
-    button.onclick = function() {resetTallies(buckets)}
+    button.onclick = function() {resetTallies()}
     listBox.appendChild(button);
   }
 }
 
-function resetTallies(buckets){
+function resetTallies(){
   // remove items from tallies and reset
-  for (let i=0;i<buckets.length;i++){
+  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
     let tallyID = 'tally' + i;
     let titleID = 'title' + i;
     let tally = document.getElementById(tallyID);
@@ -218,12 +227,11 @@ function resetTallies(buckets){
       tally.removeChild(tally.firstChild);
     }
     let listName = document.getElementById(titleID);
-    listName.innerHTML = buckets[i] + ": $0";
+    listName.innerHTML = bucketWeightPairs[i].bucket + ": $0";
   }
 }
 
 function addTallyEntry(liID,ulID){
-  let income = sessionStorage.getItem('income');
   // add item to tally
   let list = document.getElementById(ulID);
   let item = document.getElementById('item'+liID).value;
@@ -261,12 +269,10 @@ function deleteTallyEntry(liID,value,titleID) {
   listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(income/52)).toFixed(2);
 }
 
-function createBucketList(buckets) { 
+function createBucketList() { 
   // generate bucket list for choosing weights
   let block = document.getElementById("b4"); 
-  $(function() {
-    $("#b4").fadeIn(1000);
-  });
+  block.style.display = "block" // display bucket/weight list box
   let bl = document.getElementById("bucketList");  
   let para = document.createElement("div");
   while(bl.firstChild){
@@ -275,9 +281,16 @@ function createBucketList(buckets) {
   para.innerHTML = "<p>Input weights so the sum equals 1. </p>";
   para.id = "weightpara";
   bl.appendChild(para);
-  for (let i=0; i<buckets.length; i++) {
+  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
     let node = document.createElement("div");
-    node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight. Eg. 0.3"> ${buckets[i]}</li>`; 
+    if ((bucketWeightPairs[i].weight == 0) || (isNaN(bucketWeightPairs[i].weight)))
+    {
+      node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight. Eg. 0.3"> ${bucketWeightPairs[i].bucket}</li>`; 
+    }
+    else
+    {
+      node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" value="${bucketWeightPairs[i].weight}"> ${bucketWeightPairs[i].bucket}</li>`;
+    }
     bl.appendChild(node);
   }
   let chosenBuckets = document.getElementsByClassName("newBucket");
@@ -288,58 +301,34 @@ function createBucketList(buckets) {
     let button = document.createElement("button");
     button.innerHTML = "Done";
     button.id = "donebutton";
-    button.onclick = function() {saveWeightBucketPairs(buckets)}
+    button.onclick = function() {saveWeightBucketPairs()}
     block.appendChild(button);
   }
 }
 
-function saveWeightBucketPairs(buckets) {
+function saveWeightBucketPairs() {
   // save chosen weights for chosen buckets
-  bucketWeightPairs = [];
   let totalweight = 0;
   let weights = document.getElementsByName("chosenBucket");  
-  for (let i=0;i<weights.length;i++){
-    let pair = {
-      bucket: buckets[i],
-      weight: parseFloat(weights[i].value)
-    };
+  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
+    bucketWeightPairs[i].weight = parseFloat(weights[i].value);
     totalweight = totalweight + parseFloat(weights[i].value);
-    bucketWeightPairs.push(pair);
-    sessionStorage.setItem(buckets[i],weights[i].value);
   }
   let para = document.getElementById("weightpara");
   para.innerText = "Weight sum = " + totalweight;
 
-  setCookie(bucketWeightPairs);
+  deleteCookie();
+  setCookie();
   populateTable();
   drawPlot();
 }
 
-function getBucketWeightPairs() {
-  bucketWeightPairs = [];
-  let keys = Object.keys(sessionStorage); 
-  for(let key of keys) {
-    if (key.includes('income') != 1){
-      pair = {};
-      pair['bucket'] = key;
-      pair['weight'] = parseFloat(sessionStorage.getItem(key));
-      bucketWeightPairs.push(pair);
-    }
-  }
-  return bucketWeightPairs;
-} 
-
-
 function populateTable() {
-  let income = sessionStorage.getItem('income');
-  let bucketWeightPairs = getBucketWeightPairs();
   // generate bucket/income table
-  $(function() {
-    $("#tableblock").fadeIn(1000);
-  });
+  document.getElementById("tableblock").style.display = "block"; // display table box
   let table = document.getElementById("tbody");
   table.innerHTML = "";
-  for (let i=0;i<bucketWeightPairs.length;i++){
+  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
     let row = table.insertRow();
     insertTableEntry(row, 0, bucketWeightPairs[i].bucket) // bucket name
     for (let j=0;j<10;j++){
@@ -359,10 +348,7 @@ function plotCheckbox(id) {
 }
 
 function drawPlot() { 
-  let income = sessionStorage.getItem('income');
-  $(function() {
-    $("#plotbox").fadeIn(1000);
-  }); 
+  document.getElementById("plotbox").style.display = "block";  // display plot box
   let unit = 1;
   let time = "";
   let multiplier = 1;
@@ -394,14 +380,12 @@ function drawPlot() {
   xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;
   $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
 
-  document.getElementById('resetall').style.display = 'block';
+  document.getElementById("resetall").style.display = "block";
 }
 
 document.getElementById("resetall").addEventListener("click", function(){
-  document.cookie = "income=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+  deleteCookie();
   location.reload();
 });
 
-sessionStorage.clear();
-getCookie();
-document.getElementById('income').focus();
+income.focus();
