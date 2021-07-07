@@ -1,41 +1,59 @@
-let income = 0;
-let bucketWeightPairs = [];
-getCookie();
+let bw_pairs = [];
 
-function getCookie() {
+function get_income() {
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    if (bw_pairs[i].bucket.includes("income")) {
+      return bw_pairs[i].weight;
+    }
+  }
+}
+
+function set_income(income) {
+  let income_found = false;
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    if (bw_pairs[i].bucket.includes("income")) {
+      bw_pairs[i].weight = income;
+      income_found = true;
+    }
+  }
+  if (!income_found){
+    pair = {
+      bucket : 'income',
+      weight : income
+    };
+    bw_pairs.push(pair);
+  }
+}
+
+(function getCookie() {
+  bw_pairs = [];
   let cEntries = document.cookie.split(';');
-  let cBucketWeightPairs = [];
-  let cIncome = 0;
+  alert(cEntries);
   for (let i=0; i<cEntries.length; i++){
     let cPair = cEntries[i].split("=");
-    if (cPair[0].includes('income') == 1){
-      cIncome = parseFloat(cEntries[i].split('=')[1]);
-    }
-    else if (cPair[0].includes('undefined') != 1){
+    if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN'))) {
       let pair = {
         bucket: cPair[0],
         weight: parseFloat(cPair[1])
       };
-      cBucketWeightPairs.push(pair);
+      bw_pairs.push(pair);
     }
   }
-  if ((cIncome != 0) && (!isNaN(cIncome))){ // cookie found!
-    applyCookie(cIncome,cBucketWeightPairs);
+  if ((get_income() != 0) && (!isNaN(get_income()))){ // cookie found!
+    applyCookie();
   }
-}
+}());
 
 function setCookie() {
-  document.cookie = "income=" + income + ";";
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
-    document.cookie = bucketWeightPairs[i]["bucket"] + "=" + bucketWeightPairs[i]["weight"] + ";";
+  // document.cookie = "income=" + get_income() + ";";
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    document.cookie = bw_pairs[i].bucket + "=" + bw_pairs[i].weight + ";";
   }
 } 
 
-function applyCookie(cIncome, cBucketWeightPairs) {
-  income = cIncome;
-  bucketWeightPairs = cBucketWeightPairs;
-  document.getElementById('income').value = Math.round(income / 26).toFixed(2);
-  document.getElementById('setincome').innerText = `Your income is set to $${Math.round(income / 26).toFixed(2)}`
+function applyCookie() {
+  document.getElementById('income').value = Math.round(get_income() / 26).toFixed(2);
+  document.getElementById('setincome').innerText = `Your income is set to $${Math.round(get_income() / 26).toFixed(2)}`
   document.getElementById('t1div').style.display = 'block';
   document.getElementById('b3').style.display = 'block';
   document.getElementById('b4').style.display = 'block';
@@ -50,9 +68,9 @@ function applyCookie(cIncome, cBucketWeightPairs) {
 }
 
 function deleteCookie() {
-  let cEntries = document.cookie.split(';');
-  for (let i=0; i<cEntries.length; i++){
-    let cPair = cEntries[i].split("=");
+  let cbw_pairs = document.cookie.split(';');
+  for (let i=0; i<cbw_pairs.length; i++){
+    let cPair = cbw_pairs[i].split("=");
     document.cookie = `${cPair[0]}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
 }
@@ -91,7 +109,7 @@ function optionsCheckbox(id) {
   document.getElementById(id).checked = true;
 }  
 
-function calculateIncome(e){
+function calculateIncome(e){ // change to event listener
   if ((e.keyCode == 13) || (e.keyCode == null)) {
     for (let i = 1;i <= 5; i++)
     {
@@ -99,27 +117,27 @@ function calculateIncome(e){
         period = " per " + document.getElementById("o" + i).name;
       }
     }
-    income = parseFloat(document.getElementById("income").value);
+    let income = parseFloat(document.getElementById("income").value);
     document.getElementById("setincome").innerText = "Your income is set to: $" + commas(income.toFixed(2)) + period;
     switch(period) {
       case " per month":
-        income = income * 12;
+        set_income(income * 12);
         break;
       case " per fortnight":
-        income = income * 26;
+        set_income(income * 26);
         break;
       case " per week":
-        income = income * 52;     
+        set_income(income * 52);     
         break;
       case " per day":
-        income = income * 365;
+        set_income(income * 365);
     } 
     // fill out income table
     populateIncomeTable();
     
     // display income table and block 3
-    deleteCookie();
-    setCookie();
+    // deleteCookie();
+    // setCookie();
     document.getElementById("t1div").style.display = "block"; // display income table
     document.getElementById("b3").style.display = "block"; // display bucket tree
     return false;
@@ -132,14 +150,14 @@ function populateIncomeTable() {
   tab1.innerHTML = "";
   let row1 = tab1.insertRow();
   for (let i=0;i<5;i++){
-    insertTableEntry(row1, i, "$" + convertIncome(income,1)[i]);  
+    insertTableEntry(row1, i, "$" + convertIncome(get_income(),1)[i]);  
   }
   row1 = tab1.insertRow();
   let tab2 = document.getElementById("tbody2");
   tab2.innerHTML = "";
   let row2 = tab2.insertRow();
   for (let i=0;i<5;i++){
-    insertTableEntry(row2, i, "$" + convertIncome(income,1)[i+5]);  
+    insertTableEntry(row2, i, "$" + convertIncome(get_income(),1)[i+5]);  
   }
   row2 = tab2.insertRow();   
 }
@@ -159,7 +177,8 @@ function addEntry(e,lid,fid) {
 document.getElementById("chosenbuckets").addEventListener("click", function(){
   // get chosen buckets from the bucket tree
   let checkboxes = document.getElementsByName('bucket');
-  bucketWeightPairs = [];
+  let income = get_income();
+  bw_pairs = [];
   for (let i=0; i<checkboxes.length; i++) {
      if (checkboxes[i].checked) {
       let pair = {
@@ -167,9 +186,10 @@ document.getElementById("chosenbuckets").addEventListener("click", function(){
          weight: 0
        };
        
-        bucketWeightPairs.push(pair);
+        bw_pairs.push(pair);
      }
   }
+  set_income(income);
   generateTallies();
   createBucketList();
   return False;
@@ -185,24 +205,26 @@ function generateTallies(){
   while(listArea.firstChild){
     listArea.removeChild(listArea.firstChild);
   }
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
-    let listDiv=document.createElement('div'); 
-    listDiv.className = "flexitem";
-    let listName=document.createElement('p');
-    listName.innerHTML = bucketWeightPairs[i].bucket + ": $0";
-    listName.id = "title" + i;
-    listName.style.color = "ivory";
-    listDiv.appendChild(listName);
-    let list = document.createElement("ul");
-    list.id = "tally" + i;
-    let listEntry = document.createElement("li");
-    listEntry.className = "newentry";
-    listEntry.innerHTML = `<div><input placeholder="Item" id='item${i}' size="10"> \
-                          <input placeholder="$" id='val${i}' size="1"><button type="button" \
-                          onclick="addTallyEntry('${i}','tally${i}')">Add</button></div>`;
-    list.appendChild(listEntry);
-    listDiv.appendChild(list);
-    listFlex.appendChild(listDiv);
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    if (bw_pairs[i].bucket != 'income'){
+      let listDiv=document.createElement('div'); 
+      listDiv.className = "flexitem";
+      let listName=document.createElement('p');
+      listName.innerHTML = bw_pairs[i].bucket + ": $0";
+      listName.id = "title" + i;
+      listName.style.color = "ivory";
+      listDiv.appendChild(listName);
+      let list = document.createElement("ul");
+      list.id = "tally" + i;
+      let listEntry = document.createElement("li");
+      listEntry.className = "newentry";
+      listEntry.innerHTML = `<div><input placeholder="Item" id='item${i}' size="10"> \
+                            <input placeholder="$" id='val${i}' size="1"><button type="button" \
+                            onclick="addTallyEntry('${i}','tally${i}')">Add</button></div>`;
+      list.appendChild(listEntry);
+      listDiv.appendChild(list);
+      listFlex.appendChild(listDiv);
+    }
   }
   listArea.appendChild(listFlex);
 
@@ -219,7 +241,7 @@ function generateTallies(){
 
 function resetTallies(){
   // remove items from tallies and reset
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
     let tallyID = 'tally' + i;
     let titleID = 'title' + i;
     let tally = document.getElementById(tallyID);
@@ -227,7 +249,7 @@ function resetTallies(){
       tally.removeChild(tally.firstChild);
     }
     let listName = document.getElementById(titleID);
-    listName.innerHTML = bucketWeightPairs[i].bucket + ": $0";
+    listName.innerHTML = bw_pairs[i].bucket + ": $0";
   }
 }
 
@@ -249,7 +271,7 @@ function addTallyEntry(liID,ulID){
   let ind = listTitle.indexOf("$");
   let currentTotal = parseFloat(listTitle.slice(ind+1));
   currentTotal = currentTotal + parseFloat(value);
-  listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(income/52)).toFixed(2);
+  listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(cbw_pairs['income'].weight/52)).toFixed(2);
   
   // reset form
   document.getElementById('item'+liID).value = "";
@@ -266,7 +288,7 @@ function deleteTallyEntry(liID,value,titleID) {
   let ind = listTitle.indexOf("$");
   let currentTotal = parseFloat(listTitle.slice(ind+1));
   currentTotal = currentTotal - parseFloat(value);
-  listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(income/52)).toFixed(2);
+  listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(cbw_pairs['income'].weight/52)).toFixed(2);
 }
 
 function createBucketList() { 
@@ -281,17 +303,19 @@ function createBucketList() {
   para.innerHTML = "<p>Input weights so the sum equals 1. </p>";
   para.id = "weightpara";
   bl.appendChild(para);
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
-    let node = document.createElement("div");
-    if ((bucketWeightPairs[i].weight == 0) || (isNaN(bucketWeightPairs[i].weight)))
-    {
-      node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight. Eg. 0.3"> ${bucketWeightPairs[i].bucket}</li>`; 
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    if (!bw_pairs[i].bucket.includes("income")) {
+      let node = document.createElement("div");
+      if ((bw_pairs[i].weight == 0) || (isNaN(bw_pairs[i].weight)))
+      {
+        node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" placeholder="Add weight. Eg. 0.3"> ${bw_pairs[i].bucket}</li>`; 
+      }
+      else
+      {
+        node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" value="${bw_pairs[i].weight}"> ${bw_pairs[i].bucket}</li>`;
+      }
+      bl.appendChild(node);
     }
-    else
-    {
-      node.innerHTML = `<li class="newBucket"> <input name="chosenBucket" value="${bucketWeightPairs[i].weight}"> ${bucketWeightPairs[i].bucket}</li>`;
-    }
-    bl.appendChild(node);
   }
   let chosenBuckets = document.getElementsByClassName("newBucket");
   for (let i=0;i<chosenBuckets.length;i++){
@@ -310,9 +334,11 @@ function saveWeightBucketPairs() {
   // save chosen weights for chosen buckets
   let totalweight = 0;
   let weights = document.getElementsByName("chosenBucket");  
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
-    bucketWeightPairs[i].weight = parseFloat(weights[i].value);
-    totalweight = totalweight + parseFloat(weights[i].value);
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    if (!bw_pairs[i].bucket.includes("income")) {
+      bw_pairs[i].weight = parseFloat(weights[i].value);
+      totalweight = totalweight + parseFloat(weights[i].value);
+    }
   }
   let para = document.getElementById("weightpara");
   para.innerText = "Weight sum = " + totalweight;
@@ -328,11 +354,13 @@ function populateTable() {
   document.getElementById("tableblock").style.display = "block"; // display table box
   let table = document.getElementById("tbody");
   table.innerHTML = "";
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
-    let row = table.insertRow();
-    insertTableEntry(row, 0, bucketWeightPairs[i].bucket) // bucket name
-    for (let j=0;j<10;j++){
-      insertTableEntry(row, j+1, (convertIncome(income,bucketWeightPairs[i].weight)[j])) 
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    if (!bw_pairs[i].bucket.includes("income")) {
+      let row = table.insertRow();
+      insertTableEntry(row, 0, bw_pairs[i].bucket) // bucket name
+      for (let j=0;j<10;j++){
+        insertTableEntry(row, j+1, (convertIncome(get_income(),bw_pairs[i].weight)[j])) 
+      }
     }
   }
 }
@@ -363,18 +391,20 @@ function drawPlot() {
   let data = [];
   let mult = 0;
   let colours = ['black','blue','brown','red','aqua','crimson','cyan','pink','orange','yellow','purple','grey','green'];
-  for (let i=0;i<Object.keys(bucketWeightPairs).length;i++){
-    if ((i+1) % (colours.length+1) == 0){
-      mult+=colours.length;
+  for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    if (!bw_pairs[i].bucket.includes("income")) {
+      if ((i+1) % (colours.length+1) == 0){
+        mult+=colours.length;
+      }
+      let pair = {};
+      pair["label"] = bw_pairs[i]["bucket"];
+      pair["data"] = [];
+      pair["data"].push([0,0]);
+      pair["data"].push([unit, bw_pairs[i]["weight"] * multiplier * get_income()]);
+      pair["points"] = {symbol: "circle"};
+      pair["color"] = colours[i - mult];
+      data.push(pair);
     }
-    let pair = {};
-    pair["label"] = bucketWeightPairs[i]["bucket"]
-    pair["data"] = [];
-    pair["data"].push([0,0]);
-    pair["data"].push([unit, bucketWeightPairs[i]["weight"] * multiplier * income]);
-    pair["points"] = {symbol: "circle"};
-    pair["color"] = colours[i - mult];
-    data.push(pair);
   }
   let xlabel = document.head.appendChild(document.createElement('style'));
   xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;
@@ -388,4 +418,4 @@ document.getElementById("resetall").addEventListener("click", function(){
   location.reload();
 });
 
-income.focus();
+document.getElementById('income').focus();
