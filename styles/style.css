@@ -74,7 +74,7 @@ section {
     text-align: center;
 } 
 
-.listbox {
+.tally_box {
     border: 3px solid;
     border-color: #375e97;
     box-shadow: 5px 10px #888888;
@@ -85,7 +85,7 @@ section {
     /* margin: auto 25%; */
 } 
 
-.listblock {
+.tally_block {
     justify-content: space-around;
 }
 
@@ -130,7 +130,7 @@ section {
     font-weight: 600;
 }
 
-.plotbox {
+.plot_box {
     border: 3px solid;
     border-color: #375e97;
     box-shadow: 5px 10px #888888;
@@ -138,4 +138,8 @@ section {
     padding: 40px;
     text-align: center;  
     display: none;
+}
+
+.bold {
+    font-weight: bold;
 }

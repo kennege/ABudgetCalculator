@@ -10,7 +10,15 @@
 		that each have a different purpose.">
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="icon" href="bucket.ico" type="image/x-icon">
+
+		<script src="/scripts/tools.js" defer></script>
+		<script src="/scripts/show_results.js" defer></script>
+		<script src="/scripts/tallies.js" defer></script>
+		<script src="/scripts/bucket_weight_list.js" defer></script>
 		<script src="/scripts/main.js" defer></script>
+		<script src="/scripts/income.js" defer></script>		
+		<script src="/scripts/cookies.js" defer></script>
+
 		<script src="/scripts/jquery-3.6.0.js"></script>
 		<script src="/scripts/jquery.flot.js"></script>				 
 		</head>
@@ -31,25 +39,25 @@
 			On this page you can choose from a range of possible categories and apply weightings to them, so that you can find an income budget that works for you.
 		</p>
 		<section>
-		<article class=box id="b1">
+		<article class=box id=income_box>
 			<form>
-				<input placeholder="Income after tax" id="income" onkeypress="return calculateIncome(event)">
+				<input placeholder="Income after tax" id=income onkeypress="return calculateIncome(event)">
 			</form>
 			<p>
 				What time period have you entered your income for?
 			</p>
-			<div class="options">
+			<div class=options>
 				<ul>
-					<li><input type="checkbox" id="o1" name="year" onclick="optionsCheckbox(this.id)"> Yearly</li>
-					<li><input type="checkbox" id="o2" name="month" onclick="optionsCheckbox(this.id)"> Monthly</li>
-					<li><input type="checkbox" id="o3" name="fortnight" onclick="optionsCheckbox(this.id)" checked> Fortnightly</li>
-					<li><input type="checkbox" id="o4" name="week" onclick="optionsCheckbox(this.id)"> Weekly</li>
-					<li><input type="checkbox" id="o5" name="day" onclick="optionsCheckbox(this.id)"> Daily</li>
+					<li><input type=checkbox id=o1 name=year onclick="optionsCheckbox(this.id)"> Yearly</li>
+					<li><input type=checkbox id=o2 name=month onclick="optionsCheckbox(this.id)"> Monthly</li>
+					<li><input type=checkbox id=o3 name=fortnight onclick="optionsCheckbox(this.id)" checked> Fortnightly</li>
+					<li><input type=checkbox id=o4 name=week onclick="optionsCheckbox(this.id)"> Weekly</li>
+					<li><input type=checkbox id=o5 name=day onclick="optionsCheckbox(this.id)"> Daily</li>
 				</ul>
 			</div>  
 			<p id=setincome>Your income is set to $0.00</p>
-			<div id=t1div style="display:none">
-				<table style="width:100%">
+			<div id=income_table style=display:none>
+				<table style=width:100%>
 					<thead>
 							<tr>
 								<th>Daily</th>
@@ -59,7 +67,7 @@
 								<th>Yearly</th>
 							</tr>
 					</thead>
-					<tbody id="tbody1">
+					<tbody id=income_t1>
 					</tbody>
 					<thead>
 						<tr>
@@ -70,14 +78,14 @@
 							<th>30 Years</th>
 						</tr>
 				</thead>	
-				<tbody id="tbody2">
+				<tbody id=income_t2>
 				</tbody>				
 				</table>
 			</div>
-			<button type="button" id="done_options" onclick="calculateIncome(event)">Ready</button>     
+			<button type=button id=done_options onclick="calculateIncome(event)">Ready</button>     
 		</article>
 		<br>
-		<article class=box id="b3" style="display:none">
+		<article class=box id=tree_box style=display:none>
 		<p>Choose your categories (3-6 recommended)</p>
 		<ul class="tree">
 			<li id="l7"> <input name="bucket" value="Income" type="checkbox"> Income</li>
@@ -119,23 +127,23 @@
 		<button id=chosenbuckets type="button">Done</button>
 	</article>
 	<br>
-	<article class=listbox id="b5" style="display:none">
+	<article class=tally_box id=tally_box style=display:none>
 		<p style="text-align: left">
 			To help figure out your weights, here are some optional lists that you can use to tally <br>
 			 expected spending over a <b>week</b>.<br>
 			Eg. tally basic expenses (food, rent, petrol, etc) to work out what weight to apply to this category. <br>
 			The weight (fraction of your weekly salary) for the tally is then calculated for you.
 		</p>
-		<section id=listblock class=listblock>
+		<section id=tally_block class=tally_block>
 		</section>
 	</article>	
 	<br>
-	<article class="box" id="b4" style="display:none">
+	<article class=box id=bucket_box style="display:none">
 		<ul id="bucketList">
 		</ul>
 	</article>
 	<br>
-	<article class=box id="tableblock" style="display:none">
+	<article class=box id=table_box style="display:none">
 		<table id=table style="width:100%">
 			<thead>
 			<tr>
@@ -154,28 +162,30 @@
 		</thead>
 		<tbody id="tbody">
 		</tbody>
+		<thead class=bold id=total>
+		</thead>
 		</table>
 	</article>
 	<br>
-<article id=plotbox class=plotbox>
-	<div class="options">
+<article id=plot_box class=plot_box>
+	<div class=options>
 		<ul>
-			<li><input type="checkbox" id="ch1" name=hours value=24 title='1/365' onclick="plotCheckbox(this.id)"> Daily</li>
-			<li><input type="checkbox" id="ch2" name=days value=7 title='1/52' onclick="plotCheckbox(this.id)"> Weekly</li>
-			<li><input type="checkbox" id="ch3" name=days value=14 title='1/26' onclick="plotCheckbox(this.id)"> Fortnightly</li>
-			<li><input type="checkbox" id="ch4" name=days value=31 title='1/12' onclick="plotCheckbox(this.id)"> Monthly</li>
-			<li><input type="checkbox" id="ch5" name=months value=12 title='1' onclick="plotCheckbox(this.id)" checked> Yearly</li>
-			<li><input type="checkbox" id="ch6" name=months value=24 title='2' onclick="plotCheckbox(this.id)"> 2 Years</li>
-			<li><input type="checkbox" id="ch7" name=years value=5 title='5' onclick="plotCheckbox(this.id)"> 5 Years</li>
-			<li><input type="checkbox" id="ch8" name=years value=10 title='10' onclick="plotCheckbox(this.id)"> 10 Years</li>
-			<li><input type="checkbox" id="ch9" name=years value=20 title='20' onclick="plotCheckbox(this.id)"> 20 Years</li>
-			<li><input type="checkbox" id="ch10" name=years value=30 title='30' onclick="plotCheckbox(this.id)"> 30 Years</li>
+			<li><input type=checkbox id=ch1 name=hours value=24 title='1/365' onclick="plotCheckbox(this.id)"> Daily</li>
+			<li><input type=checkbox id=ch2 name=days value=7 title='1/52' onclick="plotCheckbox(this.id)"> Weekly</li>
+			<li><input type=checkbox id=ch3 name=days value=14 title='1/26' onclick="plotCheckbox(this.id)"> Fortnightly</li>
+			<li><input type=checkbox id=ch4 name=days value=31 title='1/12' onclick="plotCheckbox(this.id)"> Monthly</li>
+			<li><input type=checkbox id=ch5 name=months value=12 title='1' onclick="plotCheckbox(this.id)" checked> Yearly</li>
+			<li><input type=checkbox id=ch6 name=months value=24 title='2' onclick="plotCheckbox(this.id)"> 2 Years</li>
+			<li><input type=checkbox id=ch7 name=years value=5 title='5' onclick="plotCheckbox(this.id)"> 5 Years</li>
+			<li><input type=checkbox id=ch8 name=years value=10 title='10' onclick="plotCheckbox(this.id)"> 10 Years</li>
+			<li><input type=checkbox id=ch9 name=years value=20 title='20' onclick="plotCheckbox(this.id)"> 20 Years</li>
+			<li><input type=checkbox id=ch10 name=years value=30 title='30' onclick="plotCheckbox(this.id)"> 30 Years</li>
 		</ul>
 	</div> 
 	<div id="flotcontainer" class="flotcontainer"></div>
 </article>
 <br>
-<button type="button" id=resetall style="display: none;">Reset</button>     
+<button type="button" id=reset_all style="display: none;">Reset</button>     
 </section>
 </body>
 </html>
