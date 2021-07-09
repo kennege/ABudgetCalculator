@@ -8,7 +8,7 @@ function populateTable() {
       let row = table.insertRow();
       insertTableEntry(row, 0, bw_pairs[i].bucket) // bucket name
       for (let j=0;j<10;j++){
-        insertTableEntry(row, j+1, (convertIncome(get_income(),bw_pairs[i].weight)[j])) 
+        insertTableEntry(row, j+1, (anIncome.convert(bw_pairs[i].weight)[j])) 
       }
     }
   }
@@ -17,7 +17,7 @@ function populateTable() {
   row = table_total.insertRow();
   insertTableEntry(row, 0, 'Total');
   for (let j=0;j<10;j++){
-    insertTableEntry(row, j+1, (convertIncome(get_income(),1)[j])) 
+    insertTableEntry(row, j+1, (anIncome.convert(1)[j])) 
   }
 }
 
@@ -61,7 +61,7 @@ function drawPlot() {
       pair["label"] = bw_pairs[i]["bucket"];
       pair["data"] = [];
       pair["data"].push([0,0]);
-      pair["data"].push([unit, bw_pairs[i]["weight"] * multiplier * get_income()]);
+      pair["data"].push([unit, bw_pairs[i]["weight"] * multiplier * anIncome.get()]);
       pair["points"] = {symbol: "circle"};
       pair["color"] = colours[i - mult];
       data.push(pair);
