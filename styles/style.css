@@ -18,12 +18,31 @@ section {
     flex-direction: column;
 }
 
-.header img {
+#im1 {
     position: absolute;
+    transform: scaleX(-1);
     width: 90px;
     height: 90px;
     right: 30px;
     top: 2px;
+}
+
+#im2 {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    right: 120px;
+    top: 13px;    
+    transform: scale(0.75) scaleX(-1);
+}
+
+#im3 {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    right: 190px;
+    top: 25px;    
+    transform: scale(0.5) scaleX(-1);
 }
   
 .header h1 {

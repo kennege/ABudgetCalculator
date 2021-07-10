@@ -1,8 +1,10 @@
 class Tally {
-  constructor(){
+  constructor(name){
+    this.ping();
+    this.name = name;
   }
 
-    generate(bw_pairs){
+    create(bw_pairs){
     // generate optional tallies to aid in choosing weights
     let listBox = document.getElementById("tally_box");
     listBox.style.display = "block";
@@ -13,8 +15,8 @@ class Tally {
       listArea.removeChild(listArea.firstChild);
     }
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
-    if (!bw_pairs[i].bucket.includes("income")) {
-      let listDiv=document.createElement('div'); 
+      if (!bw_pairs[i].bucket.includes("income")) {
+        let listDiv=document.createElement('div'); 
         listDiv.className = "flexitem";
         let listName=document.createElement('p');
         listName.innerHTML = bw_pairs[i].bucket + ": $0";
@@ -27,7 +29,7 @@ class Tally {
         listEntry.className = "newentry";
         listEntry.innerHTML = `<div><input placeholder="Item" id='item${i}' size="10"> \
                               <input placeholder="$" id='val${i}' size="1"><button type="button" \
-                              onclick="ATally.add_entry('${i}','tally${i}')">Add</button></div>`;
+                              onclick="${this.name}.add_entry('${i}','tally${i}')">Add</button></div>`;
         list.appendChild(listEntry);
         listDiv.appendChild(list);
         listFlex.appendChild(listDiv);
@@ -35,15 +37,8 @@ class Tally {
     }
     listArea.appendChild(listFlex);
 
-    if (!document.getElementById('reset')){
-      let linebreak = document.createElement("br");
-      listBox.appendChild(linebreak);
-      let button = document.createElement("button");
-      button.innerHTML = "Reset Tallies";
-      button.id = "reset";
-      button.onclick = function() {this.reset()}
-      listBox.appendChild(button);
-    }
+    document.getElementById('tally_div').style.display = 'block';
+    document.getElementById('tally_box').style.display = 'block';
   }
 
   add_entry(liID,ulID){
@@ -55,7 +50,7 @@ class Tally {
     listEntry.id = item;
     listEntry.style.color = "ivory";
     listEntry.innerHTML = `<div> ${item}: $${value}   <button type="button" \
-                          onclick="aTally.delete_entry('${item}','${value}','title${liID}')">Delete</button></div>`;
+                          onclick="${this.name}.delete_entry('${item}','${value}','title${liID}')">Delete</button></div>`;
     list.insertBefore(listEntry,list.lastChild);
 
     // update total tally and weight
@@ -74,32 +69,31 @@ class Tally {
 
   delete_entry(liID,value,titleID) {
     document.getElementById(liID).remove();
-  
-    // update total tally and weight
     let listPara = document.getElementById(titleID);
-    listTitle = listPara.innerHTML;
+    let listTitle = listPara.innerHTML;
     let ind = listTitle.indexOf("$");
     let currentTotal = parseFloat(listTitle.slice(ind+1));
     currentTotal = currentTotal - parseFloat(value);
     listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(anIncome.get()/52)).toFixed(2);
   }
 
-  display() {
-    document.getElementById('tally_box').style.display = 'block';
-  }
-
-  reset(){
+  reset(bw_pairs){
     // remove items from tallies and reset
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      let tallyID = 'tally' + i;
-      let titleID = 'title' + i;
-      let tally = document.getElementById(tallyID);
-      while(tally.childNodes.length > 1){
-        tally.removeChild(tally.firstChild);
+      if (!bw_pairs[i].bucket.includes("income")) {
+        let tallyID = 'tally' + i;
+        let titleID = 'title' + i;
+        let tally = document.getElementById(tallyID);
+        while(tally.childNodes.length > 1){
+          tally.removeChild(tally.firstChild);
+        }
+        let listName = document.getElementById(titleID);
+        listName.innerHTML = bw_pairs[i].bucket + ": $0";
       }
-      let listName = document.getElementById(titleID);
-      listName.innerHTML = bw_pairs[i].bucket + ": $0";
     }
   }
+
+  ping() {
+    console.log("I am a Tally!");
+  }
 }
-let aTally = new Tally();

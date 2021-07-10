@@ -1,9 +1,11 @@
 class Income {
-  constructor(income){
-    this.income = income;
+  constructor(){
+    this.income = 0;
+    this.period = "";
+    this.ping();
   }
 
-  set(income) {
+  set(income, bw_pairs) {
     this.income = income;
     let income_found = false;
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
@@ -19,15 +21,12 @@ class Income {
       };
       bw_pairs.push(pair);
     }
+    this.bw_pairs = bw_pairs;
+    return bw_pairs;
   }
 
   get() {
-    for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      if (bw_pairs[i].bucket.includes("income")) {
-        this.income = bw_pairs[i].weight;
-        return this.income;
-      }
-    }
+    return this.income;
   }
 
   read() {
@@ -36,7 +35,7 @@ class Income {
 
   write() {
     document.getElementById('income').value = Math.round(this.get() / 26).toFixed(2);
-    document.getElementById('setincome').innerText = `Your income is set to $${Math.round(this.get() / 26).toFixed(2)}`
+    document.getElementById('setincome').innerText = `Your income is set to $${Math.round(this.get() / 26).toFixed(2)} ${this.period}`
   }
 
   convert(factor) {
@@ -53,6 +52,30 @@ class Income {
       commas(Math.round(factor * 30 * this.income)) // 30 yearly
   ];
     return incomes;
+  }
+
+  calculate(bw_pairs){
+    for (let i = 1;i <= 5; i++)
+    {
+      if(document.getElementById("o" + i).checked){
+        this.period = " per " + document.getElementById("o" + i).name;
+      }
+    }
+    let income = this.read();
+    switch(this.period) {
+      case " per month":
+        bw_pairs = this.set(income * 12, bw_pairs);
+        break;
+      case " per fortnight":
+        bw_pairs = this.set(income * 26, bw_pairs);
+        break;
+      case " per week":
+        bw_pairs = this.set(income * 52, bw_pairs);     
+        break;
+      case " per day":
+        bw_pairs = this.set(income * 365, bw_pairs);
+    } 
+    return bw_pairs;
   }
 
   display() {
@@ -72,6 +95,10 @@ class Income {
       insertTableEntry(row2, i, "$" + this.convert(1)[i+5]);  
     }
     row2 = tab2.insertRow();   
+  }
+
+  ping() {
+    console.log("I am an Income!");
   }
 }
 
