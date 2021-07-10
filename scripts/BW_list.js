@@ -6,7 +6,6 @@ class BW_list {
   create(bw_pairs) { 
     this.bw_pairs = bw_pairs;
     // generate bucket list for choosing weights
-    let block = document.getElementById("bucket_box"); 
     let bl = document.getElementById("bucketList");  
     let para = document.createElement("div");
     while(bl.firstChild){
@@ -33,11 +32,9 @@ class BW_list {
     for (let i=0;i<chosenBuckets.length;i++){
       chosenBuckets[i].style.listStyleType = "none";
     }
-    document.getElementById('bucket_box').style.display = 'block';
-    document.getElementById('done_button').style.display = 'block';
+    $('#bucket_box').fadeIn(1000);
+    $('#done_button').fadeIn(1000);
   }
 
-  ping() {
-    console.log("I am a BW_list");
-  }
+  ping = () => console.log("I am a BW_list");
 }

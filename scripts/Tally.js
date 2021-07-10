@@ -37,8 +37,8 @@ class Tally {
     }
     listArea.appendChild(listFlex);
 
-    document.getElementById('tally_div').style.display = 'block';
-    document.getElementById('tally_box').style.display = 'block';
+    $('#tally_div').fadeIn(1000);
+    $('#tally_box').fadeIn(1000);
   }
 
   add_entry(liID,ulID){
@@ -68,11 +68,12 @@ class Tally {
   }
 
   delete_entry(liID,value,titleID) {
-    document.getElementById(liID).remove();
     let listPara = document.getElementById(titleID);
     let listTitle = listPara.innerHTML;
     let ind = listTitle.indexOf("$");
     let currentTotal = parseFloat(listTitle.slice(ind+1));
+   
+    document.getElementById(liID).remove();
     currentTotal = currentTotal - parseFloat(value);
     listPara.innerText = listTitle.slice(0,ind+1) + currentTotal + ", weight: " + (currentTotal/(anIncome.get()/52)).toFixed(2);
   }
@@ -93,7 +94,5 @@ class Tally {
     }
   }
 
-  ping() {
-    console.log("I am a Tally!");
-  }
+  ping = () => console.log("I am a Tally!");
 }

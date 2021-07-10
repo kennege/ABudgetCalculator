@@ -63,8 +63,9 @@ section {
 }
 
 .topnav {
+    background-image: linear-gradient(to right, #375e97,ivory);
     overflow: hidden;
-    background-color: #375e97;
+    /* background-color: #375e97; */
     text-align: left;
     border-radius: 10px;
 }

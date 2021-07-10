@@ -6,7 +6,6 @@ class Result {
   populate_table(bw_pairs) {
     this.bw_pairs = bw_pairs;
     // generate bucket/income table
-    document.getElementById("table_box").style.display = "block"; // display table box
     let table = document.getElementById("tbody");
     table.innerHTML = "";
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
@@ -25,11 +24,10 @@ class Result {
     for (let j=0;j<10;j++){
       insertTableEntry(row, j+1, (anIncome.convert(1)[j])) 
     }
-    document.getElementById('table_box').style.display = 'block';
+    $('#table_box').fadeIn(1000);
   }
 
   plot(bw_pairs) { 
-    document.getElementById("plot_box").style.display = "block";  // display plot box
     let unit = 1;
     let time = "";
     let multiplier = 1;
@@ -63,12 +61,9 @@ class Result {
     xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;
     $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
     
-    document.getElementById('plot_box').style.display = 'block';
-    document.getElementById("reset_all").style.display = "block";
+    $('#plot_box').fadeIn(1000);
+    $("#reset_all").fadeIn(1000);
     }
 
-  ping() {
-    console.log("I am a Result!");
-  }
+  ping = () => console.log("I am a Result!");
 }
-

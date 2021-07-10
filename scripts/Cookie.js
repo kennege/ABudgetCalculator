@@ -13,11 +13,14 @@ class Cookie {
   get(cIncome, cTally, cBW_list, cResult, cBW_pairs) {
     let bw_pairs = [];
     let cEntries = document.cookie.split(';');
-    var income;
+    let income;
+    let cPair;
+    let pair;
+
     for (let i=0; i<cEntries.length; i++){
-      let cPair = cEntries[i].split("=");
+      cPair = cEntries[i].split("=");
       if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN'))) {
-        let pair = {
+        pair = {
           bucket: cPair[0],
           weight: parseFloat(cPair[1])
         };
@@ -46,16 +49,15 @@ class Cookie {
 
   delete() {
     let cbw_pairs = document.cookie.split(';');
+    let remainder;
+
     for (let i=0; i<cbw_pairs.length; i++){
       let cPair = cbw_pairs[i].split("=");
       document.cookie = `${cPair[0]}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     }
-    let remainder = document.cookie;
+    remainder = document.cookie;
     document.cookie = `${remainder}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
 
-  ping() {
-    console.log("I am a Cookie!");
-  }
+  ping = () => console.log("I am a Cookie!");
 }
-

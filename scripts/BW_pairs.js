@@ -7,13 +7,10 @@ class BW_pairs {
     }];
   }
 
-  reset(bw_pairs) {
-    this.bw_pairs = bw_pairs;
-  }
+  reset = (bw_pairs) => this.bw_pairs = bw_pairs;
 
-  get() {
-    return this.bw_pairs;
-  }
+  get = () => this.bw_pairs;
+  
 
   check() {
     for (let i=0;i<Object.keys(this.bw_pairs).length;i++){
@@ -21,8 +18,5 @@ class BW_pairs {
     } 
   }
 
-  ping() {
-    console.log("I am a BW_pair!");
-  }
+  ping = () => console.log("I am a BW_pair!");
 }
-
