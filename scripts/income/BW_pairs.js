@@ -1,20 +1,17 @@
 class BW_pairs {
   constructor(){
     this.ping();
-    this.bw_pairs = [{
-      bucket : "income",
-      weight : 0
-    }];
+    this.bw_pairs = [];
   }
 
-  reset = (bw_pairs) => this.bw_pairs = bw_pairs;
+  set = (bw_pairs) => this.bw_pairs = bw_pairs;
 
   get = () => this.bw_pairs;
-  
 
   check() {
+    console.log("Checking BW pairs... ")
     for (let i=0;i<Object.keys(this.bw_pairs).length;i++){
-      console.log(this.bw_pairs[i].bucket + " " + this.bw_pairs[i].weight);
+      console.log(this.bw_pairs[i].bucket + ": " + this.bw_pairs[i].weight);
     } 
   }
 

@@ -4,7 +4,6 @@
 		<meta charset="utf-8">
 		<title>SimpleBudgetCalculator.com</title>
 		<link href="../styles/style.css" rel="stylesheet">
-		<link href="../styles/income_style.css" rel="stylesheet">
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<meta name="description" content="A simple website that allows you
 		to create a budget based on the concepts of splitting your income into 'buckets'
@@ -12,13 +11,13 @@
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="icon" href="bucket.ico" type="image/x-icon">
 
-		<script src="/scripts/BW_pairs.js" defer></script>
-		<script src="/scripts/Result.js" defer></script>
-		<script src="/scripts/BW_list.js" defer></script>
-		<script src="/scripts/Tally.js" defer></script>
-		<script src="/scripts/Income.js" defer></script>		
-		<script src="/scripts/Cookie.js" defer></script>
-		<script src="/scripts/main.js" defer></script>
+		<script src="/scripts/income/BW_pairs.js" defer></script>
+		<script src="/scripts/income/Result.js" defer></script>
+		<script src="/scripts/income/BW_list.js" defer></script>
+		<script src="/scripts/income/Tally.js" defer></script>
+		<script src="/scripts/income/Income.js" defer></script>		
+		<script src="/scripts/income/Cookie.js" defer></script>
+		<script src="/scripts/income/main.js" defer></script>
 
 		<script src="/scripts/jquery-3.6.0.js"></script>
 		<script src="/scripts/jquery.flot.js"></script>				 
@@ -33,6 +32,7 @@
 		<div class="topnav">
 			<ul>
 				<a href="index.html">Home</a>
+				<!-- <a href="pages/compound_interest.html">Compound Interest <br>Calculator</a> -->
 				<a href="pages/how_to_use.html">How To Use</a>
 			</ul>
 		</div>
@@ -45,11 +45,11 @@
 			<h3>	What time period have you entered your income for?	</h3>
 			<div class='options well'>
 				<ul>
-					<li><input type=checkbox class=income_ch id=o1 name=year> Yearly</li>
-					<li><input type=checkbox class=income_ch id=o2 name=month> Monthly</li>
-					<li><input type=checkbox class=income_ch id=o3 name=fortnight checked> Fortnightly</li>
-					<li><input type=checkbox class=income_ch id=o4 name=week> Weekly</li>
-					<li><input type=checkbox class=income_ch id=o5 name=day> Daily</li>
+					<li><label><input type=checkbox class=income_ch id=year> Yearly</label></li>
+					<li><label><input type=checkbox class=income_ch id=month> Monthly</label></li>
+					<li><label><input type=checkbox class=income_ch id=fortnight checked> Fortnightly</label></li>
+					<li><label><input type=checkbox class=income_ch id=week> Weekly</label></li>
+					<li><label><input type=checkbox class=income_ch id=day> Daily</label></li>
 				</ul>
 			</div>  
 			<h3 id=setincome>Your income is set to $0.00</h3>
@@ -86,34 +86,34 @@
 		<h3>Choose your categories (3-6 recommended)</h3>
 		<div class='parent'>
 		<ul id="l7" class='list-group'>
-			<li class="list-group-item"> <input name="bucket" value="Income" type="checkbox"> Income</li>
+			<li class="list-group-item"> <label><input name="bucket" value="Income" type="checkbox"> Income</label></li>
 				<ul id="l6">
-					<li class="list-group-item"> <input name="bucket" value="Savings" type="checkbox"> Savings</li>
+					<li class="list-group-item"> <label><input name="bucket" value="Savings" type="checkbox"> Savings</label></li>
 					<ul id="l4">
-						<li class="list-group-item"> <input name="bucket" value="Investing" type="checkbox"> Investing</li>
+						<li class="list-group-item"> <label><input name="bucket" value="Investing" type="checkbox"> Investing</label></li>
 						<ul id=l1>
-							<li class="list-group-item"><input name="bucket" value="Shares" type="checkbox"> Shares</li>
+							<li class="list-group-item"><label><input name="bucket" value="Shares" type="checkbox"> Shares</label></li>
 							<li class='text-left list-group-item'> <input name="bucket" id=c1 type="checkbox"><input placeholder="New category" class=new_box id="i1"></li>
 						</ul>
-						<li class="list-group-item" > <input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings</li>
+						<li class="list-group-item"><label><input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings</label></li>
 						<ul id="l2">
-							<li class="list-group-item"><input name="bucket" value="Retirement" type="checkbox"> Retirement</li>
-							<li class="list-group-item"><input name="bucket" value="House Deposit" type="checkbox"> House Deposit</li>
-							<li class="list-group-item" ><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</li>
+							<li class="list-group-item"><label><input name="bucket" value="Retirement" type="checkbox"> Retirement</label></li>
+							<li class="list-group-item"><label><input name="bucket" value="House Deposit" type="checkbox"> House Deposit</label></li>
+							<li class="list-group-item" ><label><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</label></li>
 							<li class='text-left list-group-item'> <input name="bucket" id=c2 type="checkbox"></form><input placeholder="New category" class=new_box id="i2"></li>	
 						</ul>
-						<li class="list-group-item"> <input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings</li>
+						<li class="list-group-item"> <label><input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings</label></li>
 						<ul id="l3">
-							<li class="list-group-item"><input name="bucket" value="Travel" type="checkbox"> Travel</li>
-							<li class="list-group-item"><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</li>
+							<li class="list-group-item"><label><input name="bucket" value="Travel" type="checkbox"> Travel</label></li>
+							<li class="list-group-item"><label><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</label></li>
 							<li class='text-left list-group-item '> <input name="bucket" id=c3 type="checkbox"><input placeholder="New category" class=new_box id="i3"></li>	
 						</ul>
 						<li class='text-left list-group-item'> <input name="bucket" id=c4 type="checkbox"><input placeholder="New category" class=new_box id="i4"></li>						
 					</ul>
-					<li class="list-group-item"> <input name="bucket" value="Spending" type="checkbox" class="spending"> Spending</li>
+					<li class="list-group-item"> <label><input name="bucket" value="Spending" type="checkbox" class="spending"> Spending</label></li>
 					<ul id="l5">
-						<li class="list-group-item"> <input name="bucket" value="Basics" type="checkbox" checked> Basics</li>
-						<li class="list-group-item"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
+						<li class="list-group-item"> <label><input name="bucket" value="Basics" type="checkbox" checked> Basics</label></li>
+						<li class="list-group-item"> <label><input name="bucket" value="Splurge" type="checkbox"> Splurge</label></li>
 						<li class='text-left list-group-item'> <input name="bucket" id=c5 type="checkbox"><input placeholder="New category" class=new_box id="i5"></li>	
 					</ul>
 					<li class='text-left list-group-item'> <input name="bucket" id=c6 type="checkbox"><input placeholder="New category" class=new_box id="i6"></li>					
@@ -179,16 +179,16 @@
 	<br>
 	<div class='options well'>
 		<ul>
-			<li><input class=plot_ch type=checkbox id=ch1 name=hours value=24 title='1/365'> Daily</li>
-			<li><input class=plot_ch type=checkbox id=ch2 name=days value=7 title='1/52'> Weekly</li>
-			<li><input class=plot_ch type=checkbox id=ch3 name=days value=14 title='1/26'> Fortnightly</li>
-			<li><input class=plot_ch type=checkbox id=ch4 name=days value=31 title='1/12'> Monthly</li>
-			<li><input class=plot_ch type=checkbox id=ch5 name=months value=12 title='1' checked> Yearly</li>
-			<li><input class=plot_ch type=checkbox id=ch6 name=months value=24 title='2'> 2 Years</li>
-			<li><input class=plot_ch type=checkbox id=ch7 name=years value=5 title='5'> 5 Years</li>
-			<li><input class=plot_ch type=checkbox id=ch8 name=years value=10 title='10'> 10 Years</li>
-			<li><input class=plot_ch type=checkbox id=ch9 name=years value=20 title='20'> 20 Years</li>
-			<li><input class=plot_ch type=checkbox id=ch10 name=years value=30 title='30'> 30 Years</li>
+			<li><label><input class=plot_ch type=checkbox id=ch1 name=hours value=24 title='1/365'> Daily</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch2 name=days value=7 title='1/52'> Weekly</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch3 name=days value=14 title='1/26'> Fortnightly</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch4 name=days value=31 title='1/12'> Monthly</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch5 name=months value=12 title='1' checked> Yearly</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch6 name=months value=24 title='2'> 2 Years</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch7 name=years value=5 title='5'> 5 Years</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch8 name=years value=10 title='10'> 10 Years</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch9 name=years value=20 title='20'> 20 Years</label></li>
+			<li><label><input class=plot_ch type=checkbox id=ch10 name=years value=30 title='30'> 30 Years</label></li>
 		</ul>
 	</div> 
 	<div id="flotcontainer" class="flotcontainer"></div>

@@ -16,25 +16,23 @@ class Tally {
       listArea.removeChild(listArea.firstChild);
     }
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      if (!bw_pairs[i].bucket.includes("income")) {
-        let listDiv=document.createElement('div'); 
-        listDiv.className = "flexitem";
-        let listName=document.createElement('p');
-        listName.innerHTML = bw_pairs[i].bucket + ": $0";
-        listName.id = "title" + i;
-        listName.style.color = "ivory";
-        listDiv.appendChild(listName);
-        let list = document.createElement("ul");
-        list.id = "tally" + i;
-        let listEntry = document.createElement("li");
-        listEntry.className = "newentry";
-        listEntry.innerHTML = `<div><input style='color:black' placeholder="Item" id='item${i}' size="10"> \
-                              <input style='color:black' placeholder="$" id='val${i}' size="1"><button style='color:black; margin-left:5px;' type="button" \
-                              class="btn-xs" onclick="${this.name}.add_entry('${i}','tally${i}')">Add</button></div>`;
-        list.appendChild(listEntry);
-        listDiv.appendChild(list);
-        listFlex.appendChild(listDiv);
-      }
+      let listDiv=document.createElement('div'); 
+      listDiv.className = "flexitem";
+      let listName=document.createElement('p');
+      listName.innerHTML = bw_pairs[i].bucket + ": $0";
+      listName.id = "title" + i;
+      listName.style.color = "ivory";
+      listDiv.appendChild(listName);
+      let list = document.createElement("ul");
+      list.id = "tally" + i;
+      let listEntry = document.createElement("li");
+      listEntry.className = "newentry";
+      listEntry.innerHTML = `<div><input style='color:black' placeholder="Item" id='item${i}' size="10"> \
+                            <input style='color:black' placeholder="$" id='val${i}' size="1"><button style='color:black; margin-left:5px;' type="button" \
+                            class="btn-xs" onclick="${this.name}.add_entry('${i}','tally${i}')">Add</button></div>`;
+      list.appendChild(listEntry);
+      listDiv.appendChild(list);
+      listFlex.appendChild(listDiv);     
     }
     listArea.appendChild(listFlex);
 
@@ -82,16 +80,14 @@ class Tally {
   reset(bw_pairs){
     // remove items from tallies and reset
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      if (!bw_pairs[i].bucket.includes("income")) {
-        let tallyID = 'tally' + i;
-        let titleID = 'title' + i;
-        let tally = document.getElementById(tallyID);
-        while(tally.childNodes.length > 1){
-          tally.removeChild(tally.firstChild);
-        }
-        let listName = document.getElementById(titleID);
-        listName.innerHTML = bw_pairs[i].bucket + ": $0";
+      let tallyID = 'tally' + i;
+      let titleID = 'title' + i;
+      let tally = document.getElementById(tallyID);
+      while(tally.childNodes.length > 1){
+        tally.removeChild(tally.firstChild);
       }
+      let listName = document.getElementById(titleID);
+      listName.innerHTML = bw_pairs[i].bucket + ": $0";      
     }
   }
 
