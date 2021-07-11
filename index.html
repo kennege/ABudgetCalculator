@@ -43,7 +43,6 @@
 				<input placeholder="Income after tax" class=set_income id=income>
 			</form>
 			<h3>	What time period have you entered your income for?	</h3>
-
 			<div class='options'>
 				<ul>
 					<li><input type=checkbox class=income_ch id=o1 name=year> Yearly</li>
@@ -146,7 +145,7 @@
 	<br>
 <article id=plot_box class=container style=display:none>
 	<div class=well>
-		<table class='table-responsive table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
+		<table class='table-responsive table-condensed table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
 			<thead>
 			<tr>
 				<th class='text-center' id="bucketcol">Bucket</th>
@@ -155,6 +154,18 @@
 				<th class='text-center' id="fortnightcol">Fortnightly</th>
 				<th class='text-center' id="monthcol">Monthly</th>
 				<th class='text-center' id="yearcol">Yearly</th>
+			</tr>
+		</thead>
+		<tbody id="tbody_1">
+		</tbody>
+		<thead class=bold id=total1>
+		</thead>
+		</table>
+		<br>
+		<table class='table-responsive table-condensed table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
+			<thead>
+			<tr>
+				<th class='text-center' id="bucketcol">Bucket</th>
 				<th class='text-center' id="2yearcol">2 years</th>
 				<th class='text-center' id="5yearcol">5 years</th>
 				<th class='text-center' id="10yearcol">10 years</th>
@@ -162,9 +173,9 @@
 				<th class='text-center' id="30yearcol">30 years</th>
 			</tr>
 		</thead>
-		<tbody id="tbody">
+		<tbody id="tbody_2">
 		</tbody>
-		<thead class=bold id=total>
+		<thead class=bold id=total2>
 		</thead>
 		</table>
 	</div>
