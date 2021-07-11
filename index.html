@@ -43,7 +43,7 @@
 				<input placeholder="Income after tax" class=set_income id=income>
 			</form>
 			<h3>	What time period have you entered your income for?	</h3>
-			<div class='options'>
+			<div class='options well'>
 				<ul>
 					<li><input type=checkbox class=income_ch id=o1 name=year> Yearly</li>
 					<li><input type=checkbox class=income_ch id=o2 name=month> Monthly</li>
@@ -84,7 +84,7 @@
 		<br>
 		<article class=container id=tree_box style=display:none>
 		<h3>Choose your categories (3-6 recommended)</h3>
-		<div class='parent'>
+		<div class='parent well'>
 		<ul id="l7" class='list-group'>
 			<li class="list-group-item"> <input name="bucket" value="Income" type="checkbox"> Income</li>
 				<ul id="l6">
@@ -98,7 +98,7 @@
 						<li class="list-group-item" > <input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings</li>
 						<ul id="l2">
 							<li class="list-group-item"><input name="bucket" value="Retirement" type="checkbox"> Retirement</li>
-							<li class="list-group-item"><input name="bucket" value="House Deposit/Mortgage" type="checkbox"> House Deposit/Mortgage</li>
+							<li class="list-group-item"><input name="bucket" value="House Deposit" type="checkbox"> House Deposit</li>
 							<li class="list-group-item" ><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</li>
 							<li class='text-left list-group-item'> <input name="bucket" id=c2 type="checkbox"></form><input placeholder="New category" class=new_box id="i2"></li>	
 						</ul>
@@ -160,9 +160,6 @@
 		</tbody>
 		<thead class=bold id=total1>
 		</thead>
-		</table>
-		<br>
-		<table class='table-responsive table-condensed table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
 			<thead>
 			<tr>
 				<th class='text-center' id="bucketcol">Bucket</th>
@@ -180,7 +177,7 @@
 		</table>
 	</div>
 	<br>
-	<div class=options>
+	<div class='options well'>
 		<ul>
 			<li><input class=plot_ch type=checkbox id=ch1 name=hours value=24 title='1/365'> Daily</li>
 			<li><input class=plot_ch type=checkbox id=ch2 name=days value=7 title='1/52'> Weekly</li>

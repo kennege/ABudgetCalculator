@@ -187,6 +187,10 @@ section {
   table, th, td {
     border: 1px solid black;
   }
+  th {
+      background-color: #375e97;
+      color: white;
+  }
 
   .table-responsive {
       text-align: auto;
@@ -199,7 +203,6 @@ ul {
 	display: inline-block; 
 	text-align: left; 
 }
-
 
 .list-group-item {
     padding: 0;

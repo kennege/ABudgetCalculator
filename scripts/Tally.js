@@ -10,6 +10,7 @@ class Tally {
     listBox.style.display = "block";
     let listArea = document.getElementById("tally_block");
     let listFlex = document.createElement("article");
+    listArea.className = "well";
     listFlex.className = "listflex";
     while(listArea.firstChild){
       listArea.removeChild(listArea.firstChild);

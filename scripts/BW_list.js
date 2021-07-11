@@ -11,15 +11,17 @@ class BW_list {
     while(bl.firstChild){
       bl.removeChild(bl.firstChild );
     }
-    para.innerHTML = `<h3>Input weights so the sum equals 1. </h3>
+    para.innerHTML = `<h3>Input weights so the sum equals 1 </h3>
                       <p style=text-align:center>Eg. Basics = 0.4</p>`;
     para.id = "weightpara";
     bl.appendChild(para);
+    let div = document.createElement('div');
+    div.className = "well";
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
       if (!bw_pairs[i].bucket.includes("income")) {
         let node = document.createElement("div");
-        node.style.marginLeft = "20%"
-        node.style.marginRight = "20%"
+        node.style.marginLeft = "10%"
+        node.style.marginRight = "10%"
         if ((bw_pairs[i].weight == 0) || (isNaN(bw_pairs[i].weight)))
         {
           node.innerHTML = `<li class="newBucket list-group-item"> <input name="chosenBucket" 
@@ -30,8 +32,9 @@ class BW_list {
           node.innerHTML = `<li class="newBucket list-group-item"> <input name="chosenBucket" 
           style='width:40px' id="${bw_pairs[i].bucket}" value="${bw_pairs[i].weight}"> ${bw_pairs[i].bucket}</li>`;
         }
-        bl.appendChild(node);
+        div.appendChild(node);
       }
+      bl.appendChild(div);
     }
     let chosenBuckets = document.getElementsByClassName("newBucket");
     for (let i=0;i<chosenBuckets.length;i++){
