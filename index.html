@@ -38,7 +38,7 @@
 		</div>
 		<br>
 		<section>
-		<article class=container id=income_box>
+		<article class=container-fluid id=income_box>
 			<form>
 				<input placeholder="Income after tax" class=set_income id=income>
 			</form>
@@ -82,9 +82,9 @@
 			<button type=button class="set_income btn" id=done_options>Ready</button>     
 		</article>
 		<br>
-		<article class=container id=tree_box style=display:none>
+		<article class=container-fluid id=tree_box style=display:none>
 		<h3>Choose your categories (3-6 recommended)</h3>
-		<div class='parent well'>
+		<div class='parent'>
 		<ul id="l7" class='list-group'>
 			<li class="list-group-item"> <input name="bucket" value="Income" type="checkbox"> Income</li>
 				<ul id="l6">
@@ -124,7 +124,7 @@
 		<button id=chosenbuckets class="btn" type="button">Done</button>
 	</article>
 	<br>
-	<article class=container id=tally_box style=display:none>
+	<article class=container-fluid id=tally_box style=display:none>
 		<p style="text-align: left">
 			To help figure out your weights, here are some optional lists that you can use to tally
 			 expected spending over a <b>week</b>.
@@ -137,13 +137,13 @@
 		<div id=tally_div style="display: none;"><button class="btn" id=tally_button type="button">Reset Lists</button></div> 
 	</article>	
 	<br>
-	<article class=container id=bucket_box style="display:none">
+	<article class=container-fluid id=bucket_box style="display:none">
 		<ul id="bucketList" class=list-group>
 		</ul>
 		<div id=done_button style="display: none;"><button class="btn" id=bucket_button type="button">Done</button></div> 
 	</article>
 	<br>
-<article id=plot_box class=container style=display:none>
+<article id=plot_box class=container-fluid style=display:none>
 	<div class=well>
 		<table class='table-responsive table-condensed table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
 			<thead>

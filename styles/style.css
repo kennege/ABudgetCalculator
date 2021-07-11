@@ -84,7 +84,7 @@ section {
     color: black;
 }
 
-.container {
+.container-fluid {
     border: 3px solid;
     border-color: #375e97;
     box-shadow: 5px 10px #888888;
@@ -206,4 +206,8 @@ ul {
 
 .list-group-item {
     padding: 0;
+}
+
+.list-group-item {
+    background-color: ivory;
 }

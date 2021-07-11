@@ -29,8 +29,8 @@ class Tally {
         let listEntry = document.createElement("li");
         listEntry.className = "newentry";
         listEntry.innerHTML = `<div><input style='color:black' placeholder="Item" id='item${i}' size="10"> \
-                              <input style='color:black' placeholder="$" id='val${i}' size="1"><button style='color:black' type="button" \
-                              onclick="${this.name}.add_entry('${i}','tally${i}')">Add</button></div>`;
+                              <input style='color:black' placeholder="$" id='val${i}' size="1"><button style='color:black; margin-left:5px;' type="button" \
+                              class="btn-xs" onclick="${this.name}.add_entry('${i}','tally${i}')">Add</button></div>`;
         list.appendChild(listEntry);
         listDiv.appendChild(list);
         listFlex.appendChild(listDiv);
@@ -50,7 +50,7 @@ class Tally {
     let listEntry = document.createElement("li");
     listEntry.id = item;
     listEntry.style.color = "ivory";
-    listEntry.innerHTML = `<div> ${item}: $${value}   <button type="button" style='color:black' \
+    listEntry.innerHTML = `<div> ${item}: $${value}<button type="button" style='color:black; margin-left:5px;' class="btn-xs"\
                           onclick="${this.name}.delete_entry('${item}','${value}','title${liID}')">Delete</button></div>`;
     list.insertBefore(listEntry,list.lastChild);
 
