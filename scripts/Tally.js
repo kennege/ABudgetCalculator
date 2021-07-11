@@ -27,8 +27,8 @@ class Tally {
         list.id = "tally" + i;
         let listEntry = document.createElement("li");
         listEntry.className = "newentry";
-        listEntry.innerHTML = `<div><input placeholder="Item" id='item${i}' size="10"> \
-                              <input placeholder="$" id='val${i}' size="1"><button type="button" \
+        listEntry.innerHTML = `<div><input style='color:black' placeholder="Item" id='item${i}' size="10"> \
+                              <input style='color:black' placeholder="$" id='val${i}' size="1"><button style='color:black' type="button" \
                               onclick="${this.name}.add_entry('${i}','tally${i}')">Add</button></div>`;
         list.appendChild(listEntry);
         listDiv.appendChild(list);
@@ -49,7 +49,7 @@ class Tally {
     let listEntry = document.createElement("li");
     listEntry.id = item;
     listEntry.style.color = "ivory";
-    listEntry.innerHTML = `<div> ${item}: $${value}   <button type="button" \
+    listEntry.innerHTML = `<div> ${item}: $${value}   <button type="button" style='color:black' \
                           onclick="${this.name}.delete_entry('${item}','${value}','title${liID}')">Delete</button></div>`;
     list.insertBefore(listEntry,list.lastChild);
 

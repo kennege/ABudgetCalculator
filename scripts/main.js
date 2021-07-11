@@ -44,7 +44,7 @@ $(document).ready(function(){
       totalweight = totalweight + parseFloat(new_bw_pairs[i].value);
     }
     para = document.getElementById("weightpara");
-    para.innerText = "Weight sum = " + totalweight.toFixed(2);
+    para.innerHTML = "<h3>Weight sum = " + totalweight.toFixed(2) + "</h3>";
     bw_pairs = anIncome.set(anIncome.get(),bw_pairs);
     allBW_pairs.reset(bw_pairs);
     allBW_pairs.check();
@@ -59,13 +59,14 @@ $(document).ready(function(){
     if (event.keyCode === 13) {
       event.preventDefault();
       let lid = "l" + this.id.slice(1);
+      let cid = "c" + this.id.slice(1);
       let input = this.value;
       let li = document.getElementById(lid);
       let node = document.createElement("div");
-      
-      console.log(input);
-      node.innerHTML = '<li> <input name="bucket" value="' + input + '" type="checkbox">' +  input + '</li>'; 
+            node.innerHTML = '<li class=list-group-item> <input name="bucket" value="' + input + '" type="checkbox" checked>' +  input + '</li>'; 
       li.appendChild(node);    
+      document.getElementById(cid).checked = false;
+      document.getElementById(this.id).value = "";
     }
   });
 

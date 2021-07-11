@@ -5,7 +5,7 @@
 		<title>SimpleBudgetCalculator.com</title>
 		<link href="../styles/style.css" rel="stylesheet">
 		<link href="../styles/income_style.css" rel="stylesheet">
-	  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<meta name="description" content="A simple website that allows you
 		to create a budget based on the concepts of splitting your income into 'buckets'
 		that each have a different purpose.">
@@ -24,7 +24,7 @@
 		<script src="/scripts/jquery.flot.js"></script>				 
 	</head>
 	<body> 
-		<div class="header">
+		<div class='page-header'>
 			<h1><a href="index.html">Simple Budget Calculator</a></h1>
 			<img id=im1 src="../images/bucket.ico" alt="logo">
 			<img id=im2 src="../images/bucket.ico" alt="logo">
@@ -38,14 +38,13 @@
 		</div>
 		<br>
 		<section>
-		<article class=box id=income_box>
+		<article class=container id=income_box>
 			<form>
 				<input placeholder="Income after tax" class=set_income id=income>
 			</form>
-			<p>
-				What time period have you entered your income for?
-			</p>
-			<div class=options>
+			<h3>	What time period have you entered your income for?	</h3>
+
+			<div class='options'>
 				<ul>
 					<li><input type=checkbox class=income_ch id=o1 name=year> Yearly</li>
 					<li><input type=checkbox class=income_ch id=o2 name=month> Monthly</li>
@@ -54,112 +53,113 @@
 					<li><input type=checkbox class=income_ch id=o5 name=day> Daily</li>
 				</ul>
 			</div>  
-			<p id=setincome>Your income is set to $0.00</p>
-			<div id=income_table style=display:none>
-				<table style=width:100%>
+			<h3 id=setincome>Your income is set to $0.00</h3>
+			<div class=well id=income_table style='display:none'>
+				<table class='table-responsive table-condensed table-striped' style='margin-left: auto; margin-right: auto'>
 					<thead>
 							<tr>
-								<th>Daily</th>
-								<th>Weekly</th>
-								<th>Fortnightly</th>
-								<th>Monthly</th>
-								<th>Yearly</th>
+								<th class='text-center'>Daily</th>
+								<th class='text-center'>Weekly</th>
+								<th class='text-center'>Fortnightly</th>
+								<th class='text-center'>Monthly</th>
+								<th class='text-center'>Yearly</th>
 							</tr>
 					</thead>
 					<tbody id=income_t1>
 					</tbody>
 					<thead>
 						<tr>
-							<th>2 Years</th>
-							<th>5 Years</th>
-							<th>10 Years</th>
-							<th>20 Years</th>
-							<th>30 Years</th>
+							<th class='text-center'>2 Years</th>
+							<th class='text-center'>5 Years</th>
+							<th class='text-center'>10 Years</th>
+							<th class='text-center'>20 Years</th>
+							<th class='text-center'>30 Years</th>
 						</tr>
 				</thead>	
 				<tbody id=income_t2>
 				</tbody>				
 				</table>
 			</div>
-			<button type=button class=set_income id=done_options>Ready</button>     
+			<button type=button class="set_income btn" id=done_options>Ready</button>     
 		</article>
 		<br>
-		<article class=box id=tree_box style=display:none>
-		<p>Choose your categories (3-6 recommended)</p>
-		<ul class="tree">
-			<li id="l7"> <input name="bucket" value="Income" type="checkbox"> Income</li>
-				<ul>
-					<li> <input name="bucket" value="Savings" type="checkbox"> Savings</li>
-					<ul>
-						<li> <input name="bucket" value="Investing" type="checkbox"> Investing</li>
-						<ul>
-							<li id=l1><input name="bucket" value="Shares" type="checkbox"> Shares</li>
-							<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" class=new_box id="i1"></li>
+		<article class=container id=tree_box style=display:none>
+		<h3>Choose your categories (3-6 recommended)</h3>
+		<div class='parent'>
+		<ul id="l7" class='list-group'>
+			<li class="list-group-item"> <input name="bucket" value="Income" type="checkbox"> Income</li>
+				<ul id="l6">
+					<li class="list-group-item"> <input name="bucket" value="Savings" type="checkbox"> Savings</li>
+					<ul id="l4">
+						<li class="list-group-item"> <input name="bucket" value="Investing" type="checkbox"> Investing</li>
+						<ul id=l1>
+							<li class="list-group-item"><input name="bucket" value="Shares" type="checkbox"> Shares</li>
+							<li class='text-left list-group-item'> <input name="bucket" id=c1 type="checkbox"><input placeholder="New category" class=new_box id="i1"></li>
 						</ul>
-						<li> <input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings</li>
-						<ul>
-							<li><input name="bucket" value="Retirement" type="checkbox"> Retirement</li>
-							<li><input name="bucket" value="House Deposit/Mortgage" type="checkbox"> House Deposit/Mortgage</li>
-							<li id="l2"><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</li>
-							<li class="newcategory"> <input name="bucket" type="checkbox"></form><input placeholder="New category" class=new_box id="i2"></li>	
+						<li class="list-group-item" > <input name="bucket" value="Long-term savings" type="checkbox"> Long-term savings</li>
+						<ul id="l2">
+							<li class="list-group-item"><input name="bucket" value="Retirement" type="checkbox"> Retirement</li>
+							<li class="list-group-item"><input name="bucket" value="House Deposit/Mortgage" type="checkbox"> House Deposit/Mortgage</li>
+							<li class="list-group-item" ><input name="bucket" value="Emergencies" type="checkbox"> Emergencies</li>
+							<li class='text-left list-group-item'> <input name="bucket" id=c2 type="checkbox"></form><input placeholder="New category" class=new_box id="i2"></li>	
 						</ul>
-						<li id="l4"> <input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings</li>
-						<ul>
-							<li><input name="bucket" value="Travel" type="checkbox"> Travel</li>
-							<li id="l3"><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</li>
-							<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" class=new_box id="i3"></li>	
+						<li class="list-group-item"> <input name="bucket" value="Short-term savings" type="checkbox"> Short-term savings</li>
+						<ul id="l3">
+							<li class="list-group-item"><input name="bucket" value="Travel" type="checkbox"> Travel</li>
+							<li class="list-group-item"><input name="bucket" value="New vehicle" type="checkbox"> New vehicle</li>
+							<li class='text-left list-group-item '> <input name="bucket" id=c3 type="checkbox"><input placeholder="New category" class=new_box id="i3"></li>	
 						</ul>
-						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" class=new_box id="i4"></li>						
+						<li class='text-left list-group-item'> <input name="bucket" id=c4 type="checkbox"><input placeholder="New category" class=new_box id="i4"></li>						
 					</ul>
-					<li id="l6"> <input name="bucket" value="Spending" type="checkbox" class="spending"> Spending</li>
-					<ul>
-						<li> <input name="bucket" value="Basics" type="checkbox" checked> Basics</li>
-						<li id="l5"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
-						<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" class=new_box id="i5"></li>	
+					<li class="list-group-item"> <input name="bucket" value="Spending" type="checkbox" class="spending"> Spending</li>
+					<ul id="l5">
+						<li class="list-group-item"> <input name="bucket" value="Basics" type="checkbox" checked> Basics</li>
+						<li class="list-group-item"> <input name="bucket" value="Splurge" type="checkbox"> Splurge</li>
+						<li class='text-left list-group-item'> <input name="bucket" id=c5 type="checkbox"><input placeholder="New category" class=new_box id="i5"></li>	
 					</ul>
-					<li class="newcategory"> <input name="bucket" type="checkbox"><input placeholder="New category" class=new_box id="i6"></li>					
+					<li class='text-left list-group-item'> <input name="bucket" id=c6 type="checkbox"><input placeholder="New category" class=new_box id="i6"></li>					
 				</ul>
+			<li class="list-group-item"><input name="bucket" id=c7 type="checkbox"><input placeholder="New category" class=new_box id="i7"></li>
 		</ul>
-		<ul class="tree">
-			<li class="newcategory"><input name="bucket" type="checkbox"><input placeholder="New category" class=new_box id="i7"></li>
-		</ul>
-		<button id=chosenbuckets type="button">Done</button>
+	</div>
+		<button id=chosenbuckets class="btn" type="button">Done</button>
 	</article>
 	<br>
-	<article class=tally_box id=tally_box style=display:none>
+	<article class=container id=tally_box style=display:none>
 		<p style="text-align: left">
-			To help figure out your weights, here are some optional lists that you can use to tally <br>
-			 expected spending over a <b>week</b>.<br>
-			Eg. List your basic expenses (food, rent, petrol, etc) to work out what weight to apply to this category. <br>
+			To help figure out your weights, here are some optional lists that you can use to tally
+			 expected spending over a <b>week</b>.
+			Eg. List your basic expenses (food, rent, petrol, etc) to work out what weight to apply to this category. 
 			The weight (fraction of your weekly salary) for the list is then calculated for you.
 		</p>
 		<section id=tally_block class=tally_block>
 		</section>
 		<br>
-		<div id=tally_div style="display: none;"><button id=tally_button type="button">Reset Lists</button></div> 
+		<div id=tally_div style="display: none;"><button class="btn" id=tally_button type="button">Reset Lists</button></div> 
 	</article>	
 	<br>
-	<article class=box id=bucket_box style="display:none">
-		<ul id="bucketList">
+	<article class=container id=bucket_box style="display:none">
+		<ul id="bucketList" class=list-group>
 		</ul>
-		<div id=done_button style="display: none;"><button id=bucket_button type="button">Done</button></div> 
+		<div id=done_button style="display: none;"><button class="btn" id=bucket_button type="button">Done</button></div> 
 	</article>
 	<br>
-	<article class=box id=table_box style="display:none">
-		<table id=table style="width:100%">
+<article id=plot_box class=container style=display:none>
+	<div class=well>
+		<table class='table-responsive table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
 			<thead>
 			<tr>
-				<th id="bucketcol">Bucket</th>
-				<th id="daycol">Daily</th>
-				<th id="weekcol">Weekly</th>
-				<th id="fortnightcol">Fortnightly</th>
-				<th id="monthcol">Monthly</th>
-				<th id="yearcol">Yearly</th>
-				<th id="2yearcol">2 years</th>
-				<th id="5yearcol">5 years</th>
-				<th id="10yearcol">10 years</th>
-				<th id="20yearcol">20 years</th>
-				<th id="30yearcol">30 years</th>
+				<th class='text-center' id="bucketcol">Bucket</th>
+				<th class='text-center' id="daycol">Daily</th>
+				<th class='text-center' id="weekcol">Weekly</th>
+				<th class='text-center' id="fortnightcol">Fortnightly</th>
+				<th class='text-center' id="monthcol">Monthly</th>
+				<th class='text-center' id="yearcol">Yearly</th>
+				<th class='text-center' id="2yearcol">2 years</th>
+				<th class='text-center' id="5yearcol">5 years</th>
+				<th class='text-center' id="10yearcol">10 years</th>
+				<th class='text-center' id="20yearcol">20 years</th>
+				<th class='text-center' id="30yearcol">30 years</th>
 			</tr>
 		</thead>
 		<tbody id="tbody">
@@ -167,9 +167,8 @@
 		<thead class=bold id=total>
 		</thead>
 		</table>
-	</article>
+	</div>
 	<br>
-<article id=plot_box class=plot_box>
 	<div class=options>
 		<ul>
 			<li><input class=plot_ch type=checkbox id=ch1 name=hours value=24 title='1/365'> Daily</li>
@@ -187,7 +186,8 @@
 	<div id="flotcontainer" class="flotcontainer"></div>
 </article>
 <br>
-<button type="button" id=reset_all style="display: none;">Reset</button>     
+<div class='text-center'><button type="button" class="btn" id=reset_all style="display: none;">Reset</button></div> 
+<br>    
 </section>
 </body>
 </html>
