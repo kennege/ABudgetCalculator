@@ -66,6 +66,7 @@ class Cookie {
   }
 
   check(){
+    console.log("Checking cookie...");
     console.log(document.cookie);
   }
 

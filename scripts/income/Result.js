@@ -39,12 +39,11 @@ class Result {
    for (let j=0;j<5;j++){
      insertTableEntry(row2, j+1, "$"+(anIncome.convert(1)[j+5])) 
    }
-
     $('#table_box').fadeIn(1000);
   }
 
   plot(bw_pairs) { 
-    for (let i=0;i<2;i++){
+    for (let j=0;j<2;j++){
       let unit = 1;
       let time = "";
       let multiplier = 1;

@@ -1,76 +1,143 @@
 settings = new Settings();
 
-function plot(bw_pairs) { 
-  
-  for (let i=0;i<2;i++){
-    let unit = 1;
-    let time = "";
-    let multiplier = 1;
-    for (let i=1;i<=10;i++)
-    {
-      if (document.getElementById("ch" + i).checked) {
-        time = document.getElementById("ch" + i).name;
-        unit = parseFloat(document.getElementById("ch" + i).value);
-        multiplier = eval(document.getElementById("ch" + i).title);
-      }
-    }
+function plot(settings, stats) { 
+  let n = settings.get_num_years(); // number of years (num_years)
+  let total = stats.total;
+  let deposits = stats.deposits;
+  let colours = ['black','blue'];
+  labels = ['deposits', 'total']; 
+
+  function GenerateData(input_data, n){
     let data = [];
-    let mult = 0;
-    let colours = ['black','blue','brown','red','aqua','crimson','cyan','pink','orange','yellow','purple','grey','green'];
-    for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      if (!bw_pairs[i].bucket.includes("income")) {
-        if ((i+1) % (colours.length+1) == 0){
-          mult+=colours.length;
-        }
-        let pair = {};
-        pair.label = bw_pairs[i].bucket;
-        pair.data = [];
-        pair.data.push([0,0]);
-        pair.data.push([unit, bw_pairs[i].weight * multiplier * anIncome.get()]);
-        pair.points = {symbol: "circle"};
-        pair.color = colours[i - mult];
-        data.push(pair);
-      }
+    for(i=0;i<n;i++){ 
+      data.push([i + 1, input_data[i]]);
+      
     }
-    let xlabel = document.head.appendChild(document.createElement('style'));
-    xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;
-    $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
-  
-    $('#plot_box').fadeIn(1000);
-    $("#reset_all").fadeIn(1000);
+    return data;
   }
-}
 
-function cal_comp_int(settings){
-  let P = settings.get_init_dep();
-  let r = settings.get_rate();
-  let n = settings.get_num_years();
-}
+  var options = {
+    series:{
+        stack:true,
+        bars:{show: true, 
+          barWidth:0.8,
+        lineWidth: 0,
+        fillColor: { colors: [ { opacity: 0.8 }, { opacity: 0.1 } ] }
+      }
+    },
+    legend:{
+      position: "nw"
+    },
+    grid:{
+      backgroundColor: { 
+        colors: ['ivory', 'white'] },
+    clickable: true,
+    hoverable: true,
+},
+  };
 
-// ensure only one frequency checkbox is selected
-$('.frequency').click(function(event) {
-  for (let i = 1;i <= 5; i++)
+  let deposit_data = GenerateData(deposits, n);
+  let total_data = GenerateData(total, n);
+  let dataset = [
+    {
+    label : "deposits",
+    data : deposit_data,
+    color : 'black'
+  }, 
   {
-    document.getElementById("c" + i).checked = false;
+    label : "total",
+    data : total_data,
+    color : '#375e97'
+  }];
+
+  let xlabel = document.head.appendChild(document.createElement('style'));
+  xlabel.innerHTML = `#flotcontainer:before {content: 'Time (years)'`;  
+   $.plot($("#flotcontainer"), dataset, options);  
+
+  // $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
+
+  $('#plot_box').fadeIn(1000);
+  $("#reset_all").fadeIn(1000);
+}
+
+function calc_total(settings){
+  let P_now = settings.get_init_dep(); // principal (init_dep)
+  let P_prev = P_now;
+  let r = settings.get_rate(); // interest rate (rate)
+  let n = settings.get_num_years(); // number of years (num_years)
+  let dep_per_year = settings.freq2years(); // deposits/year
+  let dep = settings.get_reg_dep(); // amount deposited
+  let A = 0;
+  let running_total = [];
+
+  for (let i=0; i<n; i++){
+    A = P_now * (1 + r);
+    P_prev = P_now;
+    P_now += A - P_prev + (dep * dep_per_year); 
+    running_total.push(P_now.toFixed(2));
   }
-  this.checked = true;
-  settings.set_dep_freq(this.value);
-  document.getElementById('dep_freq').innerText = this.value;
-});
+  return running_total;
+}
+
+function calc_deposits(settings) {
+  let P = 0;
+  let n = settings.get_num_years(); // number of years (num_years)
+  let dep_per_year = settings.freq2years(); // deposits/year
+  let dep = settings.get_reg_dep(); // amount deposited
+  let running_total = [];
+
+  for (let i=0; i<n; i++){
+    P += dep * dep_per_year;
+    running_total.push(P);
+  }
+  return running_total;
+}
+
+function calc_interest(settings, total, deposits){
+  let P0 = settings.get_init_dep(); // principal (init_dep)
+  let n = settings.get_num_years(); // number of years (num_years) 
+  let running_total = []; 
+  
+  for (let i=0; i<n; i++){
+    running_total.push(total[i] - deposits[i] - P0);
+  }
+  return running_total;
+}
 
 $(document).ready(function(){
 
   $('#init_dep').focus();
 
+  // ensure only one frequency checkbox is selected
+  $('.frequency').click(function(event) {
+    for (let i = 1;i <= 5; i++)
+    {
+      document.getElementById("c" + i).checked = false;
+    }
+    this.checked = true;
+    settings.set_dep_freq(this.value);
+    document.getElementById('dep_freq').innerText = this.value;
+  });
+
+  // get inputs and plot
   $("#submit").click(function(event) {
     settings.set_init_dep($('#init_dep').val());
     settings.set_reg_dep($('#reg_dep').val());
     settings.set_num_years($('#num_years').val());
     settings.set_rate($('#rate').val());
-    settings.check();
-    cal_comp_int(settings);
-    $("#plot_box").show();
-    $("#reset_all").show();
+    // settings.check();
+
+    let total = calc_total(settings);
+    let deposits = calc_deposits(settings);
+    let interest = calc_interest(settings, total, deposits);
+    let stats = {
+      'total' : total,
+      'deposits' :  deposits,
+      'interest' : interest
+    };
+    for (let i=0; i<2; i++){
+      plot(settings, stats);
+    }
   });
 
   $('#reset_all').click(function(event) {
@@ -80,6 +147,5 @@ $(document).ready(function(){
     console.clear();
     location.reload();
   });
-
 });
 
