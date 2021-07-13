@@ -1,16 +1,16 @@
-.dropdown {
+/* .dropdown {
   position: relative;
-  margin-left: 50%; /* More to the left */
+  margin-left: 50%; 
   margin-right: 50%;
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Bottom of button */
+  top: 100%;
   right: 0;
-  margin-left: 50%; /* More to the left */
+  margin-left: 50%; 
   margin-right: 50%;
-}
+} */
 
 .flex-container {
   display: flex;

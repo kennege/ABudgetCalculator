@@ -22,7 +22,13 @@ function displayBucketTree(){
 $(document).ready(function(){
   
   $('#income').focus();
-  anIncome, allBW_pairs = aCookie.get(anIncome, allBW_pairs, aTally, aBW_list, aResult);
+  $('#plot-container').hide();
+  let cookie_success;
+  anIncome, allBW_pairs, cookie_success = aCookie.get(anIncome, allBW_pairs, aTally, aBW_list, aResult);
+  if (cookie_success){
+
+    $('#plot-container').show();
+  }
 
   // ensure only one income checkbox is selected
   $('.income_ch').click(function(event) {

@@ -22,6 +22,7 @@ class Cookie {
     let cEntries = document.cookie.split(';');
     let cPair;
     let bw_pair;
+    this.check();
 
     for (let i=0; i<cEntries.length; i++){
       cPair = cEntries[i].split("=");
@@ -39,7 +40,7 @@ class Cookie {
         bw_pairs.push(bw_pair);
       }
     }
-    
+    let cookie_success = false;
     cBW_pairs.set(bw_pairs);
     if ((cIncome.get() != 0) && (!isNaN(cIncome.get()))){ // cookie found!
       console.log("cookie found!");
@@ -48,9 +49,12 @@ class Cookie {
       cBW_list.create(bw_pairs);
       cTally.create(bw_pairs);
       cResult.populate_table(bw_pairs);
+      $('#plot-container').show();
+
       cResult.plot(bw_pairs);
+      cookie_success = true;
     }
-    return cIncome, cBW_pairs;
+    return cIncome, cBW_pairs, cookie_success;
   }
 
   delete() {

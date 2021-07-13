@@ -13,11 +13,12 @@
 		<link rel="icon" href="bucket.ico" type="image/x-icon">
     
   <script src="../scripts/interest/Settings.js" defer></script>
+  <script src="../scripts/interest/Stats.js" defer></script>
   <script src="../scripts/interest/main.js" defer></script>
 
   <script src="../scripts/jquery-3.6.0.js"></script>
   <script src="../scripts/jquery.flot.js"></script>				 
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 </head>
 	<body> 
@@ -38,8 +39,8 @@
 		<section>
       <article class=container-fluid id=input_box>
         <div class="flex-container">
-          <div><label>Initial deposit:</label><input id=init_dep value=10000></div>
-          <div><label>Regular deposit:</label><input id=reg_dep value=1000></div>
+          <div><label>Initial deposit:</label><input id=init_dep></div>
+          <div><label>Regular deposit:</label><input id=reg_dep></div>
           <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id=dep_freq data-toggle="dropdown">Deposit Frequency
             <span class="caret"></span></button>
@@ -51,17 +52,15 @@
               <li><label><input class=frequency id=c5 value=Daily type="checkbox">  Daily</label></a></li>
             </ul>
             </div>
-          <div><label>Number of years: <span>(max 50)</span></label><input id=num_years value="10"></div>
+          <div><label>Number of years: <span>(max 50)</span></label><input id=num_years></div>
           <div><label>Annual interest rate (%): <span>(max 20%)</span></label><input id=rate value="5.00"></div>
         </div>
           <button type="submit" id=submit class="btn btn-default">Submit</button>
         </form>
       </article>
       <br>
-      <article id=plot_box class=container-fluid style=display:none>
-        <div id="flotcontainer" class="flotcontainer"></div>
-      </article>
-      <br>
+        <div class=container-fluid id=plot-container> <div id="flotcontainer" style="margin: 2% auto; width:90%; height:500px;"></div></div>
+        <br>
       <div class='text-center'><button type="button" class="btn" id=reset_all style="display: none;">Reset</button></div> 
       <br>    
     </section>

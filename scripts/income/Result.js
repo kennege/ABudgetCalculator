@@ -74,7 +74,9 @@ class Result {
       let xlabel = document.head.appendChild(document.createElement('style'));
       xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;
       $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
-
+      window.onresize = function(event) {
+        $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
+      }
       $('#plot_box').fadeIn(1000);
       $("#reset_all").fadeIn(1000);
     }

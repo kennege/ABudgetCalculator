@@ -1,17 +1,20 @@
-settings = new Settings();
+let settings = new Settings();
+let Stat = new Stats();
+
+function commas(str) {
+  return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
+}
 
 function plot(settings, stats) { 
   let n = settings.get_num_years(); // number of years (num_years)
   let total = stats.total;
   let deposits = stats.deposits;
-  let colours = ['black','blue'];
   labels = ['deposits', 'total']; 
 
   function GenerateData(input_data, n){
     let data = [];
     for(i=0;i<n;i++){ 
       data.push([i + 1, input_data[i]]);
-      
     }
     return data;
   }
@@ -32,8 +35,7 @@ function plot(settings, stats) {
       backgroundColor: { 
         colors: ['ivory', 'white'] },
     clickable: true,
-    hoverable: true,
-},
+    hoverable: true,},
   };
 
   let deposit_data = GenerateData(deposits, n);
@@ -52,7 +54,10 @@ function plot(settings, stats) {
 
   let xlabel = document.head.appendChild(document.createElement('style'));
   xlabel.innerHTML = `#flotcontainer:before {content: 'Time (years)'`;  
-   $.plot($("#flotcontainer"), dataset, options);  
+  $.plot($("#flotcontainer"), dataset, options);  
+  window.onresize = function(event) {
+    $.plot($("#flotcontainer"), dataset, options);  
+  }
 
   // $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
 
@@ -104,13 +109,33 @@ function calc_interest(settings, total, deposits){
   return running_total;
 }
 
+function showTooltip(x, y, contents, color) {     
+  $('<div id="tooltip">' + contents + '</div>').css( {
+    position: 'absolute',
+    width: '140px',
+    display: 'none',
+    'font-family': 'sans-serif',
+    'font-size': '12px',
+    top: y + 5,
+    left: x + 5,
+    'border-width': '2px',
+    'border-style': 'solid',
+    'border-color': color,
+    padding: '4px',
+    'background-color': "#eee",
+    opacity: 0.90
+}).appendTo("body").fadeIn(200);
+}
+
 $(document).ready(function(){
 
   $('#init_dep').focus();
-
+  $('#plot-container').hide();
+  stats = {};
   // ensure only one frequency checkbox is selected
   $('.frequency').click(function(event) {
-    for (let i = 1;i <= 5; i++)
+    console.log("here");
+  for (let i = 1;i <= 5; i++)
     {
       document.getElementById("c" + i).checked = false;
     }
@@ -118,7 +143,7 @@ $(document).ready(function(){
     settings.set_dep_freq(this.value);
     document.getElementById('dep_freq').innerText = this.value;
   });
-
+  
   // get inputs and plot
   $("#submit").click(function(event) {
     settings.set_init_dep($('#init_dep').val());
@@ -135,8 +160,33 @@ $(document).ready(function(){
       'deposits' :  deposits,
       'interest' : interest
     };
+    Stat.set(stats);
+    $('#plot-container').show();
     for (let i=0; i<2; i++){
       plot(settings, stats);
+    }
+    return stats;
+  });
+
+  // Figure out which point is being hovered over and display that data
+  $("#flotcontainer").bind("plothover", function (event, pos, item){
+    if (item) {
+      if (previousPoint != item.dataIndex) {
+        previousPoint = item.dataIndex;
+
+        $("#tooltip").remove();
+
+        var x = item.datapoint[0];
+        var y = item.datapoint[1];
+
+        var label = "Year: " + x + "<br> Interest: $" + commas(Math.round(Stat.get().interest[x-1])) + 
+          "<br> Deposits: $" + commas(Math.round(Stat.get().deposits[x-1] + settings.get_init_dep())) +  "<br> Total: $" + commas(Math.round(y));                
+        showTooltip(item.pageX, item.pageY, label, item.series.color);
+      }
+    }
+    else {
+      $("#tooltip").remove();
+      previousPoint = null;            
     }
   });
 
