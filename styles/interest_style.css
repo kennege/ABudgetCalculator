@@ -1,4 +1,4 @@
-/* .dropdown {
+.dropdown {
   position: relative;
   margin-left: 50%; 
   margin-right: 50%;
@@ -10,15 +10,18 @@
   right: 0;
   margin-left: 50%; 
   margin-right: 50%;
-} */
+}
 
 .flex-container {
   display: flex;
   justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: wrap;
+  
 }
 
 .flex-container > div {
   background-color: #f1f1f1;
   margin: 10px;
-  padding: 20px;
+  padding: 10px;
 }
