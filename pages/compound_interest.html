@@ -11,9 +11,10 @@
 		that each have a different purpose.">
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="icon" href="bucket.ico" type="image/x-icon">
-    
+   
+  <script src="../scripts/interest/plot.js" defer></script>   
+  <script src="../scripts/interest/table.js" defer></script>    
   <script src="../scripts/interest/Settings.js" defer></script>
-  <script src="../scripts/interest/Stats.js" defer></script>
   <script src="../scripts/interest/main.js" defer></script>
 
   <script src="../scripts/jquery-3.6.0.js"></script>
@@ -33,6 +34,7 @@
 				<a href="../index.html">Create Budget</a>
 				<!-- <a href="track.html">Track Budget</a> -->
 				<a href="compound_interest.html">Compound Interest <br>Calculator</a>
+				<!-- <a href="hecs.html">HECS Repayment <br>Calculator</a> -->
 				<a href="how_to_use.html">How To Use</a>
 			</ul>
 		</div>
@@ -61,6 +63,8 @@
       </article>
       <br>
         <div class=container-fluid id=plot-container> <div id="flotcontainer" style="margin: 2% auto; width:90%; height:500px;"></div></div>
+        <br>       
+         <div class=container-fluid id=table-container style="display:none;"> <div id="flotcontainer" style="margin: 2% auto; width:90%;"></div></div>
         <br>
       <div class='text-center'><button type="button" class="btn" id=reset_all style="display: none;">Reset</button></div> 
       <br>    
