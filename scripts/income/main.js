@@ -26,7 +26,7 @@ $(document).ready(function(){
   let cookie_success;
   anIncome, allBW_pairs, cookie_success = aCookie.get(anIncome, allBW_pairs, aTally, aBW_list, aResult);
   if (cookie_success){
-
+    $("#flotcontainer").width(  $("#plot-container").width()  )
     $('#plot-container').show();
   }
 
@@ -123,6 +123,7 @@ $(document).ready(function(){
     aCookie.delete();
     aCookie.set(anIncome, allBW_pairs);
     aResult.populate_table(allBW_pairs.get());
+    $('#plot-container').show();
     aResult.plot(allBW_pairs.get());
   });
 
@@ -134,6 +135,7 @@ $(document).ready(function(){
         document.getElementById("ch" + i).checked = false;
     }
     this.checked = true;
+    $('#plot-container').show();
     aResult.plot(allBW_pairs.get());
   });
 
