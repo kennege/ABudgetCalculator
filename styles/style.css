@@ -190,6 +190,11 @@ section {
       color: white;
   }
 
+  .th {
+    background-color: #375e97;
+    color: white;   
+  }
+
   .table-responsive {
       text-align: auto;
   }

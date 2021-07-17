@@ -7,8 +7,8 @@ function commas(str) {
 $(document).ready(function(){
 
   $('#init_dep').focus();
-  // $('#plot-container').hide();
-  // $('#table-container').hide();
+  $('#plot-container').hide();
+  $('#table-container').hide();
 
   // ensure only one frequency checkbox is selected
   $('.frequency').click(function(event) {
@@ -23,7 +23,7 @@ $(document).ready(function(){
   });
   
   // get inputs and plot
-  $("#button-div").click(function(event) {
+  $("#submit").click(function(event) {
     settings.save();
 
     $('#plot-container').show();
@@ -31,6 +31,7 @@ $(document).ready(function(){
     for (let i=0; i<2; i++){
       plot(settings);
     }
+    generateTable(settings);
   });
 
   // display data on hover
