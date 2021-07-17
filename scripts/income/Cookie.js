@@ -17,7 +17,7 @@ class Cookie {
     this.check();
   } 
 
-  get(cIncome, cBW_pairs, cTally, cBW_list, cResult) {
+  get(cIncome, cBW_pairs, cBW_list, cResult) {
     let bw_pairs = [];
     let cEntries = document.cookie.split(';');
     let cPair;
@@ -47,7 +47,6 @@ class Cookie {
       cIncome.display();   
       displayBucketTree();
       cBW_list.create(bw_pairs);
-      cTally.create(bw_pairs);
       cResult.populate_table(bw_pairs);
       $('#plot-container').show();
 

@@ -2,7 +2,6 @@ console.log("main loaded!")
 let allBW_pairs = new BW_pairs();
 let aResult = new Result();
 let aBW_list = new BW_list();
-let aTally = new Tally('aTally');
 let anIncome = new Income();
 let aCookie = new Cookie();
 
@@ -24,7 +23,7 @@ $(document).ready(function(){
   $('#income').focus();
   $('#plot-container').hide();
   let cookie_success;
-  anIncome, allBW_pairs, cookie_success = aCookie.get(anIncome, allBW_pairs, aTally, aBW_list, aResult);
+  anIncome, allBW_pairs, cookie_success = aCookie.get(anIncome, allBW_pairs, aBW_list, aResult);
   if (cookie_success){
     $("#flotcontainer").width(  $("#plot-container").width()  )
     $('#plot-container').show();
@@ -74,7 +73,6 @@ $(document).ready(function(){
       }
     }
     allBW_pairs.set(bw_pairs);
-    aTally.create(bw_pairs);
     aBW_list.create(bw_pairs);
     return false;
   });
@@ -93,11 +91,6 @@ $(document).ready(function(){
       document.getElementById(cid).checked = false;
       document.getElementById(this.id).value = "";
     }
-  });
-
-  // button to reset tallies
-  $("#tally_button").click(function(event){
-    aTally.reset(allBW_pairs.get());
   });
 
   // button to finish assigning weights

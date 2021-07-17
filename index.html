@@ -14,15 +14,17 @@
 		<script src="/scripts/income/BW_pairs.js" defer></script>
 		<script src="/scripts/income/Result.js" defer></script>
 		<script src="/scripts/income/BW_list.js" defer></script>
-		<script src="/scripts/income/Tally.js" defer></script>
+		<script src="/scripts/income/Tally.js" type="text/babel" defer></script>
 		<script src="/scripts/income/Income.js" defer></script>		
 		<script src="/scripts/income/Cookie.js" defer></script>
 		<script src="/scripts/income/main.js" defer></script>
 
 		<script src="/scripts/jquery-3.6.0.js"></script>
 		<script src="/scripts/jquery.flot.js"></script>				 
-	</head>
-	<body> 
+		<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin defer></script>
+		<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin defer></script>	</head>
+		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+		<body> 
 		<div class='page-header'>
 			<h1><a href="index.html">Simple Budget Calculator</a></h1>
 			<img id=im1 src="../images/bucket.ico" alt="logo">
@@ -126,7 +128,7 @@
 		<button id=chosenbuckets class="btn" type="button">Done</button>
 	</article>
 	<br>
-	<article class=container-fluid id=tally_box style=display:none>
+	<article class=container-fluid id=tally_box > <!---style=display:none--->
 		<p style="text-align: left">
 			To help figure out your weights, here are some optional lists that you can use to tally
 			 expected spending over a <b>week</b>.
@@ -135,8 +137,8 @@
 		</p>
 		<section id=tally_block class=tally_block>
 		</section>
-		<br>
-		<div id=tally_div style="display: none;"><button class="btn" id=tally_button type="button">Reset Lists</button></div> 
+		<!-- <br>
+		<div id=tally_div style="display: none;"><button class="btn" id=tally_button type="button">Reset Lists</button></div>  -->
 	</article>	
 	<br>
 	<article class=container-fluid id=bucket_box style="display:none">
