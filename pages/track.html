@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Simple Budget Calculator</title>
+		<link href="../styles/style.css" rel="stylesheet">
+		<!-- <link href="../styles/track_style.css" rel="stylesheet"> -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<meta name="description" content="A simple website that allows you
+		to create a budget based on the concepts of splitting your income into 'buckets'
+		that each have a different purpose.">
+		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
+		<link rel="shortcut icon" href="../images/bucket_ico_f.ico" type="image/x-icon">
+    
+		<script src="../scripts/track/main.js" type="text/babel" defer></script>
+		<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+		<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+		<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <script src="../scripts/jquery-3.6.0.js"></script>
+  <script src="../scripts/jquery.flot.js"></script>				 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+	<body> 
+		<div class='page-header'>
+			<h1><a href="index.html">Simple Budget Calculator</a></h1>
+			<img id=im1 src="../images/bucket.ico" alt="logo">
+			<img id=im2 src="../images/bucket.ico" alt="logo">
+			<img id=im3 src="../images/bucket.ico" alt="logo">
+		</div>
+		<div class="topnav">
+			<ul>
+				<a href="../index.html">Create Budget</a>
+				<a href="track.html">Track Budget</a>
+				<a href="compound_interest.html">Compound Interest <br>Calculator</a>
+				<!-- <a href="hecs.html">HECS Repayment <br>Calculator</a> -->
+        <a href="how_to_use.html">How To Use</a>
+			</ul>
+		</div>
+		<br>
+    <div id="root"></div>
+		<form action="createDB()">
+		 <input type=submit value="Create DB">
+		</form>
+
+<script>
+
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password);
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+// Create database
+$sql = "CREATE DATABASE myDB";
+if ($conn->query($sql) === TRUE) {
+  echo "Database created successfully";
+} else {
+  echo "Error creating database: " . $conn->error;
+}
+
+$conn->close();
+?>
+</script>
+
+
+	</body>
+</html>
+
