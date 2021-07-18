@@ -46,6 +46,7 @@ class Cookie {
       console.log("cookie found!");
       cIncome.display();   
       displayBucketTree();
+      displayTallies();
       cBW_list.create(bw_pairs);
       cResult.populate_table(bw_pairs);
       $('#plot-container').show();

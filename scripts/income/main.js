@@ -18,6 +18,12 @@ function displayBucketTree(){
   $("#tree_box").fadeIn(1000); 
 }
 
+function displayTallies(){
+  let domContainer = document.querySelector('#tally_block');
+  ReactDOM.render(<Tally bw_pairs={allBW_pairs}/>, domContainer);
+  $("#tally_box").fadeIn(1000); 
+}
+
 $(document).ready(function(){
   
   $('#income').focus();
@@ -74,6 +80,7 @@ $(document).ready(function(){
     }
     allBW_pairs.set(bw_pairs);
     aBW_list.create(bw_pairs);
+    displayTallies();
     return false;
   });
   
