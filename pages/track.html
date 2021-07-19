@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Simple Budget Calculator</title>
+		<link href="../styles/track.css" rel="stylesheet">
 		<link href="../styles/style.css" rel="stylesheet">
 		<!-- <link href="../styles/track_style.css" rel="stylesheet"> -->
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -11,15 +12,18 @@
 		that each have a different purpose.">
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="shortcut icon" href="../images/bucket_ico_f.ico" type="image/x-icon">
-    
-		<script src="../scripts/track/main.js" type="text/babel" defer></script>
+
+		<script src="../scripts/income/BW_pairs.js" defer></script>    
+		<script src="../scripts/income/Income.js" defer></script>    
+		<script src="../scripts/income/Result.js" defer></script>    
+		<script src="../scripts/track/User.js" defer></script>    
+		<script src="../scripts/track/main.js" defer></script>
+	
 		<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
 		<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
 		<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   <script src="../scripts/jquery-3.6.0.js"></script>
   <script src="../scripts/jquery.flot.js"></script>				 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
 </head>
 	<body> 
 		<div class='page-header'>
@@ -38,38 +42,22 @@
 			</ul>
 		</div>
 		<br>
-    <div id="root"></div>
-		<form action="createDB()">
-		 <input type=submit value="Create DB">
-		</form>
-
-<script>
-
-<?php
-$servername = "localhost";
-$username = "username";
-$password = "password";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-// Create database
-$sql = "CREATE DATABASE myDB";
-if ($conn->query($sql) === TRUE) {
-  echo "Database created successfully";
-} else {
-  echo "Error creating database: " . $conn->error;
-}
-
-$conn->close();
-?>
-</script>
-
-
-	</body>
+		<div class="flot-container">
+			<form>
+				<input type="text" placeholder="Enter Username" id=name value=gerard required>
+				<input type="password" id="password" autocomplete='password' placeholder="Enter Password" value=Password@1 required>
+				<button type="submit" id=submit>Login</button>
+				<label>
+					<input type="checkbox" checked="checked" name="remember"> Remember me
+				</label>
+			</form>
+		</div>	
+		<div class="container" style="background-color:#f1f1f1">
+			<button type="button" class="cancelbtn btn-danger">Cancel</button>
+			<span class="psw">Forgot <a href="#">password?</a></span>
+		</div>
+	<br>
+	<article class=container-fluid id=track-box style='display:none'></article>
+	<br>
+	<button type="button" id=reset>Reset</button>
 </html>
-
