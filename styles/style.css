@@ -64,9 +64,16 @@ section {
 .topnav {
     background-image: linear-gradient(to right, #375e97,ivory);
     overflow: hidden;
-    /* background-color: #375e97; */
-    text-align: left;
     border-radius: 10px;
+}
+
+.topnav #login {
+    position: absolute;
+    color: #375e97;
+    float: right; 
+    margin-left: auto;
+    right: 0;
+    
 }
 
 .topnav a {
@@ -77,6 +84,8 @@ section {
     padding: 14px 16px;
     text-decoration: none;
 }
+
+
   
 .topnav a:hover {
     background-color: ivory;

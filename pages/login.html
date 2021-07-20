@@ -12,6 +12,11 @@
 		that each have a different purpose.">
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="shortcut icon" href="../images/bucket_ico_f.ico" type="image/x-icon">
+
+		<script src="../scripts/income/Cookie.js" defer></script>    
+
+		<script src="../scripts/login/User.js" defer></script>    
+		<script src="../scripts/login/main.js" defer></script>
 	
 		<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
 		<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
@@ -33,8 +38,26 @@
 				<a href="compound_interest.html">Compound Interest <br>Calculator</a>
 				<!-- <a href="hecs.html">HECS Repayment <br>Calculator</a> -->
         <a href="how_to_use.html">How To Use</a>
-				<a id=login href="pages/login.html">Login/<br>Sign up</a>
+        <a id=login href="login.html">Login/<br>Sign up</a>
 			</ul>
 		</div>
 		<br>
+		<div class="flot-container">
+			<form>
+				<input type="text" placeholder="Enter Username" id=name required>
+				<input type="password" id="password" autocomplete='password' placeholder="Enter Password" required>
+				<button type="submit" id=submit>Login</button>
+				<label>
+					<input type="checkbox" checked="checked" id="remember"> Remember me
+				</label>
+			</form>
+		</div>	
+		<div class="container" style="background-color:#f1f1f1">
+			<button type="button" class="cancelbtn btn-danger">Cancel</button>
+			<span class="psw">Forgot <a href="#">password?</a></span>
+		</div>
+	<br>
+	<article class=container-fluid id=track-box style='display:none'></article>
+	<br>
+	<button type="button" id=reset>Reset</button>
 </html>

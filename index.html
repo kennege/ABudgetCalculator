@@ -11,6 +11,8 @@
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="shortcut icon" href="/images/bucket_ico_f.ico" type="image/x-icon">
 
+		<script src="/scripts/login/User.js" defer></script>
+
 		<script src="/scripts/income/BW_pairs.js" defer></script>
 		<script src="/scripts/income/Result.js" defer></script>
 		<script src="/scripts/income/BW_list.js" defer></script>
@@ -34,10 +36,11 @@
 		<div class="topnav">
 			<ul>
 				<a href="index.html">Create Budget</a>
-				<!-- <a href="pages/track.html">Track Budget</a> -->
+				<a href="pages/track.html">Track Budget</a>
 				<a href="pages/compound_interest.html">Compound Interest <br>Calculator</a>
 				<!-- <a href="pages/hecs.html">HECS Repayment <br>Calculator</a> -->
         <a href="pages/how_to_use.html">How To Use</a>
+				<a id=login href="pages/login.html">Login/<br>Sign up</a>
 			</ul>
 		</div>
 		<br>
@@ -197,7 +200,10 @@
 <br>
 <div class=container-fluid id=plot-container> <div id="flotcontainer" style="margin: 2% auto; width: 400px; height: 400px;"></div></div>
 <br>
-<div class='text-center'><button type="button" class="btn" id=reset_all style="display: none;">Reset</button></div> 
+<div id=button_div class='text-center' style="display: none;">
+	<button type="button" class="btn" id=save>Save</button>
+	<button type="button" class="btn" id=reset_all>Reset</button>
+</div> 
 <br>    
 </section>
 </body>

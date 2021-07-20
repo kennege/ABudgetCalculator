@@ -3,6 +3,7 @@ let allBW_pairs = new BW_pairs();
 let aResult = new Result();
 let aBW_list = new BW_list();
 let anIncome = new Income();
+let aUser = new User();
 let aCookie = new Cookie();
 
 function commas(str) {
@@ -28,13 +29,56 @@ $(document).ready(function(){
   
   $('#income').focus();
   $('#plot-container').hide();
+<<<<<<< HEAD
   let cookie_success;
   anIncome, allBW_pairs, cookie_success = aCookie.get(anIncome, allBW_pairs, aBW_list, aResult);
   if (cookie_success){
     $("#flotcontainer").width(  $("#plot-container").width()  )
-    $('#plot-container').show();
-  }
+=======
+  
+  let cEntries = aCookie.get();
+  let bw_pairs = [];
+  let cPair;
+  let bw_pair;
 
+  for (let i=0; i<cEntries.length; i++){
+    cPair = cEntries[i].split("=");
+    if (cPair[0].includes('__income__')){
+      anIncome.reset(parseFloat(cPair[1]));
+    }   
+    else if (cPair[0].includes('__period__')){
+      anIncome.reset_period(cPair[1]);
+    } 
+    else if (cPair[0].includes('__name__')) {
+      aUser.set_name(cPair[1]);
+    }
+    else if (cPair[0].includes('__password__')) {
+      aUser.set_password(cPair[1]);
+    }
+    else if (cPair[0].includes('__remember__')) {
+      aUser.set_password(cPair[1]);
+    }    else if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN'))) {
+      bw_pair = {
+        bucket: cPair[0],
+        weight: parseFloat(cPair[1])
+      };
+      bw_pairs.push(bw_pair);
+    }
+  }
+  if ((anIncome.get() != 0) && (!isNaN(anIncome.get()))){ 
+    console.log("cookie found!");
+    allBW_pairs.set(bw_pairs);
+    anIncome.display();   
+    displayBucketTree();
+    aBW_list.create(bw_pairs);
+    aTally.create(bw_pairs);
+    aResult.populate_table(bw_pairs);
+    aResult.plot(bw_pairs);
+>>>>>>> general cookie
+    $('#plot-container').show();
+    $("#button_div").fadeIn(1000);
+  }
+  
   // ensure only one income checkbox is selected
   $('.income_ch').click(function(event) {
     let options = ["year", "month", "fortnight", "week", "day"];
@@ -102,7 +146,7 @@ $(document).ready(function(){
 
   // button to finish assigning weights
   $("#bucket_button").click(function(event){
-    let totalweight = 0;
+    let total_weight = 0;
     let new_bw_pairs = document.getElementsByName("chosenBucket");  
     let bw_pairs = [];
     let para;
@@ -113,17 +157,19 @@ $(document).ready(function(){
         weight : parseFloat(new_bw_pairs[i].value)
       }
       bw_pairs.push(pair);
-      totalweight = totalweight + parseFloat(new_bw_pairs[i].value);
+      total_weight = total_weight + parseFloat(new_bw_pairs[i].value);
     }
     para = document.getElementById("weightpara");
-    para.innerHTML = "<h3>Weight sum = " + totalweight.toFixed(2) + "</h3>";
+    para.innerHTML = "<h3>Weight sum = " + total_weight.toFixed(2) + "</h3>";
     allBW_pairs.set(bw_pairs);
     allBW_pairs.check();
     anIncome.check();
-    aCookie.delete();
-    aCookie.set(anIncome, allBW_pairs);
+    aCookie.set(allBW_pairs.get());
+    aCookie.set([{bucket:'__income__', weight:anIncome.get()}]);
+    aCookie.set([{bucket:'__period__',weight:anIncome.get_period()}])
     aResult.populate_table(allBW_pairs.get());
     $('#plot-container').show();
+    $("#button_div").fadeIn(1000);
     aResult.plot(allBW_pairs.get());
   });
 
@@ -139,9 +185,26 @@ $(document).ready(function(){
     aResult.plot(allBW_pairs.get());
   });
 
+  $("#save").click(function() {
+    console.log(aUser.check());
+    if (aUser.exists()){
+      aUser.save_budget(anIncome.get(),anIncome.get_period(),allBW_pairs.get());
+    }
+    else {
+      let p = document.createElement('p');
+      p.innerText = "You must be signed in to save your budget!";
+      let button_div = document.getElementById('button_div');
+      button_div.appendChild(p);
+    }
+  });
+
   // delete cookie and refresh page
   $("#reset_all").click(function(){
     aCookie.delete();
+    if (aUser.exists()){
+      aCookie.set([{'__name__':aUser.name()}]);
+      aCookie.set([{'__password__':aUser.password()}]);
+    }
     console.clear();
     location.reload();
   });
