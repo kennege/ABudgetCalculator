@@ -2,23 +2,24 @@ class User {
   #name;
   #password;
   #income;
+  #period;
   #exists;
   #remember;
+  #bw_pairs;
   constructor(){
     this.#name = "";
     this.#password = "";
     this.#income = {};
     this.#exists = false;
     this.#remember = true;
+    this.#bw_pairs = [];
     this.ping();
   }
 
   name = () => this.#name;
-
   password = () => this.#password;
-
   income = () => this.#income;
-
+  bw_pairs = () => this.#bw_pairs;
   exists = () => this.#exists;
 
   set_name (name) {
@@ -27,32 +28,31 @@ class User {
   }
 
   set_remember = (remember) => this.#remember = remember;
-
   set_password  = (password) => this.#password = password;
 
-  save_all() {
-    // add username, password to cookie
-  }
-
-  save_budget(income, period, bw_pairs) {
+  save_budget(income, bw_pairs) {
+    this.#income = income;
+    this.#bw_pairs = bw_pairs;
+    console.log("s: " + this.#remember);
     let data = {
       name: this.#name,
       password: this.#password,
       income: income,
-      period: period
     };
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      data.bw_pairs[i].bucket = bw_pairs[i].weight;
+     let bucket = bw_pairs[i].bucket;
+     let weight = bw_pairs[i].weight;
+     data[`${bucket}`] = weight;
     }
-
+    for (const [key, value] of Object.entries(data)) {
+      console.log(`${key}: ${value}`);
+    }
     $.ajax({
       type: "POST",
       url: "../php/save_budget.php",
       data: data,
       cache: false,
       success: function(data) {
-        user.set(name,password);
-        welcomer();
         console.log(data);
       },
       error: function(xhr, status, error) {
@@ -64,7 +64,7 @@ class User {
   check() {
     console.log("Checking user...")
     console.log("name: " + this.#name);
-    // console.log("income: " + this.#income);
+    console.log("password: " + this.#password);
   }
 
   ping = () => console.log("I am a User!");

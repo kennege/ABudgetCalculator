@@ -56,8 +56,9 @@ $(document).ready(function(){
       aUser.set_password(cPair[1]);
     }
     else if (cPair[0].includes('__remember__')) {
-      aUser.set_password(cPair[1]);
-    }    else if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN'))) {
+      aUser.set_remember(cPair[1]);
+    }    
+    else if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN'))) {
       bw_pair = {
         bucket: cPair[0],
         weight: parseFloat(cPair[1])
@@ -186,9 +187,8 @@ $(document).ready(function(){
   });
 
   $("#save").click(function() {
-    console.log(aUser.check());
     if (aUser.exists()){
-      aUser.save_budget(anIncome.get(),anIncome.get_period(),allBW_pairs.get());
+      aUser.save_budget(anIncome.get(),allBW_pairs.get());
     }
     else {
       let p = document.createElement('p');
@@ -202,8 +202,8 @@ $(document).ready(function(){
   $("#reset_all").click(function(){
     aCookie.delete();
     if (aUser.exists()){
-      aCookie.set([{'__name__':aUser.name()}]);
-      aCookie.set([{'__password__':aUser.password()}]);
+      aCookie.set([{bucket:'__name__',weight:aUser.name()}]);
+      aCookie.set([{bucket:'__password__',weight:aUser.password()}]);
     }
     console.clear();
     location.reload();

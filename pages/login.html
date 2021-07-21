@@ -44,11 +44,23 @@
 		<br>
 		<div class="flot-container">
 			<form>
-				<input type="text" placeholder="Enter Username" id=name required>
-				<input type="password" id="password" autocomplete='password' placeholder="Enter Password" required>
-				<button type="submit" id=submit>Login</button>
+				<input type="text" placeholder="Enter Username" id=l_name required>
+				<input type="password" id="l_password" autocomplete='password' placeholder="Enter Password" required>
+				<button type="submit" id=login>Login</button>
 				<label>
-					<input type="checkbox" checked="checked" id="remember"> Remember me
+					<input type="checkbox" checked="checked" id="l_remember"> Remember me
+				</label>
+			</form>
+		</div>	
+		<div class="flot-container" id=s_div>
+			<form>
+				<input type="text" placeholder="Enter Email" id=s_email value=this.me@gmail.com required>
+				<input type="text" placeholder="Enter Username" id=s_name value=user required>
+				<input type="password" id="s_password1" autocomplete='password' value=Password@1 placeholder="Enter Password" required>
+				<input type="password" id="s_password2" autocomplete='password' value=Password@1 placeholder="Confirm Password" required>
+				<button type="submit" id=signup>Sign Up</button>
+				<label>
+					<input type="checkbox" checked="checked" id="s_remember"> Remember me
 				</label>
 			</form>
 		</div>	
