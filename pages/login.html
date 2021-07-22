@@ -38,6 +38,7 @@
 				<a href="compound_interest.html">Compound Interest <br>Calculator</a>
 				<!-- <a href="hecs.html">HECS Repayment <br>Calculator</a> -->
         <a href="how_to_use.html">How To Use</a>
+        <a id=logout style="display:none"><button id=logoutbtn type="button" class="logoutbtn btn">Logout</button></a>
         <a id=login href="login.html">Login/<br>Sign up</a>
 			</ul>
 		</div>
@@ -46,7 +47,7 @@
 			<form>
 				<input type="text" placeholder="Enter Username" id=l_name required>
 				<input type="password" id="l_password" autocomplete='password' placeholder="Enter Password" required>
-				<button type="submit" id=login>Login</button>
+				<button type="submit" id=l_login>Login</button>
 				<label>
 					<input type="checkbox" checked="checked" id="l_remember"> Remember me
 				</label>
@@ -54,7 +55,6 @@
 		</div>	
 		<div class="flot-container" id=s_div>
 			<form>
-				<input type="text" placeholder="Enter Email" id=s_email value=this.me@gmail.com required>
 				<input type="text" placeholder="Enter Username" id=s_name value=user required>
 				<input type="password" id="s_password1" autocomplete='password' value=Password@1 placeholder="Enter Password" required>
 				<input type="password" id="s_password2" autocomplete='password' value=Password@1 placeholder="Confirm Password" required>
@@ -70,6 +70,4 @@
 		</div>
 	<br>
 	<article class=container-fluid id=track-box style='display:none'></article>
-	<br>
-	<button type="button" id=reset>Reset</button>
 </html>

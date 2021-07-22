@@ -6,7 +6,7 @@ $(document).ready(function(){
 
   pre_fill();
   
-  $('#login').click(function(event) {
+  $('#l_login').click(function(event) {
     event.preventDefault();
     hide_popup();
     let name = $("#l_name").val();
@@ -14,21 +14,15 @@ $(document).ready(function(){
     let remember = document.getElementById('l_remember').checked;
     $.ajax({
       type: "POST",
-      url: "../php/load_details.php",
+      url: "../php/login.php",
       data: {
         name: name,
         password: password,
       },
       cache: false,
-      success: function(data) {
-        user.set_name(name);
-        user.set_password(password);
-        aCookie.set([{bucket:'__name__',weight:name}]);
-        aCookie.set([{bucket:'__password__',weight:password}]);
-        aCookie.set([{bucket:'__remember__',weight:remember}]);
-        aCookie.check();
-        welcomer();
-        console.log(data);
+      success: function(output) {
+        welcomer(output, name, password, remember);
+        console.log(output);
       },
       error: function(xhr, status, error) {
         console.error(xhr);
@@ -39,33 +33,25 @@ $(document).ready(function(){
   $('#signup').click(function(event) {
     event.preventDefault();
     hide_popup();
-    let email = $("#s_email").val();
     let name = $("#s_name").val();
     let password_1 = $("#s_password1").val();
     let password_2 = $("#s_password2").val();
     let remember = document.getElementById('s_remember').checked;
 
-    if (check_passwords(password_1, password_2) && validate_email(email)){
+    if (check_passwords(password_1, password_2)) {
 
       $.ajax({
         type: "POST",
         url: "../php/create_user.php",
         data: {
-          email: email,
           name: name,
           password: password_1,
+          confirm_password: password_2
         },
         cache: false,
-        success: function(data) {
-          user.set_name(name);
-          user.set_password(password_1);
-          aCookie.set([{bucket:'__name__',weight:name}]);
-          aCookie.set([{bucket:'__password__',weight:password_1}]);
-          aCookie.set([{bucket:'__remember__',weight:remember}]);
-          aCookie.check();
-          welcomer();
-
-          console.log(data);
+        success: function(output) {
+          welcomer(output, name, password_1, remember);
+          console.log(output);
         },
         error: function(xhr, status, error) {
           console.error(xhr);
@@ -74,11 +60,17 @@ $(document).ready(function(){
     }
   }); 
 
-  $('#reset').click(function(event) {
-    hide_popup();
-    $("#track-box").hide();
-    aCookie.delete();
-    aCookie.check();
+  $('#logoutbtn').click(function(event) {
+    $('#logout').hide();
+    $('#login').show();
+    $.ajax({
+      type: "POST",
+      url: '../php/logout.php',
+      data:{action:'call_this'},
+      success:function(output) {
+        console.log(output);
+      }
+    });    
     console.clear();
     location.reload();
   });
@@ -90,7 +82,6 @@ function pre_fill() {
   let remember = false;
   let name;
   let password;
-
   for (let i=0; i<cEntries.length; i++){
     cPair = cEntries[i].split("=");
     if (cPair[0].includes('__remember__') && cPair[1]){
@@ -107,18 +98,34 @@ function pre_fill() {
         password = cPair[1];
       }
     }
-    $('#name').val(name);
-    $('#password').val(password);
+    $('#l_name').val(name);
+    $('#l_password').val(password);
   }
-  
 }
 
-function welcomer() {
+function welcomer(output, name, password, remember) {
   let outer_box = document.getElementById("track-box");
   outer_box.style.display = "block";
   outer_box.innerHTML = "";
   let welcome_div = document.createElement("p");
-  welcome_div.innerText = `Welcome back, ${user.name()}!`;
+  if (output.includes("SUCCESS")){
+    $('#logout').show();
+    $('#login').hide();
+    user.set_name(name);
+    user.set_password(password);
+    aCookie.set([{bucket:'__name__',weight:name}]);
+    aCookie.set([{bucket:'__password__',weight:password}]);
+    aCookie.set([{bucket:'__remember__',weight:remember}]);
+    aCookie.check();
+    if (output.includes("LOGIN")) {
+      welcome_div.innerText = `Welcome back, ${user.name()}!`;
+    } else {
+      welcome_div.innerText = `Welcome, ${user.name()}!`;
+    }
+    // get income, bucket, history here
+  } else {
+    welcome_div.innerText = output;
+  }
   outer_box.appendChild(welcome_div);
 }
 
@@ -131,16 +138,6 @@ function check_passwords(p1, p2) {
     return false;
   }
   return true;  
-}
-
-function validate_email(email) {
-  let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (re.test(String(email).toLowerCase()))
-  {
-    return true;
-  } else {
-    show_popup('please enter a valid email');
-  }
 }
 
 function hide_popup() {

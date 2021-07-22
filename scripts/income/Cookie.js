@@ -27,7 +27,7 @@ class Cookie {
       for (let i=0; i<cEntries.length; i++){
         cPair = cEntries[i].split("="); 
         if (cPair[0].includes(cKey)){
-          cVal = cPair[1];
+          document.cookie = cPair[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
         }
       }
       document.cookie = cKey + "=" + cVal + "; path=/;";

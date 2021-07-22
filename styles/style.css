@@ -72,8 +72,14 @@ section {
     color: #375e97;
     float: right; 
     margin-left: auto;
-    right: 0;
-    
+    right: 0; 
+}
+
+.topnav #logout {
+    position: absolute;
+    float: right; 
+    margin-left: auto;
+    right: 0;   
 }
 
 .topnav a {
