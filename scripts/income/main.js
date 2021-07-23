@@ -5,6 +5,7 @@ let aBW_list = new BW_list();
 let anIncome = new Income();
 let aUser = new User();
 let aCookie = new Cookie();
+let aServer = new Server();
 
 function commas(str) {
   return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
@@ -188,7 +189,11 @@ $(document).ready(function(){
 
   $("#save").click(function() {
     if (aUser.exists()){
-      aUser.save_budget(anIncome.get(),allBW_pairs.get());
+      aUser.set_income(anIncome.get());
+      aUser.set_period(anIncome.get_period());
+      aUser.set_bw_pairs(allBW_pairs.get());
+      aUser.set_password(aUser.password());
+      aServer.save_budget(aUser.name(), aUser.password(), anIncome.get(),allBW_pairs.get());
     }
     else {
       let p = document.createElement('p');

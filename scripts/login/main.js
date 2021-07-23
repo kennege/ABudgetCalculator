@@ -37,9 +37,7 @@ $(document).ready(function(){
     let password_1 = $("#s_password1").val();
     let password_2 = $("#s_password2").val();
     let remember = document.getElementById('s_remember').checked;
-
     if (check_passwords(password_1, password_2)) {
-
       $.ajax({
         type: "POST",
         url: "../php/create_user.php",
