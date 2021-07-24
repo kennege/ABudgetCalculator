@@ -13,15 +13,20 @@
 
 		<script src="/scripts/server/Server.js" defer></script>
 
-		<script src="/scripts/login/User.js" defer></script>
+		<script src="/scripts/User.js" defer></script>
+		<script src="/scripts/Cookie.js" defer></script>
 
 		<script src="/scripts/income/BW_pairs.js" defer></script>
 		<script src="/scripts/income/Result.js" defer></script>
 		<script src="/scripts/income/BW_list.js" defer></script>
 		<script src="/scripts/income/Tally.js" type="text/babel" defer></script>
 		<script src="/scripts/income/Income.js" defer></script>		
+<<<<<<< HEAD
 		<script src="/scripts/income/Cookie.js" defer></script>
 		<script src="/scripts/income/main.js" type="text/babel" defer></script>
+=======
+		<script src="/scripts/income/main.js" defer></script>
+>>>>>>> fuck flot
 
 		<script src="/scripts/jquery-3.6.0.js"></script>
 		<script src="/scripts/jquery.flot.js"></script>				 
@@ -42,11 +47,16 @@
 				<a href="pages/compound_interest.html">Compound Interest <br>Calculator</a>
 				<!-- <a href="pages/hecs.html">HECS Repayment <br>Calculator</a> -->
         <a href="pages/how_to_use.html">How To Use</a>
+				<a id=logout style="display:none"><button id=logoutbtn type="button" class="logoutbtn btn">Logout</button></a>
 				<a id=login href="pages/login.html">Login/<br>Sign up</a>
 			</ul>
 		</div>
 		<br>
 		<section>
+		<div id=load_button_div class='text-center' style="display: none;">
+			<button type="button" class="btn" id=load>Load Budget</button>
+		</div> 
+		<br>
 		<article class=container-fluid id=income_box>
 			<form>
 				<input placeholder="Income after tax" class=set_income id=income>
@@ -155,7 +165,7 @@
 		<table class='table-responsive table-condensed table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
 			<thead>
 			<tr>
-				<th class='text-center' id="bucketcol">Bucket</th>
+				<th class='text-center' id="bucketcol">Category</th>
 				<th class='text-center' id="daycol">Daily</th>
 				<th class='text-center' id="weekcol">Weekly</th>
 				<th class='text-center' id="fortnightcol">Fortnightly</th>
@@ -169,7 +179,7 @@
 		</thead>
 			<thead>
 			<tr>
-				<th class='text-center' id="bucketcol">Bucket</th>
+				<th class='text-center' id="bucketcol">Category</th>
 				<th class='text-center' id="2yearcol">2 years</th>
 				<th class='text-center' id="5yearcol">5 years</th>
 				<th class='text-center' id="10yearcol">10 years</th>
@@ -203,7 +213,7 @@
 <div class=container-fluid id=plot-container> <div id="flotcontainer" style="margin: 2% auto; width: 400px; height: 400px;"></div></div>
 <br>
 <div id=button_div class='text-center' style="display: none;">
-	<button type="button" class="btn" id=save>Save</button>
+	<button type="button" class="btn" id=save>Save Budget</button>
 	<button type="button" class="btn" id=reset_all>Reset</button>
 </div> 
 <br>    

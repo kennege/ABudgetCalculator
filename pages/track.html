@@ -12,10 +12,18 @@
 		that each have a different purpose.">
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="shortcut icon" href="../images/bucket_ico_f.ico" type="image/x-icon">
-	
-		<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-		<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-		<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+		<script src="/scripts/server/Server.js" defer></script>
+
+		<script src="/scripts/income/Result.js" defer></script>
+		<script src="/scripts/income/Income.js" defer></script>		
+		<script src="/scripts/income/BW_pairs.js" defer></script>
+
+		<script src="/scripts/User.js" defer></script>
+		<script src="/scripts/Cookie.js" defer></script>
+
+		<script src="/scripts/track/main.js" defer></script>
+
   <script src="../scripts/jquery-3.6.0.js"></script>
   <script src="../scripts/jquery.flot.js"></script>				 
 </head>
@@ -33,8 +41,63 @@
 				<a href="compound_interest.html">Compound Interest <br>Calculator</a>
 				<!-- <a href="hecs.html">HECS Repayment <br>Calculator</a> -->
         <a href="how_to_use.html">How To Use</a>
+        <a id=logout style="display:none"><button id=logoutbtn type="button" class="logoutbtn btn">Logout</button></a>
 				<a id=login href="login.html">Login/<br>Sign up</a>
 			</ul>
 		</div>
 		<br>
+		<section id=display_budget style=display:none>
+			<article id=plot_box class=container-fluid style=display:none>
+				<div class=well>
+					<table class='table-responsive table-condensed table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
+						<thead>
+						<tr>
+							<th class='text-center' id="bucketcol">Category</th>
+							<th class='text-center' id="daycol">Daily</th>
+							<th class='text-center' id="weekcol">Weekly</th>
+							<th class='text-center' id="fortnightcol">Fortnightly</th>
+							<th class='text-center' id="monthcol">Monthly</th>
+							<th class='text-center' id="yearcol">Yearly</th>
+						</tr>
+					</thead>
+					<tbody id="tbody_1">
+					</tbody>
+					<thead class=bold id=total1>
+					</thead>
+						<thead>
+						<tr>
+							<th class='text-center' id="bucketcol">Category</th>
+							<th class='text-center' id="2yearcol">2 years</th>
+							<th class='text-center' id="5yearcol">5 years</th>
+							<th class='text-center' id="10yearcol">10 years</th>
+							<th class='text-center' id="20yearcol">20 years</th>
+							<th class='text-center' id="30yearcol">30 years</th>
+						</tr>
+					</thead>
+					<tbody id="tbody_2">
+					</tbody>
+					<thead class=bold id=total2>
+					</thead>
+					</table>
+				</div>
+				<br>
+				<div class='options well'>
+					<ul>
+						<li><label><input class=plot_ch type=checkbox id=ch1 name=hours value=24 title='1/365'> Daily</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch2 name=days value=7 title='1/52'> Weekly</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch3 name=days value=14 title='1/26'> Fortnightly</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch4 name=days value=31 title='1/12'> Monthly</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch5 name=months value=12 title='1' checked> Yearly</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch6 name=months value=24 title='2'> 2 Years</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch7 name=years value=5 title='5'> 5 Years</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch8 name=years value=10 title='10'> 10 Years</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch9 name=years value=20 title='20'> 20 Years</label></li>
+						<li><label><input class=plot_ch type=checkbox id=ch10 name=years value=30 title='30'> 30 Years</label></li>
+					</ul>
+				</div> 
+			</article>
+			<br>
+			<div class=container-fluid id=plot-container> <div id="flotcontainer" style="margin: 2% auto; width: 400px; height: 400px;"></div></div>
+			<br>
+		</section>
 </html>

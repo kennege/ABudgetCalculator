@@ -1,4 +1,5 @@
 let settings = new Settings();
+let server = new Server();
 
 function commas(str) {
   return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
@@ -9,6 +10,10 @@ $(document).ready(function(){
   $('#init_dep').focus();
   $('#plot-container').hide();
   $('#table-container').hide();
+  
+  if (server.is_logged_in()){
+    server.show_logout();
+  }
 
   // ensure only one frequency checkbox is selected
   $('.frequency').click(function(event) {

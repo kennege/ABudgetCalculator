@@ -12,6 +12,8 @@
 		<meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.png">
 		<link rel="shortcut icon" href="../images/bucket_ico_f.ico" type="image/x-icon">
    
+  <script src="/scripts/server/Server.js" defer></script>
+
   <script src="../scripts/interest/plot.js" defer></script>   
   <script src="../scripts/interest/table.js" defer></script>    <!--text/babel-->
   <script src="../scripts/interest/Settings.js" defer></script>
@@ -36,7 +38,8 @@
 				<a href="compound_interest.html">Compound Interest <br>Calculator</a>
 				<!-- <a href="hecs.html">HECS Repayment <br>Calculator</a> -->
 				<a href="how_to_use.html">How To Use</a>
-        <a href="login.html">Login/<br>Sign up</a>
+        <a id=logout style="display:none"><button id=logoutbtn type="button" class="logoutbtn btn">Logout</button></a>
+				<a id=login href="pages/login.html">Login/<br>Sign up</a>
 			</ul>
 		</div>
 		<br>

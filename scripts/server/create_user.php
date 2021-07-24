@@ -3,7 +3,7 @@ $password = $_POST['password'];
 $confirm_password = $_POST['confirm_password'];
 $name = $_POST['name'];
 
-require_once "../php/config.php";
+require_once "config.php";
 
 $username = $password = $confirm_password = "";
 $username_err = $password_err = $confirm_password_err = "";
@@ -62,11 +62,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);   
             $param_password = password_hash($password, PASSWORD_DEFAULT);           
             if(mysqli_stmt_execute($stmt)){
-                echo "SIGNUP SUCCESS";
-                echo $username . "added to USERS";
+                echo "SIGNUP SUCCESS\n";
+                echo $username . "added to USERS\n";
                 // header("location: ../php/login.php");
             } else {
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Oops! Something went wrong. Please try again later.\n";
             }
             mysqli_stmt_close($stmt);
         }
@@ -74,18 +74,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Get ID
         $found_user = false;
         $sql = "SELECT id FROM users WHERE username='$param_username'";
-        $id = mysqli_query($link, $sql);
+        $result = mysqli_query($link, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $id = $row['id'];
 
-        // Insert into BUCKETS
-        $sql = "INSERT INTO buckets (id, username) VALUES (? ?)";
+        // Insert into BUDGET
+        $sql = "INSERT INTO budget (id, username) VALUES (?, ?)";
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "ss", $id, $param_username);
             if(mysqli_stmt_execute($stmt)){
-                echo $username . "added to BUCKETS";
+                echo $username . "added to BUDGET\n";
             } else {
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Oops! Something went wrong. Please try again later.\n";
             }
             mysqli_stmt_close($stmt);
+        } else {
+            echo "error: " . $stmt . "\n";
         }
 
         // Insert into TRACK
@@ -93,11 +97,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "ss",$id, $param_username);
             if(mysqli_stmt_execute($stmt)){
-                echo $username . "added to TRACK";
+                echo $username . "added to TRACK\n";
             } else {
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Oops! Something went wrong. Please try again later.\n";
             }
             mysqli_stmt_close($stmt);
+        } else {
+            echo "error: " . $stmt . "\n";
         }
 
     } else {

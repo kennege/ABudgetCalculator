@@ -5,7 +5,7 @@ let aBW_list = new BW_list();
 let anIncome = new Income();
 let aUser = new User();
 let aCookie = new Cookie();
-let aServer = new Server();
+let server = new Server();
 
 function commas(str) {
   return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
@@ -31,6 +31,7 @@ $(document).ready(function(){
   $('#income').focus();
   $('#plot-container').hide();
 <<<<<<< HEAD
+<<<<<<< HEAD
   let cookie_success;
   anIncome, allBW_pairs, cookie_success = aCookie.get(anIncome, allBW_pairs, aBW_list, aResult);
   if (cookie_success){
@@ -52,35 +53,80 @@ $(document).ready(function(){
     } 
     else if (cPair[0].includes('__name__')) {
       aUser.set_name(cPair[1]);
+=======
+  load();
+
+  function load() {
+    let cEntries = aCookie.get();
+    let bw_pairs = [];
+    let cPair;
+    let bw_pair;      
+    
+    if (server.is_logged_in()){
+      server.show_logout();
+      $("#load_button_div").show();
+>>>>>>> fuck flot
     }
-    else if (cPair[0].includes('__password__')) {
-      aUser.set_password(cPair[1]);
+    
+    for (let i=0; i<cEntries.length; i++){
+      cPair = cEntries[i].split("=");
+      if (cPair[0].includes('__income__')){
+        anIncome.reset(parseFloat(cPair[1]));
+      }   
+      else if (cPair[0].includes('__period__')){
+        anIncome.reset_period(cPair[1]);
+      } 
+      else if (cPair[0].includes('__name__')) {
+        aUser.set_name(cPair[1]);
+      }
+      else if (cPair[0].includes('__password__')) {
+        aUser.set_password(cPair[1]);
+      }
+      else if (cPair[0].includes('__remember__')) {
+        aUser.set_remember(cPair[1]);
+      }  
+      else if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN')) && (!cPair[0].includes('PHP'))) {
+        bw_pair = {
+          bucket: cPair[0],
+          weight: parseFloat(cPair[1])
+        };
+        bw_pairs.push(bw_pair);
+      }
     }
-    else if (cPair[0].includes('__remember__')) {
-      aUser.set_remember(cPair[1]);
-    }    
-    else if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN'))) {
-      bw_pair = {
-        bucket: cPair[0],
-        weight: parseFloat(cPair[1])
-      };
-      bw_pairs.push(bw_pair);
+    if ((anIncome.get() != 0) && (!isNaN(anIncome.get()))){ 
+      console.log("cookie found!");
+      allBW_pairs.set(bw_pairs);
+      display_all(bw_pairs);
     }
   }
-  if ((anIncome.get() != 0) && (!isNaN(anIncome.get()))){ 
-    console.log("cookie found!");
+
+  $('#load').click(function(event) {
+    let [income, bw_pairs] = server.load_budget();
+    anIncome.reset(parseFloat(income));
+    anIncome.reset_period("fortnight");
     allBW_pairs.set(bw_pairs);
+    aCookie.set(allBW_pairs.get());
+    aCookie.set([{bucket:'__income__', weight:anIncome.get()}]);
+    aCookie.set([{bucket:'__period__',weight:anIncome.get_period()}])
+    display_all(bw_pairs);
+  });
+
+  function display_all(bw_pairs) {
     anIncome.display();   
     displayBucketTree();
     aBW_list.create(bw_pairs);
     aTally.create(bw_pairs);
     aResult.populate_table(bw_pairs);
     aResult.plot(bw_pairs);
+<<<<<<< HEAD
 >>>>>>> general cookie
     $('#plot-container').show();
+=======
+    aResult.show();
+>>>>>>> fuck flot
     $("#button_div").fadeIn(1000);
   }
-  
+    
   // ensure only one income checkbox is selected
   $('.income_ch').click(function(event) {
     let options = ["year", "month", "fortnight", "week", "day"];
@@ -139,7 +185,8 @@ $(document).ready(function(){
       let input = this.value;
       let li = document.getElementById(lid);
       let node = document.createElement("div");
-            node.innerHTML = '<li class=list-group-item> <input name="bucket" value="' + input + '" type="checkbox" checked>' +  input + '</li>'; 
+            node.innerHTML = '<li class=list-group-item> <input name="bucket" value="' 
+            + input + '" type="checkbox" checked>' +  input + '</li>'; 
       li.appendChild(node);    
       document.getElementById(cid).checked = false;
       document.getElementById(this.id).value = "";
@@ -172,6 +219,7 @@ $(document).ready(function(){
     aResult.populate_table(allBW_pairs.get());
     $('#plot-container').show();
     $("#button_div").fadeIn(1000);
+    aResult.show();
     aResult.plot(allBW_pairs.get());
   });
 
@@ -184,31 +232,45 @@ $(document).ready(function(){
     }
     this.checked = true;
     $('#plot-container').show();
+    aResult.show();
     aResult.plot(allBW_pairs.get());
   });
 
   $("#save").click(function() {
-    if (aUser.exists()){
+    let note = "";
+    if (server.is_logged_in()){
       aUser.set_income(anIncome.get());
       aUser.set_period(anIncome.get_period());
       aUser.set_bw_pairs(allBW_pairs.get());
-      aUser.set_password(aUser.password());
-      aServer.save_budget(aUser.name(), aUser.password(), anIncome.get(),allBW_pairs.get());
+      let server_response = server.save_budget(anIncome.get(),allBW_pairs.get());
+      if (server_response.includes("SUCCESS")) {
+        note = "Budget saved!";
+      }
+      else {
+        note = "Error! Budget not saved.";
+      }
     }
     else {
-      let p = document.createElement('p');
-      p.innerText = "You must be signed in to save your budget!";
-      let button_div = document.getElementById('button_div');
-      button_div.appendChild(p);
+      note = "You must be signed in to save your budget!";
     }
+    let p = document.createElement('p');
+    p.innerText = note;
+    let button_div = document.getElementById('button_div');
+    button_div.appendChild(p);
+  });
+
+  $('#logoutbtn').click(function(event) {
+    event.preventDefault();
+    server.log_out();
   });
 
   // delete cookie and refresh page
   $("#reset_all").click(function(){
     aCookie.delete();
-    if (aUser.exists()){
+    if (aUser.exists() && aUser.remember()){
       aCookie.set([{bucket:'__name__',weight:aUser.name()}]);
       aCookie.set([{bucket:'__password__',weight:aUser.password()}]);
+      aCookie.set([{bucket:'__remember__',weight:aUser.remember()}]);
     }
     console.clear();
     location.reload();

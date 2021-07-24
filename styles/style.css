@@ -82,6 +82,16 @@ section {
     right: 0;   
 }
 
+#logoutbtn {
+    background-color: #375e97;
+    color: ivory !important;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+
 .topnav a {
     float: left;
     display: block;
@@ -91,8 +101,6 @@ section {
     text-decoration: none;
 }
 
-
-  
 .topnav a:hover {
     background-color: ivory;
     border-radius: 5px;
@@ -139,7 +147,7 @@ section {
     margin: 15px 0 0 0;
 }
 
-.flotcontainer {
+.flotcontainer  {
     margin: 0 auto;
     padding: 40px 40px;
 }

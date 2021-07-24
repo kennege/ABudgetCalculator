@@ -21,6 +21,7 @@ class User {
   income = () => this.#income;
   bw_pairs = () => this.#bw_pairs;
   exists = () => this.#exists;
+  remember = () => this.#remember;
 
   set_name (name) {
     this.#name = name;

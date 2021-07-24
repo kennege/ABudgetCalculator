@@ -39,11 +39,10 @@ class Result {
    for (let j=0;j<5;j++){
      insertTableEntry(row2, j+1, "$"+(anIncome.convert(1)[j+5])) 
    }
-    $('#table_box').fadeIn(1000);
+   $('#table_box').show();
   }
 
   plot(bw_pairs) { 
-    for (let j=0;j<2;j++){
       let unit = 1;
       let time = "";
       let multiplier = 1;
@@ -79,9 +78,15 @@ class Result {
       window.onresize = function(event) {
       $("#flotcontainer").width(  $("#plot-container").width()  )
         $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
-      }
     }
   }
+  
+  show() {
+    $('#plot_box').show();
+    $('#plot-container').show();
+    $('#table_box').show();
+  }
+
   ping = () => console.log("I am a Result!");
 }
 

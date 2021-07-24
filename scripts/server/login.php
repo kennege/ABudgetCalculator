@@ -2,15 +2,8 @@
 // Initialize the session
 session_start();
  
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    echo "LOGIN SUCCESS";
-    header("location: ../php/welcome.php");
-    exit;
-}
- 
 // Include config file
-require_once "../php/config.php";
+require_once "config.php";
 
 // Define variables and initialize with empty values
 $name = $password = "";
