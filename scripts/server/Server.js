@@ -5,6 +5,9 @@ class Server {
     this.ping();
   }
 
+  get_user = () => sessionStorage.getItem('name');
+  get_password = () => sessionStorage.getItem('password');
+
   sign_up(name, password_1, password_2) {
     let response = "";
     if (this.check_passwords(password_1, password_2)) {
@@ -51,13 +54,10 @@ class Server {
       n_buckets: n_buckets,
     };
     for (let i=0;i<n_buckets;i++){
-     let bucket = bw_pairs[i].bucket;
-     let weight = bw_pairs[i].weight;
-     let bucket_name = `b${(i+1)}`;
-     data[`${bucket_name}`] = `${bucket}:${weight}`;
-    }
-    for (const [key, value] of Object.entries(data)) {
-      console.log(`${key}: ${value}`);
+      let bucket = bw_pairs[i].bucket;
+      let weight = bw_pairs[i].weight;
+      let bucket_name = `b${(i+1)}`;
+      data[`${bucket_name}`] = `${bucket}:${weight}`;
     }
     return this.send_data(data, `${this.#directory}save_budget.php`);
   }
@@ -87,6 +87,32 @@ class Server {
     return [income, bw_pairs];
   }
 
+  append_history(bw_pairs) {
+    let data = {
+      name: this.get_user(),
+      password: this.get_password(),
+      n_buckets: bw_pairs.length,
+    };
+    for (let i=0;i<n_buckets;i++){
+      let bucket = bw_pairs[i].bucket;
+      let weight = bw_pairs[i].weight;
+      let bucket_name = `b${(i+1)}`;
+      data[`${bucket_name}`] = `${bucket}:${weight}`;
+    }
+    let server_response = this.send_data(data, `${this.#directory}append_history.php`);
+    return server_response;
+  }
+
+  load_history() {
+    let data = {
+      name: this.get_user(),
+      password: this.get_password()
+    };
+    let server_response = this.send_data(data, `${this.#directory}load_history.php`);
+    console.log(server_response);
+    return server_response;
+  }
+
   send_data(data, file) {
     let response = "";
     $.ajax({
@@ -114,10 +140,6 @@ class Server {
     $('#logout').show();
     $('#login').hide();
   }
-
-  get_user = () => sessionStorage.getItem('name');
-
-  get_password = () => sessionStorage.getItem('password');
 
   is_logged_in() {
     let status = sessionStorage.getItem('logged_in'); 

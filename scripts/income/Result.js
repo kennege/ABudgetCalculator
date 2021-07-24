@@ -68,15 +68,15 @@ class Result {
         pair.data.push([unit, bw_pairs[i].weight * multiplier * anIncome.get()]);
         pair.points = {symbol: "circle"};
         pair.color = colours[i - mult];
-        data.push(pair);        
+        data.push(pair);    
       }
       let xlabel = document.head.appendChild(document.createElement('style'));
-      xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;     
+      xlabel.innerHTML = `#flotcontainer:before {content: 'Time (${time})'`;    
       $('#plot-container').show();
-      $("#flotcontainer").width(  $("#plot-container").width()  )
+      $("#flotcontainer").width(  0.9*$("#plot-container").width()  )
       $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
       window.onresize = function(event) {
-      $("#flotcontainer").width(  $("#plot-container").width()  )
+      $("#flotcontainer").width( 0.9* $("#plot-container").width()  )
         $.plot($("#flotcontainer"), data, {legend : {position: "nw"}});
     }
   }

@@ -158,8 +158,6 @@ section {
     top: 35%;
     left: -30px;
     font-weight: 600;
-    /* Internet Explorer */
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
 #flotcontainer:before {

@@ -9,6 +9,8 @@ class BW_pairs {
 
   get = () => this.#bw_pairs;
 
+  length = () => Object.keys(this.#bw_pairs).length;
+
   check() {
     console.log("Checking BW pairs... ")
     for (let i=0;i<Object.keys(this.#bw_pairs).length;i++){
