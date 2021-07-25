@@ -3,7 +3,7 @@ class Result {
     this.ping();
   }
 
-  populate_table(bw_pairs) {
+  populate_table(bw_pairs, anIncome) {
     this.bw_pairs = bw_pairs;
     // first half of bucket/income table
     let table1 = document.getElementById("tbody_1");

@@ -25,7 +25,7 @@
 		<script src="../scripts/User.js" defer></script>
 		<script src="../scripts/Cookie.js" defer></script>
 
-		<script src="../scripts/track/track.js" defer></script>
+		<script src="../scripts/track/display_budget.js" defer></script>
 		<script src="../scripts/track/main.js" defer></script>
 			 
 	</head>
@@ -49,6 +49,8 @@
 		</div>
 		<br>
 		<section id=display_budget style=display:none>
+			<article id=track_box class=container-fluid style="display:none"></article>
+			<br>
 			<article id=plot_box class=container-fluid style=display:none>
 				<div class=well>
 					<table class='table-responsive table-condensed table-striped' id=table style="width:100%; margin-left: auto; margin-right: auto">
@@ -99,10 +101,8 @@
 				</div> 
 			</article>
 			<br>
-			<br>
-			<div class=container-fluid id=plot-container> <div id="flotcontainer" style="margin: 2% auto; width: 400px; height: 400px;"></div>
+			<div class=container-fluid id=plot-container style="display:none"> <div id="flotcontainer" style="margin: 2% auto; width: 400px; height: 400px;"></div>
 		</section>
 			<br> 
-		<article id=track_box class=container-fluid style="display:none"></article>
 	</body>
 </html>

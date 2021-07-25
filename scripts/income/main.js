@@ -60,7 +60,6 @@ $(document).ready(function(){
     let cEntries = aCookie.get();
     let bw_pairs = [];
     let cPair;
-    let bw_pair;      
     
     if (server.is_logged_in()){
       server.show_logout();
@@ -76,21 +75,8 @@ $(document).ready(function(){
       else if (cPair[0].includes('__period__')){
         anIncome.reset_period(cPair[1]);
       } 
-      else if (cPair[0].includes('__name__')) {
-        aUser.set_name(cPair[1]);
-      }
-      else if (cPair[0].includes('__password__')) {
-        aUser.set_password(cPair[1]);
-      }
-      else if (cPair[0].includes('__remember__')) {
-        aUser.set_remember(cPair[1]);
-      }  
       else if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN')) && (!cPair[0].includes('PHP'))) {
-        bw_pair = {
-          bucket: cPair[0],
-          weight: parseFloat(cPair[1])
-        };
-        bw_pairs.push(bw_pair);
+        allBW_pairs.append(bw_pairs, cPair[0], parseFloat(cPair[1]));
       }
     }
     if ((anIncome.get() != 0) && (!isNaN(anIncome.get()))){ 
@@ -106,8 +92,8 @@ $(document).ready(function(){
     anIncome.reset_period("fortnight");
     allBW_pairs.set(bw_pairs);
     aCookie.set(allBW_pairs.get());
-    aCookie.set([{bucket:'__income__', weight:anIncome.get()}]);
-    aCookie.set([{bucket:'__period__',weight:anIncome.get_period()}])
+    aCookie.set(allBW_pairs.convert('__income__', anIncome.get()));
+    aCookie.set(allBW_pairs.convert('__period__',anIncome.get_period()));
     display_all(bw_pairs);
   });
 
@@ -116,7 +102,7 @@ $(document).ready(function(){
     displayBucketTree();
     aBW_list.create(bw_pairs);
     aTally.create(bw_pairs);
-    aResult.populate_table(bw_pairs);
+    aResult.populate_table(bw_pairs, anIncome);
     aResult.plot(bw_pairs);
 <<<<<<< HEAD
 >>>>>>> general cookie
@@ -163,11 +149,7 @@ $(document).ready(function(){
     
     for (let i=0; i<checkboxes.length; i++) {
       if (checkboxes[i].checked) {
-        let pair = {
-          bucket: checkboxes[i].value,
-          weight: 0
-        };     
-          bw_pairs.push(pair);
+        allBW_pairs.append(bw_pairs, checkboxes[i].value, 0);
       }
     }
     allBW_pairs.set(bw_pairs);
@@ -198,25 +180,20 @@ $(document).ready(function(){
     let total_weight = 0;
     let new_bw_pairs = document.getElementsByName("chosenBucket");  
     let bw_pairs = [];
-    let para;
 
     for (let i=0;i<new_bw_pairs.length;i++){
-      let pair = {
-        bucket : new_bw_pairs[i].id,
-        weight : parseFloat(new_bw_pairs[i].value)
-      }
-      bw_pairs.push(pair);
+      allBW_pairs.append(bw_pairs, new_bw_pairs[i].id, parseFloat(new_bw_pairs[i].value));
       total_weight = total_weight + parseFloat(new_bw_pairs[i].value);
     }
-    para = document.getElementById("weightpara");
+    let para = document.getElementById("weightpara");
     para.innerHTML = "<h3>Weight sum = " + total_weight.toFixed(2) + "</h3>";
     allBW_pairs.set(bw_pairs);
     allBW_pairs.check();
     anIncome.check();
     aCookie.set(allBW_pairs.get());
-    aCookie.set([{bucket:'__income__', weight:anIncome.get()}]);
-    aCookie.set([{bucket:'__period__',weight:anIncome.get_period()}])
-    aResult.populate_table(allBW_pairs.get());
+    aCookie.set(allBW_pairs.convert('__income__', anIncome.get()));
+    aCookie.set(allBW_pairs.convert('__period__',anIncome.get_period()));
+    aResult.populate_table(allBW_pairs.get(), anIncome);
     $('#plot-container').show();
     $("#button_div").fadeIn(1000);
     aResult.show();
@@ -267,11 +244,6 @@ $(document).ready(function(){
   // delete cookie and refresh page
   $("#reset_all").click(function(){
     aCookie.delete();
-    if (aUser.exists() && aUser.remember()){
-      aCookie.set([{bucket:'__name__',weight:aUser.name()}]);
-      aCookie.set([{bucket:'__password__',weight:aUser.password()}]);
-      aCookie.set([{bucket:'__remember__',weight:aUser.remember()}]);
-    }
     console.clear();
     location.reload();
   });

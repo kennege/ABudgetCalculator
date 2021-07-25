@@ -26,16 +26,16 @@ $(document).ready(function(){
     anIncome.set_period("fortnight");
     allBW_pairs.set(bw_pairs);
     $('#plot_box').show();
-    aResult.populate_table(bw_pairs, anIncome.convert);
+    aResult.populate_table(bw_pairs, anIncome);
     aResult.plot(bw_pairs);
     generate_track_box(bw_pairs);
 
-    let history = server.load_history(allBW_pairs.length());
-    if (history.length > 0) {
-      // display_tracking(history);
-    } else {
-      // begin_tracking(bw_pairs);
+    let [history, dates] = server.load_history(allBW_pairs.length());
+    if (history.length != 0) {
+      server.found_history(true);
+      display_checkboxes();
     }
+    display_budget(allBW_pairs.get(), history, dates);
 
   } else {
     let p = document.createElement('p');
@@ -56,21 +56,46 @@ $(document).ready(function(){
   });
 
   $('#done_button').click(function(event) {
-    let new_budget_entries = document.getElementsByName("budgetItem");  
-    let budget_pairs = [];
-    for (let i=0;i<new_budget_entries.length;i++){
-      let pair = {
-        bucket : new_budget_entries[i].id,
-        weight : parseFloat(new_budget_entries[i].value)
-      }
-      budget_pairs.push(pair);
+    let list_div = document.getElementById('list_div');
+    if (document.contains(document.getElementById("error_msg"))) {
+      document.getElementById("error_msg").remove();
     }
-    server.append_history(budget_pairs);
+    
+    if (!server.contains_history) {
+      let spending_saving = get_checkboxes(allBW_pairs.get());
+      if (spending_saving.length != allBW_pairs.length()) {
+        let message = document.createElement('p');
+        message.id = "error_msg";
+        message.innerText = spending_saving;
+        list_div.appendChild(message);        
+      } else {
+        server.set_spending_saving(spending_saving);
+      }
+    }
+    
+    let budget_pairs = [];
+    let new_budget_entries = document.getElementsByName("budgetItem");  
+    for (let i=0; i<new_budget_entries.length; i++) {
+      allBW_pairs.append(budget_pairs, new_budget_entries[i].id, parseFloat(new_budget_entries[i].value));
+    }
+    let server_response = server.append_history(budget_pairs);
+
+    if (!server_response.includes("SUCCESS")) {
+      let message = document.createElement('p');
+      message.id = "error_msg";
+      message.innerText = server_response;
+      list_div.appendChild(message);
+    } else {
+      let [history, dates] = server.load_history(budget_pairs.length);
+      let spending_saving = server.get_spending_saving(budget_pairs);
+      display_budget(budget_pairs, spending_saving, history, dates);
+    }
   });
 
   $('#logoutbtn').click(function(event) {
     event.preventDefault();
     server.log_out();
+    location.reload();
   });
     
 });
@@ -78,29 +103,58 @@ $(document).ready(function(){
 function generate_track_box(bw_pairs) {
   let article = document.getElementById('track_box');
   article.style.display = "block";
-  
   let title = document.createElement("div");
   title.innerHTML = `<h3>Input current totals </h3>`
   article.appendChild(title);
-
   let div = document.createElement('div');
   div.className = "well";
-  for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      let node = document.createElement("div");
-      node.style.marginLeft = "20%"
-      node.style.marginRight = "20%"
-      node.innerHTML = `<li class="newBudget list-group-item"> $<input name="budgetItem" 
-      style='width:80px' id="${bw_pairs[i].bucket}"> ${bw_pairs[i].bucket}</li>`;    
-      div.appendChild(node); 
-     article.appendChild(div);
-  }
+  div.id = "list_div";
+  let subtitle = document.createElement('div');
+  subtitle.innerHTML = "<p id=check_title style='display:none'>check one: ( Saving / Spending )</p>" 
+  div.appendChild(subtitle);
+
+  for (let i=0;i<bw_pairs.length;i++){
+    let node = document.createElement("div");
+    node.style.marginLeft = "20%"
+    node.style.marginRight = "20%"
+    node.innerHTML = `<li class="newBudget list-group-item"> <p class=check style="display:none">
+                      ( <input id="${bw_pairs[i].bucket}_save" type=checkbox> / <input id="${bw_pairs[i].bucket}_spend" type=checkbox> )</p>   
+                      $<input name="budgetItem" style='width:80px' id="${bw_pairs[i].bucket}"> ${bw_pairs[i].bucket}</li>`;    
+    div.appendChild(node); 
+    article.appendChild(div);
+  } 						
   let chosenBuckets = document.getElementsByClassName("newBucket");
   for (let i=0;i<chosenBuckets.length;i++){
     chosenBuckets[i].style.listStyleType = "none";
   }
+
   let done_button = document.createElement("button");
   done_button.innerText = "Done";
   done_button.className = "btn";
   done_button.id = "done_button";
   article.appendChild(done_button);
+}
+
+function display_checkboxes() {
+  document.getElementById('check_title').style.display = "block";
+  let checks = document.getElementsByClassName('check');
+  for (let i=0; i<checks.length; i++) {
+    checks[i].style.display = "block";
+  }
+}
+
+function get_checkboxes(bw_pairs) {
+  let new_bw_pairs = [];
+  for (let i=0; i<bw_pairs.length; i++) {
+    let saving = document.getElementById(bw_pairs[i].bucket+"_save");
+    let spending = document.getElementById(bw_pairs[i].bucket+"_spend");
+    if (!(saving.checked || spending.checked)) {
+      return "You must choose saving/spending for each category";
+    } else if (saving.checked) {
+      allBW_pairs.append(new_bw_pairs, bw_pairs[i].bucket,"savings");
+    } else {
+      allBW_pairs.append(new_bw_pairs, bw_pairs[i].bucket,"spending");
+    }
+  }
+  return new_bw_pairs;
 }

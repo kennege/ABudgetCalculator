@@ -236,3 +236,7 @@ ul {
     background-color: ivory;
 }
 
+.check {
+    float: left;
+    text-align: right;
+  }

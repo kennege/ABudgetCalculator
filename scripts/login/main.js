@@ -74,12 +74,6 @@ function welcomer(output, name, password, remember) {
   if (output.includes("SUCCESS")){
     user.set_name(name);
     user.set_password(password);
-    if (remember) {
-      aCookie.set([{bucket:'__name__',weight:name}]);
-      aCookie.set([{bucket:'__password__',weight:password}]);
-      aCookie.set([{bucket:'__remember__',weight:remember}]);
-      aCookie.check();
-    }
     if (output.includes("LOGIN")) {
       welcome_div.innerText = `Welcome back, ${user.name()}!`;
     } else {

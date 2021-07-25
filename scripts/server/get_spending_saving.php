@@ -15,23 +15,17 @@ $row = mysqli_fetch_assoc($result);
 
 if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']))) { // user exists
   
-  $history = array();  
+  $spending_saving = array();  
   // get bucket/weight pairs
   for ($x = 0; $x < $n_buckets; $x++) {
     $b = "b".($x+1);
-    $sql = "SELECT $b FROM track WHERE username='$name'";
+    $sql = "SELECT $b FROM spending_saving WHERE username='$name'";
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_assoc($result);  
-    array_push($history, $row["$b"]);
+    array_push($spending_saving, $row["$b"]);
   }
-  
-  // get dates
-  $sql = "SELECT dates FROM track WHERE username='$name'";
-  $result = mysqli_query($link, $sql);
-  $row = mysqli_fetch_assoc($result);  
-  array_push($history, $row["dates"]);
 
-  $json_data = json_encode($history);
+  $json_data = json_encode($spending_saving);
   echo $json_data;
 } else {
   echo "user does not exist";
