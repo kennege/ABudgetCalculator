@@ -18,6 +18,7 @@ $(document).ready(function(){
   let budget_box = document.getElementById('display_budget');
   budget_box.style.display = "block";
 
+
   if (server.is_logged_in()){
     server.show_logout();
     let [income, bw_pairs] = server.load_budget();
@@ -35,13 +36,16 @@ $(document).ready(function(){
       server.found_history(true);
       display_checkboxes();
     }
-    display_budget(allBW_pairs.get(), history, dates);
+    let spending_saving = server.get_spending_saving(bw_pairs);
+    let data = sort_data(bw_pairs, spending_saving, history, dates);
+    display_budget(data);
 
   } else {
     let p = document.createElement('p');
     p.innerText = "You must be logged in to track your budget.";
     budget_box.appendChild(p);
   }
+
 
   // ensure only one plotting checkbox is selected
   // and plot for selected period
@@ -54,6 +58,7 @@ $(document).ready(function(){
     $('#plot-container').show();
     aResult.plot(allBW_pairs.get());
   });
+
 
   $('#done_button').click(function(event) {
     let list_div = document.getElementById('list_div');
@@ -88,9 +93,11 @@ $(document).ready(function(){
     } else {
       let [history, dates] = server.load_history(budget_pairs.length);
       let spending_saving = server.get_spending_saving(budget_pairs);
-      display_budget(budget_pairs, spending_saving, history, dates);
+      let data = sort_data(bw_pairs, spending_saving, history, dates);
+      display_budget(data);
     }
   });
+
 
   $('#logoutbtn').click(function(event) {
     event.preventDefault();
@@ -157,4 +164,27 @@ function get_checkboxes(bw_pairs) {
     }
   }
   return new_bw_pairs;
+}
+
+function sort_data(bw_pairs, spending_saving, history, dates) {
+  data = [];
+  for (let i=0; i<bw_pairs.length; i++) {
+    let bucket_info = {};
+    bucket_info.bucket = bw_pairs[i].bucket;
+    bucket_info.weight = bw_pairs[i].weight;
+      
+    for (let j=0; j<spending_saving.length; j++) { 
+      if (bw_pairs[i].bucket == spending_saving[j].bucket) {
+        bucket_info.spending_saving = spending_saving[j].weight;
+      }
+    }
+    for (let j=0; j<history.length; j++) { 
+      if (bw_pairs[i].bucket == history[j].bucket) {
+        bucket_info.history = history[j].weight;
+      }
+    }
+    bucket_info.dates = dates[0].weight;
+    data.push(bucket_info);
+  }
+  return data;
 }
