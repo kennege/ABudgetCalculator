@@ -1,6 +1,7 @@
 class Cookie {
   constructor(){
     this.ping();
+    this.expire_message = "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
     this.check();
   }
 
@@ -33,7 +34,7 @@ class Cookie {
       for (let i=0; i<cEntries.length; i++){
         cPair = cEntries[i].split("="); 
         if (cPair[0].includes(cKey)){
-          document.cookie = cPair[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+          document.cookie = cPair[0] + this.expire_message;
         }
       }
       document.cookie = cKey + "=" + cVal + "; path=/;";
@@ -61,7 +62,7 @@ class Cookie {
     for (let i=0; i<this.length(); i++){
       let cPair = cEntries[i].split("="); 
       if (cPair[0].includes(key)) {
-        document.cookie = cPair[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+        document.cookie = cPair[0] + this.expire_message;
       }
     }
   }
@@ -72,13 +73,13 @@ class Cookie {
 
     for (let i=0; i<this.length(); i++){
       let cPair = cEntries[i].split("=");
-      document.cookie = cPair[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+      document.cookie = cPair[0] + this.expire_message;
     }
     remainder = document.cookie;
     let cPair = remainder.split("=");
-    document.cookie = cPair[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+    document.cookie = cPair[0] + this.expire_message;
     remainder = document.cookie;
-    document.cookie = remainder + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+    document.cookie = remainder + this.expire_message;
   }
 
   check(){

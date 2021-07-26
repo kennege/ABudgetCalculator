@@ -1,10 +1,6 @@
 let settings = new Settings();
 let server = new Server();
 
-function commas(str) {
-  return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
-}
-
 $(document).ready(function(){
 
   $('#init_dep').focus();
@@ -20,11 +16,11 @@ $(document).ready(function(){
     console.log("here");
   for (let i = 1;i <= 5; i++)
     {
-      document.getElementById("c" + i).checked = false;
+      get_by_id("c" + i).checked = false;
     }
     this.checked = true;
     settings.set_dep_freq(this.value);
-    document.getElementById('dep_freq').innerText = this.value;
+    get_by_id('dep_freq').innerText = this.value;
   });
   
   // get inputs and plot

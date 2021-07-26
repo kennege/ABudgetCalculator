@@ -6,8 +6,8 @@ class BW_list {
   create(bw_pairs) { 
     this.bw_pairs = bw_pairs;
     // generate bucket list for choosing weights
-    let bl = document.getElementById("bucketList");  
-    let para = document.createElement("div");
+    let bl = get_by_id("bucketList");  
+    let para = generate("div");
     while(bl.firstChild){
       bl.removeChild(bl.firstChild );
     }
@@ -15,10 +15,10 @@ class BW_list {
                       <p style=text-align:center>Eg. Basics = 0.4</p>`;
     para.id = "weightpara";
     bl.appendChild(para);
-    let div = document.createElement('div');
+    let div = generate('div');
     div.className = "well";
     for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      let node = document.createElement("div");
+      let node = generate("div");
       node.style.marginLeft = "10%"
       node.style.marginRight = "10%"
       if ((bw_pairs[i].weight == 0) || (isNaN(bw_pairs[i].weight)))
@@ -34,7 +34,7 @@ class BW_list {
       div.appendChild(node);    
       bl.appendChild(div);
     }
-    let chosenBuckets = document.getElementsByClassName("newBucket");
+    let chosenBuckets = get_by_class("newBucket");
     for (let i=0;i<chosenBuckets.length;i++){
       chosenBuckets[i].style.listStyleType = "none";
     }

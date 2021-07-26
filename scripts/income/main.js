@@ -7,18 +7,6 @@ let aUser = new User();
 let aCookie = new Cookie();
 let server = new Server();
 
-function commas(str) {
-  return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
-}
-
-function insertTableEntry(row, column, amount) {
-  let entry = row.insertCell(column);
-  entry.append(amount);
-}
-
-function displayBucketTree(){
-  $("#tree_box").fadeIn(1000); 
-}
 
 function displayTallies(){
   let domContainer = document.querySelector('#tally_block');
@@ -86,6 +74,11 @@ $(document).ready(function(){
     }
   }
 
+
+  function displayBucketTree(){
+    $("#tree_box").fadeIn(1000); 
+  }
+
   $('#load').click(function(event) {
     let [income, bw_pairs] = server.load_budget();
     anIncome.reset(parseFloat(income));
@@ -118,7 +111,7 @@ $(document).ready(function(){
     let options = ["year", "month", "fortnight", "week", "day"];
     for (let i = 0;i < 5; i++)
     {
-      document.getElementById(options[i]).checked = false;
+      get_by_id(options[i]).checked = false;
     }
     this.checked = true;
     anIncome.set_period(this.id);
@@ -144,7 +137,7 @@ $(document).ready(function(){
   // save buckets chosen from bucket tree
   $("#chosenbuckets").click(function(){
     // get chosen buckets from the bucket tree
-    let checkboxes = document.getElementsByName('bucket');
+    let checkboxes = get_by_name('bucket');
     let bw_pairs = [];
     
     for (let i=0; i<checkboxes.length; i++) {
@@ -165,27 +158,27 @@ $(document).ready(function(){
       let lid = "l" + this.id.slice(1);
       let cid = "c" + this.id.slice(1);
       let input = this.value;
-      let li = document.getElementById(lid);
-      let node = document.createElement("div");
+      let li = get_by_id(lid);
+      let node = generate("div");
             node.innerHTML = '<li class=list-group-item> <input name="bucket" value="' 
             + input + '" type="checkbox" checked>' +  input + '</li>'; 
       li.appendChild(node);    
-      document.getElementById(cid).checked = false;
-      document.getElementById(this.id).value = "";
+      get_by_id(cid).checked = false;
+      get_by_id(this.id).value = "";
     }
   });
 
   // button to finish assigning weights
   $("#bucket_button").click(function(event){
     let total_weight = 0;
-    let new_bw_pairs = document.getElementsByName("chosenBucket");  
+    let new_bw_pairs = get_by_name("chosenBucket");  
     let bw_pairs = [];
-
+    allBW_pairs.delete();
     for (let i=0;i<new_bw_pairs.length;i++){
       allBW_pairs.append(bw_pairs, new_bw_pairs[i].id, parseFloat(new_bw_pairs[i].value));
       total_weight = total_weight + parseFloat(new_bw_pairs[i].value);
     }
-    let para = document.getElementById("weightpara");
+    let para = get_by_id("weightpara");
     para.innerHTML = "<h3>Weight sum = " + total_weight.toFixed(2) + "</h3>";
     allBW_pairs.set(bw_pairs);
     allBW_pairs.check();
@@ -205,7 +198,7 @@ $(document).ready(function(){
   $('.plot_ch').click(function(event) {
     for (let i = 1;i <= 10; i++)
     {
-        document.getElementById("ch" + i).checked = false;
+        get_by_id("ch" + i).checked = false;
     }
     this.checked = true;
     $('#plot-container').show();
@@ -215,10 +208,15 @@ $(document).ready(function(){
 
   $("#save").click(function() {
     let note = "";
+    delete_by_id("response");
     if (server.is_logged_in()){
       aUser.set_income(anIncome.get());
       aUser.set_period(anIncome.get_period());
       aUser.set_bw_pairs(allBW_pairs.get());
+      aCookie.delete();
+      aCookie.set(allBW_pairs.get());
+      aCookie.set(allBW_pairs.convert("__income__", anIncome.get()));
+      aCookie.set(allBW_pairs.convert("__period__", anIncome.get_period()));
       let server_response = server.save_budget(anIncome.get(),allBW_pairs.get());
       if (server_response.includes("SUCCESS")) {
         note = "Budget saved!";
@@ -230,9 +228,10 @@ $(document).ready(function(){
     else {
       note = "You must be signed in to save your budget!";
     }
-    let p = document.createElement('p');
+    let p = generate('p');
+    p.id = "response";
     p.innerText = note;
-    let button_div = document.getElementById('button_div');
+    let button_div = get_by_id('button_div');
     button_div.appendChild(p);
   });
 

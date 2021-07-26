@@ -4,18 +4,9 @@ let aResult = new Result();
 let aCookie = new Cookie();
 let server = new Server();
 
-function commas(str) {
-  return (str+"").replace(/.(?=(?:[0-9]{3})+\b)/g, '$&,');
-}
-
-function insertTableEntry(row, column, amount) {
-  let entry = row.insertCell(column);
-  entry.append(amount);
-}
-
 $(document).ready(function(){
     
-  let budget_box = document.getElementById('display_budget');
+  let budget_box = get_by_id('display_budget');
   budget_box.style.display = "block";
 
 
@@ -41,7 +32,7 @@ $(document).ready(function(){
     display_budget(data);
 
   } else {
-    let p = document.createElement('p');
+    let p = generate('p');
     p.innerText = "You must be logged in to track your budget.";
     budget_box.appendChild(p);
   }
@@ -52,7 +43,7 @@ $(document).ready(function(){
   $('.plot_ch').click(function(event) {
     for (let i = 1;i <= 10; i++)
     {
-      document.getElementById("ch" + i).checked = false;
+      get_by_id("ch" + i).checked = false;
     }
     this.checked = true;
     $('#plot-container').show();
@@ -61,15 +52,13 @@ $(document).ready(function(){
 
 
   $('#done_button').click(function(event) {
-    let list_div = document.getElementById('list_div');
-    if (document.contains(document.getElementById("error_msg"))) {
-      document.getElementById("error_msg").remove();
-    }
+    let list_div = get_by_id('list_div');
+    delete_by_id("error_msg");
     
     if (!server.contains_history) {
       let spending_saving = get_checkboxes(allBW_pairs.get());
       if (spending_saving.length != allBW_pairs.length()) {
-        let message = document.createElement('p');
+        let message = generate('p');
         message.id = "error_msg";
         message.innerText = spending_saving;
         list_div.appendChild(message);        
@@ -79,7 +68,7 @@ $(document).ready(function(){
     }
     
     let budget_pairs = [];
-    let new_budget_entries = document.getElementsByName("budgetItem");  
+    let new_budget_entries = get_by_name("budgetItem");  
     for (let i=0; i<new_budget_entries.length; i++) {
       allBW_pairs.append(budget_pairs, new_budget_entries[i].id, parseFloat(new_budget_entries[i].value));
     }
@@ -98,7 +87,6 @@ $(document).ready(function(){
     }
   });
 
-
   $('#logoutbtn').click(function(event) {
     event.preventDefault();
     server.log_out();
@@ -108,20 +96,20 @@ $(document).ready(function(){
 });
 
 function generate_track_box(bw_pairs) {
-  let article = document.getElementById('track_box');
-  article.style.display = "block";
-  let title = document.createElement("div");
+  let article = get_by_id('track_box');
+  show_by_id('track_box');
+  let title = generate("div");
   title.innerHTML = `<h3>Input current totals </h3>`
   article.appendChild(title);
-  let div = document.createElement('div');
+  let div = generate('div');
   div.className = "well";
   div.id = "list_div";
-  let subtitle = document.createElement('div');
-  subtitle.innerHTML = "<p id=check_title style='display:none'>check one: ( Saving / Spending )</p>" 
+  let subtitle = generate('div');
+  subtitle.innerHTML = "<p id=check_title style='display:none'>New budget detected. Check one: ( Saving / Spending ) for each category.</p>" 
   div.appendChild(subtitle);
 
   for (let i=0;i<bw_pairs.length;i++){
-    let node = document.createElement("div");
+    let node = generate("div");
     node.style.marginLeft = "20%"
     node.style.marginRight = "20%"
     node.innerHTML = `<li class="newBudget list-group-item"> <p class=check style="display:none">
@@ -130,12 +118,12 @@ function generate_track_box(bw_pairs) {
     div.appendChild(node); 
     article.appendChild(div);
   } 						
-  let chosenBuckets = document.getElementsByClassName("newBucket");
+  let chosenBuckets = get_by_class("newBucket");
   for (let i=0;i<chosenBuckets.length;i++){
     chosenBuckets[i].style.listStyleType = "none";
   }
 
-  let done_button = document.createElement("button");
+  let done_button = generate("button");
   done_button.innerText = "Done";
   done_button.className = "btn";
   done_button.id = "done_button";
@@ -143,8 +131,8 @@ function generate_track_box(bw_pairs) {
 }
 
 function display_checkboxes() {
-  document.getElementById('check_title').style.display = "block";
-  let checks = document.getElementsByClassName('check');
+  show_by_id('check_title');
+  let checks = get_by_class('check');
   for (let i=0; i<checks.length; i++) {
     checks[i].style.display = "block";
   }
@@ -153,8 +141,8 @@ function display_checkboxes() {
 function get_checkboxes(bw_pairs) {
   let new_bw_pairs = [];
   for (let i=0; i<bw_pairs.length; i++) {
-    let saving = document.getElementById(bw_pairs[i].bucket+"_save");
-    let spending = document.getElementById(bw_pairs[i].bucket+"_spend");
+    let saving = get_by_id(bw_pairs[i].bucket+"_save");
+    let spending = get_by_id(bw_pairs[i].bucket+"_spend");
     if (!(saving.checked || spending.checked)) {
       return "You must choose saving/spending for each category";
     } else if (saving.checked) {

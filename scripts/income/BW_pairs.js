@@ -22,6 +22,8 @@ class BW_pairs {
     return bw_pairs;
   }
 
+  delete = () => this.#bw_pairs = [];
+
   check() {
     console.log("Checking BW pairs... ")
     for (let i=0;i<Object.keys(this.#bw_pairs).length;i++){

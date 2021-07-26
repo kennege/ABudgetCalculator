@@ -55,7 +55,8 @@ class Server {
 
   save_budget(income, bw_pairs) {
     let data = this.get_bw_pair_data(bw_pairs);
-    let server_response = this.append_data(data, "income", income);  
+    data["income"] = income;
+    let server_response = this.send_data(data, `${this.#directory}save_budget.php`);
     console.log("SERVER: Saving BUDGET: " + server_response + ".\n");  
     return server_response;
   }
@@ -182,8 +183,6 @@ class Server {
     }
     return data;
   }
-
-  append_data = (data, new_name, new_value) => data[new_name] = new_value;
 
   send_data(data, file) {
     let response = "";

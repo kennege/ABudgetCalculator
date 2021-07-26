@@ -76,14 +76,14 @@ class Income {
     let row1;
     let row2;
 
-    tab1 = document.getElementById("income_t1");
+    tab1 = get_by_id("income_t1");
     tab1.innerHTML = "";
     row1 = tab1.insertRow();
     for (let i=0;i<5;i++){
       insertTableEntry(row1, i, "$" + this.convert(1)[i]);  
     }
     row1 = tab1.insertRow();
-    tab2 = document.getElementById("income_t2");
+    tab2 = get_by_id("income_t2");
     tab2.innerHTML = "";
     row2 = tab2.insertRow();
     for (let i=0;i<5;i++){

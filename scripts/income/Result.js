@@ -6,16 +6,16 @@ class Result {
   populate_table(bw_pairs, anIncome) {
     this.bw_pairs = bw_pairs;
     // first half of bucket/income table
-    let table1 = document.getElementById("tbody_1");
+    let table1 = get_by_id("tbody_1");
     table1.innerHTML = "";
-    for (let i=0;i<Object.keys(bw_pairs).length;i++){
+    for (let i=0;i<bw_pairs.length;i++){
       let row = table1.insertRow();
       insertTableEntry(row, 0, bw_pairs[i].bucket) // bucket name
       for (let j=0;j<5;j++){
         insertTableEntry(row, j+1, "$"+(anIncome.convert(bw_pairs[i].weight)[j])) 
       }    
     }
-    let table_total1 = document.getElementById('total1');
+    let table_total1 = get_by_id('total1');
     table_total1.innerHTML = "";
     let row1 = table_total1.insertRow();
     insertTableEntry(row1, 0, 'Total');
@@ -23,7 +23,7 @@ class Result {
       insertTableEntry(row1, j+1, "$"+(anIncome.convert(1)[j])) 
     }
    // second half of bucket/income table
-   let table2 = document.getElementById("tbody_2");
+   let table2 = get_by_id("tbody_2");
    table2.innerHTML = "";
    for (let i=0;i<Object.keys(bw_pairs).length;i++){
       let row = table2.insertRow();
@@ -32,7 +32,7 @@ class Result {
         insertTableEntry(row, j+1, "$"+(anIncome.convert(bw_pairs[i].weight)[j+5])) 
       }  
    }
-   let table_total2 = document.getElementById('total2');
+   let table_total2 = get_by_id('total2');
    table_total2.innerHTML = "";
    let row2 = table_total2.insertRow();
    insertTableEntry(row2, 0, 'Total');
@@ -48,16 +48,16 @@ class Result {
       let multiplier = 1;
       for (let i=1;i<=10;i++)
       {
-        if (document.getElementById("ch" + i).checked) {
-          time = document.getElementById("ch" + i).name;
-          unit = parseFloat(document.getElementById("ch" + i).value);
-          multiplier = eval(document.getElementById("ch" + i).title);
+        if (get_by_id("ch" + i).checked) {
+          time = get_by_id("ch" + i).name;
+          unit = parseFloat(get_by_id("ch" + i).value);
+          multiplier = eval(get_by_id("ch" + i).title);
         }
       }
       let data = [];
       let mult = 0;
       let colours = ['black','blue','brown','red','aqua','crimson','cyan','pink','orange','yellow','purple','grey','green'];
-      for (let i=0;i<Object.keys(bw_pairs).length;i++){
+      for (let i=0;i<bw_pairs.length;i++){
         if ((i+1) % (colours.length+1) == 0){
           mult+=colours.length;
         }
