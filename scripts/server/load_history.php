@@ -10,8 +10,12 @@ require_once "config.php";
 $valid_user = false;
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 $sql = "SELECT id, username, password FROM users WHERE username='$name'";
-$result = mysqli_query($link, $sql);
-$row = mysqli_fetch_assoc($result);
+if (!mysqli_query($link, $sql)) { 
+  echo "no history found";
+} else {
+  $result = mysqli_query($link, $sql);
+  $row = mysqli_fetch_assoc($result);
+}
 
 if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']))) { // user exists
   
