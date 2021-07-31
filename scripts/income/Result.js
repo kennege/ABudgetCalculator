@@ -25,7 +25,7 @@ class Result {
    // second half of bucket/income table
    let table2 = get_by_id("tbody_2");
    table2.innerHTML = "";
-   for (let i=0;i<Object.keys(bw_pairs).length;i++){
+   for (let i=0;i<bw_pairs.length;i++){
       let row = table2.insertRow();
       insertTableEntry(row, 0, bw_pairs[i].bucket) // bucket name
       for (let j=0;j<5;j++){

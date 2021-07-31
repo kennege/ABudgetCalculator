@@ -1,6 +1,5 @@
 let allBW_pairs = new BW_pairs();
 let anIncome = new Income();
-let aResult = new Result();
 let aCookie = new Cookie();
 let server = new Server();
 
@@ -17,9 +16,6 @@ $(document).ready(function(){
     anIncome.reset(parseFloat(income));
     anIncome.set_period("fortnight");
     allBW_pairs.set(bw_pairs);
-    $('#plot_box').show();
-    aResult.populate_table(bw_pairs, anIncome);
-    aResult.plot(bw_pairs);
     generate_track_box(bw_pairs);
 
     let [history, dates] = server.load_history(allBW_pairs.length());
@@ -28,7 +24,7 @@ $(document).ready(function(){
       display_checkboxes();
     }
     let spending_saving = server.get_spending_saving(bw_pairs);
-    let data = sort_data(bw_pairs, spending_saving, history, dates);
+    let data = sort_data(income, bw_pairs, spending_saving, history, dates);
     display_budget(data);
 
   } else {
@@ -36,7 +32,6 @@ $(document).ready(function(){
     p.innerText = "You must be logged in to track your budget.";
     budget_box.appendChild(p);
   }
-
 
   // ensure only one plotting checkbox is selected
   // and plot for selected period
@@ -46,10 +41,8 @@ $(document).ready(function(){
       get_by_id("ch" + i).checked = false;
     }
     this.checked = true;
-    $('#plot-container').show();
-    aResult.plot(allBW_pairs.get());
+    display_budget(data);
   });
-
 
   $('#done_button').click(function(event) {
     let list_div = get_by_id('list_div');
@@ -80,9 +73,10 @@ $(document).ready(function(){
       message.innerText = server_response;
       list_div.appendChild(message);
     } else {
+      let [income, bw_pairs] = server.load_budget();
       let [history, dates] = server.load_history(budget_pairs.length);
       let spending_saving = server.get_spending_saving(budget_pairs);
-      let data = sort_data(bw_pairs, spending_saving, history, dates);
+      let data = sort_data(income, bw_pairs, spending_saving, history, dates);
       display_budget(data);
     }
   });
@@ -154,12 +148,14 @@ function get_checkboxes(bw_pairs) {
   return new_bw_pairs;
 }
 
-function sort_data(bw_pairs, spending_saving, history, dates) {
+function sort_data(income, bw_pairs, spending_saving, history, dates) {
   data = [];
   for (let i=0; i<bw_pairs.length; i++) {
     let bucket_info = {};
     bucket_info.bucket = bw_pairs[i].bucket;
     bucket_info.weight = bw_pairs[i].weight;
+    bucket_info.income = income;
+    bucket_info.id = i;
       
     for (let j=0; j<spending_saving.length; j++) { 
       if (bw_pairs[i].bucket == spending_saving[j].bucket) {
