@@ -16,7 +16,7 @@ if(empty(trim($_POST["name"]))){
     $sql = "SELECT id FROM users WHERE username='$name'";
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_assoc($result);
-    if (mysqli_stmt_num_rows($result) == 1) {
+    if (mysqli_num_rows($result) == 1) {
         $username_err = "This username is already taken.";
     }
 }
