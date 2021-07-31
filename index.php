@@ -12,6 +12,7 @@
 		<link rel="shortcut icon" href="/images/bucket_ico_f.ico" type="image/x-icon">
 
 		<script src="/scripts/server/Server.js" defer></script>
+		<script src="../scripts/tools.js" defer></script>
 
 		<script src="/scripts/User.js" defer></script>
 		<script src="/scripts/Cookie.js" defer></script>
