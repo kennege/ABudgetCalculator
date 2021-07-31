@@ -20,6 +20,7 @@ class Server {
       confirm_password: password_2
     };      
     let response = this.send_data(data, `${this.#directory}sign_up.php`);
+    console.log(response);
     if (response.includes('SUCCESS')){
       this.save_session(name, password_1);
       console.log("SERVER: Sign up SUCCESS.\n");
