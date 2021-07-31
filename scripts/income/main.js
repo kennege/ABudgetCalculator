@@ -2,46 +2,17 @@ console.log("main loaded!")
 let allBW_pairs = new BW_pairs();
 let aResult = new Result();
 let aBW_list = new BW_list();
+let aTally = new Tally('aTally');
 let anIncome = new Income();
 let aUser = new User();
 let aCookie = new Cookie();
 let server = new Server();
 
 
-function displayTallies(){
-  let domContainer = document.querySelector('#tally_block');
-  ReactDOM.render(<Tally bw_pairs={allBW_pairs}/>, domContainer);
-  $("#tally_box").fadeIn(1000); 
-}
-
 $(document).ready(function(){
   
   $('#income').focus();
   $('#plot-container').hide();
-<<<<<<< HEAD
-<<<<<<< HEAD
-  let cookie_success;
-  anIncome, allBW_pairs, cookie_success = aCookie.get(anIncome, allBW_pairs, aBW_list, aResult);
-  if (cookie_success){
-    $("#flotcontainer").width(  $("#plot-container").width()  )
-=======
-  
-  let cEntries = aCookie.get();
-  let bw_pairs = [];
-  let cPair;
-  let bw_pair;
-
-  for (let i=0; i<cEntries.length; i++){
-    cPair = cEntries[i].split("=");
-    if (cPair[0].includes('__income__')){
-      anIncome.reset(parseFloat(cPair[1]));
-    }   
-    else if (cPair[0].includes('__period__')){
-      anIncome.reset_period(cPair[1]);
-    } 
-    else if (cPair[0].includes('__name__')) {
-      aUser.set_name(cPair[1]);
-=======
   load();
 
   function load() {
@@ -52,7 +23,6 @@ $(document).ready(function(){
     if (server.is_logged_in()){
       server.show_logout();
       $("#load_button_div").show();
->>>>>>> fuck flot
     }
     
     for (let i=0; i<cEntries.length; i++){
@@ -97,12 +67,7 @@ $(document).ready(function(){
     aTally.create(bw_pairs);
     aResult.populate_table(bw_pairs, anIncome);
     aResult.plot(bw_pairs);
-<<<<<<< HEAD
->>>>>>> general cookie
-    $('#plot-container').show();
-=======
     aResult.show();
->>>>>>> fuck flot
     $("#button_div").fadeIn(1000);
   }
     
@@ -146,8 +111,8 @@ $(document).ready(function(){
       }
     }
     allBW_pairs.set(bw_pairs);
+    aTally.create(bw_pairs);
     aBW_list.create(bw_pairs);
-    displayTallies();
     return false;
   });
   
@@ -166,6 +131,11 @@ $(document).ready(function(){
       get_by_id(cid).checked = false;
       get_by_id(this.id).value = "";
     }
+  });
+
+  // button to reset tallies
+  $("#tally_button").click(function(event){
+    aTally.reset(allBW_pairs.get());
   });
 
   // button to finish assigning weights

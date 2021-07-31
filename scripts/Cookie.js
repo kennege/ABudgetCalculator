@@ -5,28 +5,9 @@ class Cookie {
     this.check();
   }
 
-<<<<<<< HEAD:scripts/income/Cookie.js
-  set(cIncome, cBW_pairs) {
-    this.delete();
-    let bw_pairs = cBW_pairs.get();
-    let income = cIncome.get();
-    let period = cIncome.get_period();
-    for (let i=0;i<Object.keys(bw_pairs).length;i++){
-      document.cookie = bw_pairs[i].bucket + "=" + bw_pairs[i].weight + ";";
-    }
-    document.cookie = "income" + "=" + income + ";";
-    document.cookie = "period" + "=" + period + ";";
-    this.check();
-  } 
-
-  get(cIncome, cBW_pairs, cBW_list, cResult) {
-    let bw_pairs = [];
-    let cEntries = document.cookie.split(';');
-=======
   set(array) {
     // receives [{bucket:key,weight:value}] array
     let cEntries = this.get();
->>>>>>> fuck flot:scripts/Cookie.js
     let cPair;
     for (let i=0;i<Object.keys(array).length;i++){
       let cKey = array[i].bucket;
@@ -39,20 +20,7 @@ class Cookie {
       }
       document.cookie = cKey + "=" + cVal + "; path=/;";
     }
-<<<<<<< HEAD:scripts/income/Cookie.js
-    let cookie_success = false;
-    cBW_pairs.set(bw_pairs);
-    if ((cIncome.get() != 0) && (!isNaN(cIncome.get()))){ // cookie found!
-      console.log("cookie found!");
-      cIncome.display();   
-      displayBucketTree();
-      displayTallies();
-      cBW_list.create(bw_pairs);
-      cResult.populate_table(bw_pairs);
-      $('#plot-container').show();
-=======
   } 
->>>>>>> fuck flot:scripts/Cookie.js
 
   get = () => document.cookie.split(';');
   length = () => this.get().length;
