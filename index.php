@@ -22,7 +22,6 @@
 		<script src="/scripts/income/BW_list.js" defer></script>
 		<script src="/scripts/income/Tally.js" defer></script>
 		<script src="/scripts/income/Income.js" defer></script>		
-		<script src="/scripts/income/Cookie.js" defer></script>
 		<script src="/scripts/income/main.js" defer></script>
 
 		<script src="/scripts/jquery-3.6.0.js"></script>
