@@ -22,7 +22,7 @@ if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']
     $b = "b".($x+1);
     $sql = "SELECT $b FROM track WHERE username='$name'";
     if (!mysqli_query($link, $sql)) {  
-      $error_msg = "history not found";
+      $error_msg = "FAIL: history not found";
       break;
     } else {
       $result = mysqli_query($link, $sql);
@@ -34,20 +34,23 @@ if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']
   // get dates
   $sql = "SELECT dates FROM track WHERE username='$name'";
   if (!mysqli_query($link, $sql)) {  
-    $error_msg = "history not found";
+    $error_msg = "FAIL: dates not found";
   } else {
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_assoc($result);  
     array_push($history, $row["dates"]);
   }
+  if (count($history)==0){
+    $error_msg = "FAIL: history not found";
+  }
 } else {
-  $error_msg = "user does not exist";
+  $error_msg = "FAIL: user does not exist";
 }
 if (empty($error_msg)) {
   $json_data = json_encode($history);
   echo $json_data;
 } else {
-  echo $table_err;
+  echo $error_msg;
 }
 mysqli_close($link);
 

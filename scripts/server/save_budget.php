@@ -39,6 +39,29 @@ if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']
       break;
     }
   }
+  for ($x = 0; $x < 10; $x++) { // reset history
+    $b = "b".($x+1);
+    $sql = "UPDATE track SET $b=null WHERE username='$name'";
+    if (!mysqli_query($link, $sql)) {  
+      $error_message = "Error deleting record: " . mysqli_error($link) . " at bucket: " . $b;
+      break;
+    }
+  }
+  $sql = "UPDATE track SET dates=null WHERE username='$name'";
+  if (!mysqli_query($link, $sql)) {  
+    $error_message = "Error deleting record: " . mysqli_error($link) . " at bucket: " . $b;
+  }
+  for ($x = 0; $x < $n_buckets; $x++) { // initialise history
+    $b = "b".($x+1);
+    $new_bw_pair = explode(":",$_POST["$b"]);
+    $new_bucket = $new_bw_pair[0];
+    $sql = "UPDATE track SET $b='$new_bucket:' WHERE username='$name'";
+    if (!mysqli_query($link, $sql)) {  
+      $error_message = "Error updating record: " . mysqli_error($link) . " at bucket: " . $b;
+      break;
+    }
+  }
+
 } else {
   $error_message = "user does not exist";
 }

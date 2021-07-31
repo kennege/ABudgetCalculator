@@ -9,7 +9,7 @@ class Cookie {
     // receives [{bucket:key,weight:value}] array
     let cEntries = this.get();
     let cPair;
-    for (let i=0;i<Object.keys(array).length;i++){
+    for (let i=0;i<array.length;i++){
       let cKey = array[i].bucket;
       let cVal = array[i].weight;
       for (let i=0; i<cEntries.length; i++){

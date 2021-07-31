@@ -33,8 +33,6 @@ function plot_spending(data, plot_area_id) {
     }
   }
   let date_distances = convert_dates(dates, time);
-  print(date_distances);
-  print(multiplier, unit, time);
   var options = {
     series:{
         stack:true,

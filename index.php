@@ -28,14 +28,14 @@
 		<script src="/scripts/jquery.flot.js"></script>				 
 		<body> 
 		<div class='page-header'>
-			<h1><a href="index.html">Simple Budget Calculator</a></h1>
+			<h1><a href="index.php">Simple Budget Calculator</a></h1>
 			<img id=im1 src="../images/bucket.ico" alt="logo">
 			<img id=im2 src="../images/bucket.ico" alt="logo">
 			<img id=im3 src="../images/bucket.ico" alt="logo">
 		</div>
 		<div class="topnav">
 			<ul>
-				<a href="index.html">Create Budget</a>
+				<a href="index.php">Create Budget</a>
 				<a href="pages/track.html">Track Budget</a>
 				<a href="pages/compound_interest.html">Compound Interest <br>Calculator</a>
         <a href="pages/how_to_use.html">How To Use</a>

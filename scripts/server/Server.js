@@ -101,39 +101,41 @@ class Server {
       password: this.get_password(),
       n_buckets: n_buckets,
     };
+    let history_pairs = [];
+    let date_pair = [];
     let server_response = this.send_data(data, `${this.#directory}load_history.php`);
-    if (server_response) {
+    if (!server_response.includes('FAIL')) {
       let history = JSON.parse(server_response);
-      let history_pairs = [];
-      let date_pair = [];
       for (let i=0; i<history.length; i++){
-        if (history[i].includes(":")) { 
-          let current_pair = history[i].split(":");
-          let bucket = current_pair[0];
-          let history_strs = current_pair[1].split(",");
-          let history_array = [];
-          for (let j=0; j<history_strs.length; j++) {
-            if (history_strs[j]) {
-              history_array.push(parseFloat(history_strs[j]));
+        if (history[i] !== null) {
+          if (history[i].includes(':')) { 
+            let current_pair = history[i].split(":");
+            let bucket = current_pair[0];
+            let history_strs = current_pair[1].split(",");
+            let history_array = [];
+            for (let j=0; j<history_strs.length; j++) {
+              if (history_strs[j]) {
+                history_array.push(parseFloat(history_strs[j]));
+              }
             }
-          }
-          let pair = {
-            bucket: bucket,
-            weight: history_array,
-          };     
-          history_pairs.push(pair);
-        } else {
-          let dates_strs = history[i].split(",");
-          let dates_array = [];        
-          for (let j=0; j<dates_strs.length; j++) {
-            if (dates_strs[j]) {
-              dates_array.push(dates_strs[j]);
+            let pair = {
+              bucket: bucket,
+              weight: history_array,
+            };     
+            history_pairs.push(pair);
+          } else {
+            let dates_strs = history[i].split(",");
+            let dates_array = [];        
+            for (let j=0; j<dates_strs.length; j++) {
+              if (dates_strs[j]) {
+                dates_array.push(dates_strs[j]);
+              }
             }
+            date_pair = [{
+              bucket: "dates",
+              weight: dates_array
+            }];
           }
-          date_pair = [{
-            bucket: "dates",
-            weight: dates_array
-          }];
         }
       }
       console.log("SERVER: Received " + history.length + " history pairs from TRACKING.\n");
@@ -149,7 +151,6 @@ class Server {
 
   set_spending_saving(bw_pairs) {
     let data = this.get_bw_pair_data(bw_pairs);
-    console.log(data);
     let server_response = this.send_data(data, `${this.#directory}set_spending_saving.php`);
     console.log("SERVER: Setting SPENDING_SAVING: " + server_response + ".\n");
     return server_response;
