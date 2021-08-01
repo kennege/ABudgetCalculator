@@ -124,7 +124,7 @@ function generate_track_box(bw_pairs) {
 }
 
 function display_checkboxes() {
-  show_by_id('check_title');
+  // show_by_id('check_title');
   let checks = get_by_class('check');
   for (let i=0; i<checks.length; i++) {
     checks[i].style.display = "block";
