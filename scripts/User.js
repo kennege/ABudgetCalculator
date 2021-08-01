@@ -8,6 +8,7 @@ class User {
   #bw_pairs;
   constructor(){
     this.#name = "";
+    this.#period = "";
     this.#password = "";
     this.#income = {};
     this.#exists = false;
