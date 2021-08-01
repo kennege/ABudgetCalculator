@@ -102,7 +102,7 @@ class Server {
       n_buckets: n_buckets,
     };
     let server_response = this.send_data(data, `${this.#directory}load_history.php`);
-    if (!server_response.includes("FAIL")) {
+    if (!server_response.includes('FAIL')) {
       let history = JSON.parse(server_response);
       let history_pairs = [];
       let date_pair = [];
