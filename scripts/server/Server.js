@@ -101,11 +101,12 @@ class Server {
       password: this.get_password(),
       n_buckets: n_buckets,
     };
+    let history_pairs = [];
+    let date_pair = [];
     let server_response = this.send_data(data, `${this.#directory}load_history.php`);
+    console.log(server_response);
     if (!server_response.includes('FAIL')) {
       let history = JSON.parse(server_response);
-      let history_pairs = [];
-      let date_pair = [];
       for (let i=0; i<history.length; i++){
         if (history[i].includes(":")) { 
           let current_pair = history[i].split(":");
