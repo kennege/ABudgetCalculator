@@ -4,13 +4,14 @@ let aCookie = new Cookie();
 let server = new Server();
 
 $(document).ready(function(){
+  
+  let budget_box = get_by_id('display_budget');
 
   if (server.is_logged_in()){
     server.show_logout();
     let [income, bw_pairs] = server.load_budget();
 
     if (bw_pairs.length > 0) {
-      let budget_box = get_by_id('display_budget');
       budget_box.style.display = "block";
     } else {
       let p = generate('p');
