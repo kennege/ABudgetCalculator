@@ -17,8 +17,7 @@ $(document).ready(function(){
       p.innerText = "You must save your budget before you can track it.";
       budget_box.appendChild(p);
     } else {   
-      get_by_id('track_box').style.display = "block";
-      get_by_id('plot_box').style.display = "block";
+      show_by_id('track_box');
       anIncome.reset(parseFloat(income));
       anIncome.set_period("fortnight");
       allBW_pairs.set(bw_pairs);
@@ -26,6 +25,7 @@ $(document).ready(function(){
 
       let [history, dates] = server.load_history(allBW_pairs.length());
       if (history.length != 0) {
+        show_by_id('plot_box');
         server.found_history(true);
         let spending_saving = server.get_spending_saving(bw_pairs);
         let data = sort_data(income, bw_pairs, spending_saving, history, dates);
@@ -97,7 +97,6 @@ $(document).ready(function(){
 
 function generate_track_box(bw_pairs) {
   let article = get_by_id('track_box');
-  show_by_id('track_box');
   let title = generate("div");
   title.innerHTML = `<h3>Input current totals </h3>`
   article.appendChild(title);
@@ -107,7 +106,8 @@ function generate_track_box(bw_pairs) {
   let subtitle = generate('div');
   subtitle.innerHTML = "<p id=check_title style='display:none'>New budget detected. Check one: ( Saving / Spending ) for each category.</p>" 
   div.appendChild(subtitle);
-
+  article.appendChild(div);
+  
   for (let i=0;i<bw_pairs.length;i++){
     let node = generate("div");
     node.style.marginLeft = "20%"
