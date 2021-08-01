@@ -21,12 +21,11 @@ $(document).ready(function(){
     let [history, dates] = server.load_history(allBW_pairs.length());
     if (history.length != 0) {
       server.found_history(true);
-      display_checkboxes();
+      let spending_saving = server.get_spending_saving(bw_pairs);
+      let data = sort_data(income, bw_pairs, spending_saving, history, dates);
+      display_budget(data);
     }
-    let spending_saving = server.get_spending_saving(bw_pairs);
-    let data = sort_data(income, bw_pairs, spending_saving, history, dates);
-    display_budget(data);
-
+    display_checkboxes();
   } else {
     let p = generate('p');
     p.innerText = "You must be logged in to track your budget.";

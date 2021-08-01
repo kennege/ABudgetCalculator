@@ -8,21 +8,22 @@ CREATE TABLE users (
 create table track ( 
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     username VARCHAR(50) NOT NULL UNIQUE, 
-    b1 VARCHAR(50), b2 VARCHAR(50), 
-    b3 VARCHAR(50), b4 VARCHAR(50), 
-    b5 VARCHAR(50), b6 VARCHAR(50), 
-    b7 VARCHAR(50), b8 VARCHAR(50), 
-    b9 VARCHAR(50), b10 VARCHAR(50)
+    b1 TEXT(5000), b2 TEXT(5000), 
+    b3 TEXT(5000), b4 TEXT(5000), 
+    b5 TEXT(5000), b6 TEXT(5000), 
+    b7 TEXT(5000), b8 TEXT(5000), 
+    b9 TEXT(5000), b10 TEXT(5000)
 );
 
 create table spending_saving ( 
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     username VARCHAR(50) NOT NULL UNIQUE, 
-    b1 VARCHAR(50), b2 VARCHAR(50), 
-    b3 VARCHAR(50), b4 VARCHAR(50), 
-    b5 VARCHAR(50), b6 VARCHAR(50), 
-    b7 VARCHAR(50), b8 VARCHAR(50), 
-    b9 VARCHAR(50), b10 VARCHAR(50)
+    b1 TEXT(5000), b2 TEXT(5000), 
+    b3 TEXT(5000), b4 TEXT(5000), 
+    b5 TEXT(5000), b6 TEXT(5000), 
+    b7 TEXT(5000), b8 TEXT(5000), 
+    b9 TEXT(5000), b10 TEXT(5000),
+    dates TEXT(5000)
 );
 
 create table budget ( 
@@ -30,11 +31,11 @@ create table budget (
     username VARCHAR(50) NOT NULL UNIQUE, 
     income FLOAT(10), 
     n_buckets INT(10),
-    b1 VARCHAR(50), b2 VARCHAR(50), 
-    b3 VARCHAR(50), b4 VARCHAR(50), 
-    b5 VARCHAR(50), b6 VARCHAR(50), 
-    b7 VARCHAR(50), b8 VARCHAR(50), 
-    b9 VARCHAR(50), b10 VARCHAR(50)
+    b1 TEXT(5000), b2 TEXT(5000), 
+    b3 TEXT(5000), b4 TEXT(5000), 
+    b5 TEXT(5000), b6 TEXT(5000), 
+    b7 TEXT(5000), b8 TEXT(5000), 
+    b9 TEXT(5000), b10 TEXT(5000)
 );
 
 

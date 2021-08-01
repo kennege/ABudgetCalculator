@@ -102,46 +102,45 @@ class Server {
       n_buckets: n_buckets,
     };
     let server_response = this.send_data(data, `${this.#directory}load_history.php`);
-    console.log(server_response);
-    // if (server_response) {
-    //   let history = JSON.parse(server_response);
-    //   let history_pairs = [];
-    //   let date_pair = [];
-    //   for (let i=0; i<history.length; i++){
-    //     if (history[i].includes(":")) { 
-    //       let current_pair = history[i].split(":");
-    //       let bucket = current_pair[0];
-    //       let history_strs = current_pair[1].split(",");
-    //       let history_array = [];
-    //       for (let j=0; j<history_strs.length; j++) {
-    //         if (history_strs[j]) {
-    //           history_array.push(parseFloat(history_strs[j]));
-    //         }
-    //       }
-    //       let pair = {
-    //         bucket: bucket,
-    //         weight: history_array,
-    //       };     
-    //       history_pairs.push(pair);
-    //     } else {
-    //       let dates_strs = history[i].split(",");
-    //       let dates_array = [];        
-    //       for (let j=0; j<dates_strs.length; j++) {
-    //         if (dates_strs[j]) {
-    //           dates_array.push(dates_strs[j]);
-    //         }
-    //       }
-    //       date_pair = [{
-    //         bucket: "dates",
-    //         weight: dates_array
-    //       }];
-    //     }
-    //   }
-    //   console.log("SERVER: Received " + history.length + " history pairs from TRACKING.\n");
-    // } else {
-    //   console.log("SERVER: No history detected in TRACKING.\n");
-    // }
-    // return [history_pairs, date_pair];
+    if (!server_response.includes("FAIL")) {
+      let history = JSON.parse(server_response);
+      let history_pairs = [];
+      let date_pair = [];
+      for (let i=0; i<history.length; i++){
+        if (history[i].includes(":")) { 
+          let current_pair = history[i].split(":");
+          let bucket = current_pair[0];
+          let history_strs = current_pair[1].split(",");
+          let history_array = [];
+          for (let j=0; j<history_strs.length; j++) {
+            if (history_strs[j]) {
+              history_array.push(parseFloat(history_strs[j]));
+            }
+          }
+          let pair = {
+            bucket: bucket,
+            weight: history_array,
+          };     
+          history_pairs.push(pair);
+        } else {
+          let dates_strs = history[i].split(",");
+          let dates_array = [];        
+          for (let j=0; j<dates_strs.length; j++) {
+            if (dates_strs[j]) {
+              dates_array.push(dates_strs[j]);
+            }
+          }
+          date_pair = [{
+            bucket: "dates",
+            weight: dates_array
+          }];
+        }
+      }
+      console.log("SERVER: Received " + history.length + " history pairs from TRACKING.\n");
+    } else {
+      console.log("SERVER: No history detected in TRACKING.\n");
+    }
+    return [history_pairs, date_pair];
   }
 
   reset_history() {
