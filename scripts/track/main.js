@@ -18,6 +18,7 @@ $(document).ready(function(){
       budget_box.appendChild(p);
     } else {   
       get_by_id('track_box').style.display = "block";
+      get_by_id('plot_box').style.display = "block";
       anIncome.reset(parseFloat(income));
       anIncome.set_period("fortnight");
       allBW_pairs.set(bw_pairs);
