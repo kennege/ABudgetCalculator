@@ -17,6 +17,7 @@ $(document).ready(function(){
       p.innerText = "You must save your budget before you can track it.";
       budget_box.appendChild(p);
     } else {   
+      get_by_id('track_box').style.display = "block";
       anIncome.reset(parseFloat(income));
       anIncome.set_period("fortnight");
       allBW_pairs.set(bw_pairs);
