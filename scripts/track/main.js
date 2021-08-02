@@ -18,6 +18,7 @@ $(document).ready(function(){
     allBW_pairs.set(bw_pairs);
     generate_track_box(bw_pairs);
 
+<<<<<<< HEAD
     if (bw_pairs.length == 0) {
       let p = generate('p');
       p.innerText = "You must save your budget before you can track it.";
@@ -40,6 +41,14 @@ $(document).ready(function(){
         show_by_id('check_title');
       }
       display_checkboxes();
+=======
+    let [history, dates] = server.load_history(allBW_pairs.length());
+    if (history.length != 0) {
+      server.found_history(true);
+      let spending_saving = server.get_spending_saving(bw_pairs);
+      let data = sort_data(income, bw_pairs, spending_saving, history, dates);
+      display_budget(data);
+>>>>>>> 9d334bd5b03dab122075f917bc36ca5ab34e4c7e
     }
     display_checkboxes();
   } else {
