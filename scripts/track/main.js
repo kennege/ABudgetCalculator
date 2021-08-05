@@ -91,11 +91,7 @@ $(document).ready(function(){
         server.found_history(true);
         let spending_saving = server.get_spending_saving(budget_pairs);
         let data = sort_data(income, bw_pairs, spending_saving, history, dates);
-<<<<<<< Updated upstream
-        display_budget(data, false);  
-=======
         display_budget(data);  
->>>>>>> Stashed changes
       }   
     }
   });
