@@ -39,7 +39,7 @@ function delete_by_id(id) {
 function clear_by_id(id)
 {
   if (document.contains(document.getElementById(id))) {
-    document.getElementById(id).innerHTML = '';
+    document.getElementById(id).innerHTML = 'Track your Budget';
   }
 }
 

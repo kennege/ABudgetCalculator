@@ -1,8 +1,7 @@
 const PLOT_COLS = 2;
 
 function display_budget(data) { // also enter time
-  show_by_id("category_plot_box");
-  clear_by_id("category_plot_box");
+  clear_by_id('category_plot_box');
   let n_buckets = data.length;
   let row = -1;
   for (let i=0; i<n_buckets; i++) {
@@ -66,7 +65,6 @@ function plot_spending(data, plot_area_id) {
     data : history_data,
     color : '#375e97'
   }];
-
   let xlabel = document.head.appendChild(generate('style'));
   xlabel.innerHTML = `#${plot_area_id}:after {content: 'Time (${time})'}`; 
   $(`#${plot_area_id}`).width(0.45*$("#plot_row_0").width())  
@@ -83,7 +81,6 @@ function plot_spending(data, plot_area_id) {
   //   $.plot($(`#${plot_area_id}`), dataset, options);  
   // }
 }
-
 
 function plot_savings(data, plot_area_id) { 
   let dates = data.dates;

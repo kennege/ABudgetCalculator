@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Simple Budget Calculator</title>
+		<title>A Budget Calculator</title>
 		<link href="../styles/style.css" rel="stylesheet">
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<meta name="description" content="A simple website that allows you
@@ -28,7 +28,7 @@
 		<script src="/scripts/jquery.flot.js"></script>				 
 		<body> 
 		<div class='page-header'>
-			<h1><a href="index.php">Simple Budget Calculator</a></h1>
+			<h1><a href="index.php">A Budget Calculator</a></h1>
 			<img id=im1 src="../images/bucket.ico" alt="logo">
 			<img id=im2 src="../images/bucket.ico" alt="logo">
 			<img id=im3 src="../images/bucket.ico" alt="logo">

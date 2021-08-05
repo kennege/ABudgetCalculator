@@ -8,49 +8,27 @@ $(document).ready(function(){
   let budget_box = get_by_id('display_budget');
   budget_box.style.display = "block";
 
-
   if (server.is_logged_in()){
     server.show_logout();
+    show_by_id('track_box');
+    show_by_id('plot_box');
+    show_by_id("category_plot_box");
     let [income, bw_pairs] = server.load_budget();
     
     anIncome.reset(parseFloat(income));
     anIncome.set_period("fortnight");
     allBW_pairs.set(bw_pairs);
     generate_track_box(bw_pairs);
-
-<<<<<<< HEAD
-    if (bw_pairs.length == 0) {
-      let p = generate('p');
-      p.innerText = "You must save your budget before you can track it.";
-      budget_box.appendChild(p);
-    } else {   
-      show_by_id('track_box');
-      anIncome.reset(parseFloat(income));
-      anIncome.set_period("fortnight");
-      allBW_pairs.set(bw_pairs);
-      generate_track_box(bw_pairs);
-
-      let [history, dates] = server.load_history(allBW_pairs.length());
-      if (dates.length != 0) {
-        show_by_id('plot_box');
-        server.found_history(true);
-        let spending_saving = server.get_spending_saving(bw_pairs);
-        let data = sort_data(income, bw_pairs, spending_saving, history, dates);
-        display_budget(data);
-      } else {
-        show_by_id('check_title');
-      }
-      display_checkboxes();
-=======
+    
     let [history, dates] = server.load_history(allBW_pairs.length());
     if (history.length != 0) {
       server.found_history(true);
       let spending_saving = server.get_spending_saving(bw_pairs);
       let data = sort_data(income, bw_pairs, spending_saving, history, dates);
-      display_budget(data);
->>>>>>> 9d334bd5b03dab122075f917bc36ca5ab34e4c7e
+      display_budget(data, false);
+    } else {
+      display_checkboxes();
     }
-    display_checkboxes();
   } else {
     let p = generate('p');
     p.innerText = "You must be logged in to track your budget.";
@@ -65,7 +43,7 @@ $(document).ready(function(){
       get_by_id("ch" + i).checked = false;
     }
     this.checked = true;
-    display_budget(data);
+    display_budget(data, true);
   });
 
   $('#done_button').click(function(event) {
@@ -104,7 +82,7 @@ $(document).ready(function(){
         server.found_history(true);
         let spending_saving = server.get_spending_saving(budget_pairs);
         let data = sort_data(income, bw_pairs, spending_saving, history, dates);
-        display_budget(data);  
+        display_budget(data, false);  
       }   
     }
   });
@@ -117,9 +95,9 @@ $(document).ready(function(){
     
 });
 
-function generate_track_box(bw_pairs) {
-  let article = get_by_id('track_box');
-  show_by_id('track_box');
+function generate_track_box(bw_pairs, show_message) {
+let article = get_by_id('track_box');
+show_by_id('track_box');
   let title = generate("div");
   title.innerHTML = `<h3>Input current totals </h3>`
   article.appendChild(title);
@@ -130,7 +108,7 @@ function generate_track_box(bw_pairs) {
   subtitle.innerHTML = "<p id=check_title style='display:none'>New budget detected. Check one: ( Saving / Spending ) for each category.</p>" 
   div.appendChild(subtitle);
   article.appendChild(div);
-
+  
   for (let i=0;i<bw_pairs.length;i++){
     let node = generate("div");
     node.style.marginLeft = "20%"

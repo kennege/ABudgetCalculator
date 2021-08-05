@@ -104,10 +104,6 @@ class Server {
     let history_pairs = [];
     let date_pair = [];
     let server_response = this.send_data(data, `${this.#directory}load_history.php`);
-<<<<<<< HEAD
-=======
-    console.log(server_response);
->>>>>>> 9d334bd5b03dab122075f917bc36ca5ab34e4c7e
     if (!server_response.includes('FAIL')) {
       let history = JSON.parse(server_response);
       for (let i=0; i<history.length; i++){

@@ -34,11 +34,7 @@ if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']
   // get dates
   $sql = "SELECT dates FROM track WHERE username='$name'";
   if (!mysqli_query($link, $sql)) {  
-<<<<<<< HEAD
     $error_msg = "FAIL: dates not found";
-=======
-    $error_msg = "FAIL: history not found";
->>>>>>> 9d334bd5b03dab122075f917bc36ca5ab34e4c7e
   } else {
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_assoc($result);  
