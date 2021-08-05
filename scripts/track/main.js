@@ -14,21 +14,6 @@ $(document).ready(function(){
     show_by_id('plot_box');
     show_by_id("category_plot_box");
     let [income, bw_pairs] = server.load_budget();
-<<<<<<< HEAD
-    
-    anIncome.reset(parseFloat(income));
-    anIncome.set_period("fortnight");
-    allBW_pairs.set(bw_pairs);
-    generate_track_box(bw_pairs);
-    
-    let [history, dates] = server.load_history(allBW_pairs.length());
-    if (history.length != 0) {
-      server.found_history(true);
-      let spending_saving = server.get_spending_saving(bw_pairs);
-      let data = sort_data(income, bw_pairs, spending_saving, history, dates);
-      display_budget(data, false);
-    } else {
-=======
 
     if (bw_pairs.length == 0) {
       let p = generate('p');
@@ -42,14 +27,15 @@ $(document).ready(function(){
       generate_track_box(bw_pairs);
 
       let [history, dates] = server.load_history(allBW_pairs.length());
-      if (history.length != 0) {
+      if (dates.length != 0) {
         show_by_id('plot_box');
         server.found_history(true);
         let spending_saving = server.get_spending_saving(bw_pairs);
         let data = sort_data(income, bw_pairs, spending_saving, history, dates);
         display_budget(data);
+      } else {
+        show_by_id('check_title');
       }
->>>>>>> e8f8af24eb4b507b9d5e37b9a3c5c4c440360422
       display_checkboxes();
     }
   } else {
@@ -105,7 +91,11 @@ $(document).ready(function(){
         server.found_history(true);
         let spending_saving = server.get_spending_saving(budget_pairs);
         let data = sort_data(income, bw_pairs, spending_saving, history, dates);
+<<<<<<< Updated upstream
         display_budget(data, false);  
+=======
+        display_budget(data);  
+>>>>>>> Stashed changes
       }   
     }
   });
@@ -136,7 +126,7 @@ function generate_track_box(bw_pairs) {
   subtitle.innerHTML = "<p id=check_title style='display:none'>New budget detected. Check one: ( Saving / Spending ) for each category.</p>" 
   div.appendChild(subtitle);
   article.appendChild(div);
-  
+
   for (let i=0;i<bw_pairs.length;i++){
     let node = generate("div");
     node.style.marginLeft = "20%"
