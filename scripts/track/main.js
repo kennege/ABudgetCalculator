@@ -4,7 +4,7 @@ let aCookie = new Cookie();
 let server = new Server();
 
 $(document).ready(function(){
-    
+  
   let budget_box = get_by_id('display_budget');
   budget_box.style.display = "block";
 
@@ -14,6 +14,7 @@ $(document).ready(function(){
     show_by_id('plot_box');
     show_by_id("category_plot_box");
     let [income, bw_pairs] = server.load_budget();
+<<<<<<< HEAD
     
     anIncome.reset(parseFloat(income));
     anIncome.set_period("fortnight");
@@ -27,6 +28,28 @@ $(document).ready(function(){
       let data = sort_data(income, bw_pairs, spending_saving, history, dates);
       display_budget(data, false);
     } else {
+=======
+
+    if (bw_pairs.length == 0) {
+      let p = generate('p');
+      p.innerText = "You must save your budget before you can track it.";
+      budget_box.appendChild(p);
+    } else {   
+      show_by_id('track_box');
+      anIncome.reset(parseFloat(income));
+      anIncome.set_period("fortnight");
+      allBW_pairs.set(bw_pairs);
+      generate_track_box(bw_pairs);
+
+      let [history, dates] = server.load_history(allBW_pairs.length());
+      if (history.length != 0) {
+        show_by_id('plot_box');
+        server.found_history(true);
+        let spending_saving = server.get_spending_saving(bw_pairs);
+        let data = sort_data(income, bw_pairs, spending_saving, history, dates);
+        display_budget(data);
+      }
+>>>>>>> e8f8af24eb4b507b9d5e37b9a3c5c4c440360422
       display_checkboxes();
     }
   } else {
@@ -95,9 +118,14 @@ $(document).ready(function(){
     
 });
 
+<<<<<<< HEAD
 function generate_track_box(bw_pairs, show_message) {
 let article = get_by_id('track_box');
 show_by_id('track_box');
+=======
+function generate_track_box(bw_pairs) {
+  let article = get_by_id('track_box');
+>>>>>>> e8f8af24eb4b507b9d5e37b9a3c5c4c440360422
   let title = generate("div");
   title.innerHTML = `<h3>Input current totals </h3>`
   article.appendChild(title);
@@ -132,7 +160,7 @@ show_by_id('track_box');
 }
 
 function display_checkboxes() {
-  show_by_id('check_title');
+  // show_by_id('check_title');
   let checks = get_by_class('check');
   for (let i=0; i<checks.length; i++) {
     checks[i].style.display = "block";
