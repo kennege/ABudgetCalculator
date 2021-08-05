@@ -104,14 +104,9 @@ $(document).ready(function(){
     
 });
 
-<<<<<<< HEAD
 function generate_track_box(bw_pairs, show_message) {
 let article = get_by_id('track_box');
 show_by_id('track_box');
-=======
-function generate_track_box(bw_pairs) {
-  let article = get_by_id('track_box');
->>>>>>> e8f8af24eb4b507b9d5e37b9a3c5c4c440360422
   let title = generate("div");
   title.innerHTML = `<h3>Input current totals </h3>`
   article.appendChild(title);
