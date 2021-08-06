@@ -1,3 +1,3 @@
-# A Simple Budget Calculator
+# A Budget Calculator
 
-An in-progress attempt to make a simple budgeting website.
+An in-progress attempt to make a budget creating and tracking website.
