@@ -25,7 +25,8 @@
 		<script src="/scripts/income/main.js" defer></script>
 
 		<script src="/scripts/jquery-3.6.0.js"></script>
-		<script src="/scripts/jquery.flot.js"></script>				 
+		<script src="/scripts/jquery.flot.js"></script>	
+		<script src="/scripts/jquery.flot.pie.js"></script>
 		<body> 
 		<div class='page-header'>
 			<h1><a href="index.php">A Budget Calculator</a></h1>
@@ -44,7 +45,7 @@
 			</ul>
 		</div>
 		<br>
-		<section>
+	<section>
 		<div id=load_button_div class='text-center' style="display: none;">
 			<button type="button" class="btn" id=load>Load Budget</button>
 		</div> 
@@ -94,7 +95,7 @@
 		</article>
 		<br>
 		<article class=container-fluid id=tree_box style=display:none>
-		<h3>Choose your categories (3-6 recommended)</h3>
+		<h3>Choose your categories (3-6 recommended, max: 10)</h3>
 		<div class='parent'>
 		<ul id="l7" class='list-group'>
 			<li class="list-group-item"> <label><input name="bucket" value="Income" type="checkbox"> Income</label></li>
@@ -147,9 +148,11 @@
 	</article>	
 	<br>
 	<article class=container-fluid id=bucket_box style="display:none">
-		<ul id="bucketList" class=list-group>
-		</ul>
-		<div id=done_button style="display: none;"><button class="btn" id=bucket_button type="button">Done</button></div> 
+		<div class=flex-container id=bw_list>
+		<div><ul id="bucketList" class=list-group></ul></div>
+		<div id=pie_chart style="display: none;"></div> 
+	  </div>
+    <div id=done_button style="display: none;"><button class="btn" id=bucket_button type="button">Done</button></div> 
 	</article>
 	<br>
 <article id=plot_box class=container-fluid style=display:none>
@@ -186,6 +189,9 @@
 		</table>
 	</div>
 	<br>
+</article>
+<br>
+<div class=container-fluid id=plot-container> 
 	<div class='options well'>
 		<ul>
 			<li><label><input class=plot_ch type=checkbox id=ch1 name=hours value=24 title='1/365'> Daily</label></li>
@@ -199,10 +205,9 @@
 			<li><label><input class=plot_ch type=checkbox id=ch9 name=years value=20 title='20'> 20 Years</label></li>
 			<li><label><input class=plot_ch type=checkbox id=ch10 name=years value=30 title='30'> 30 Years</label></li>
 		</ul>
-	</div> 
-</article>
-<br>
-<div class=container-fluid id=plot-container> <div id="flotcontainer" style="margin: 2% auto; width: 400px; height: 400px;"></div></div>
+	</div> 	
+	<div id="flotcontainer" style="margin: 2% auto; width: 400px; height: 400px;"></div>
+</div>
 <br>
 <div id=button_div class='text-center' style="display: none;">
 	<button type="button" class="btn" id=save>Save Budget</button>

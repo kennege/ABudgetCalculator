@@ -5,40 +5,20 @@ $password = $_POST['password'];
 
 require_once "config.php";
 
-// check user details
-$valid_user = false;
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-$sql = "SELECT id, username, password FROM users WHERE username='$name'";
-$result = mysqli_query($link, $sql);
+// Get BUDGET
+$budget = array();  
+$sql = "SELECT income, n_buckets, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10 FROM budget WHERE username='$name'";
+mysqli_query($link, $sql, MYSQLI_ASYNC);
+$result = mysqli_reap_async_query($link);
 $row = mysqli_fetch_assoc($result);
-
-if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']))) { // user exists
-  // Get BUDGET
-  $budget = array();  
-  // get income
-  $sql = "SELECT income FROM budget WHERE username='$name'";
-  $result = mysqli_query($link, $sql);
-  $row = mysqli_fetch_assoc($result);
-  $income = intval($row['income']);
-  array_push($budget, "income:$income");
-  // get n_buckets
-  $sql = "SELECT n_buckets FROM budget WHERE username='$name'";
-  $result = mysqli_query($link, $sql);
-  $row = mysqli_fetch_assoc($result);
-  $n_buckets = intval($row['n_buckets']);
-  // get bucket/weight pairs
-  for ($x = 0; $x < $n_buckets; $x++) {
-    $b = "b".($x+1);
-    $sql = "SELECT $b FROM budget WHERE username='$name'";
-    $result = mysqli_query($link, $sql);
-    $row = mysqli_fetch_assoc($result);  
-    array_push($budget, $row["$b"]);
-  }
-  $json_data = json_encode($budget);
-  echo $json_data;
-} else {
-  echo "user does not exist";
+$income = intval($row['income']);
+$n_buckets = intval($row['n_buckets']);
+array_push($budget, "income:$income");
+for ($x = 0; $x < $n_buckets; $x++) {
+  $b = "b".($x+1); 
+  array_push($budget, $row["$b"]);
 }
-mysqli_close($link);
+$json_data = json_encode($budget);
+echo $json_data;
 
 ?>

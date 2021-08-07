@@ -17,20 +17,39 @@ $(document).ready(function(){
     let name = $("#s_name").val();
     let password_1 = $("#s_password1").val();
     let password_2 = $("#s_password2").val();
-    let remember = document.getElementById('s_remember').checked;
-    let server_response = server.sign_up(name, password_1, password_2);
-    welcomer(server_response, name, password_1, remember);
+    server.send(server.signup_data(name, password_1, password_2), server.signup_file, signup_cb);
   }); 
+
+  function signup_cb(server_response) {
+    if (server_response.includes('SUCCESS')){
+      this.save_session(name, password_1);
+      console.log("SERVER: Sign up SUCCESS.\n");
+      let name = $("#s_name").val();
+      let password_1 = $("#s_password1").val();
+      let remember = document.getElementById('s_remember').checked;
+      welcomer(server_response, name, password_1, remember);
+      server.save_session(name, password_1);
+      server.show_logout();
+    }   
+  }
 
   $('#l_login').click(function(event) {
     event.preventDefault();
     hide_popup();
     let name = $("#l_name").val();
     let password = $("#l_password").val();
-    let remember = document.getElementById('l_remember').checked;
-    let server_response = server.log_in(name, password);
-    welcomer(server_response, name, password, remember);
+    server.send(server.login_data(name, password), server.login_file, login_cb);
   }); 
+
+  function login_cb(server_response) {
+    let name = $("#l_name").val();
+    let password = $("#l_password").val();
+    let remember = document.getElementById('l_remember').checked;
+    console.log("SERVER: Login SUCCESS.\n");
+    welcomer(server_response, name, password, remember);
+    server.save_session(name, password);
+    server.show_logout();
+  }
 
   $('#logoutbtn').click(function(event) {
     event.preventDefault();

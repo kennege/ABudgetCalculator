@@ -3,6 +3,7 @@
 $name = $_POST['name'];
 $password = $_POST['password'];
 $income = floatval($_POST['income']);
+$period = $_POST['period'];
 $n_buckets = intval($_POST['n_buckets']);
 $error_message = "";
 
@@ -18,17 +19,13 @@ $row = mysqli_fetch_assoc($result);
 if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']))) { // user exists
   // Insert into BUDGET
   $id = $row['id'];
-  $sql = "UPDATE budget SET id='$id', income='$income',n_buckets='$n_buckets'  WHERE username='$name'";
+  $sql = "UPDATE budget SET id='$id', income='$income', period='$period', n_buckets='$n_buckets'  WHERE username='$name'";
   if (!mysqli_query($link, $sql)) {  
     $error_message =  "Error updating income: " . mysqli_error($link);
   }
-  for ($x = 0; $x < 10; $x++) { // reset budget
-    $b = "b".($x+1);
-    $sql = "UPDATE budget SET $b=null WHERE username='$name'";
-    if (!mysqli_query($link, $sql)) {  
-      $error_message = "Error deleting record: " . mysqli_error($link) . " at bucket: " . $b;
-      break;
-    }
+  $sql = "UPDATE budget SET b1=null,b2=null,b3=null,b4=null,b5=null,b6=null,b7=null,b8=null,b9=null,b10=null WHERE username='$name'";
+  if (!mysqli_query($link, $sql)) {  
+    $error_message = "Error deleting budget: " . mysqli_error($link);
   }
   for ($x = 0; $x < $n_buckets; $x++) { // add new budget
     $b = "b".($x+1);
@@ -39,17 +36,9 @@ if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']
       break;
     }
   }
-  for ($x = 0; $x < 10; $x++) { // reset history
-    $b = "b".($x+1);
-    $sql = "UPDATE track SET $b=null WHERE username='$name'";
-    if (!mysqli_query($link, $sql)) {  
-      $error_message = "Error deleting record: " . mysqli_error($link) . " at bucket: " . $b;
-      break;
-    }
-  }
-  $sql = "UPDATE track SET dates=null WHERE username='$name'";
+  $sql = "UPDATE track SET b1=null,b2=null,b3=null,b4=null,b5=null,b6=null,b7=null,b8=null,b9=null,b10=null,dates=null WHERE username='$name'";
   if (!mysqli_query($link, $sql)) {  
-    $error_message = "Error deleting record: " . mysqli_error($link) . " at bucket: " . $b;
+    $error_message = "Error deleting track: " . mysqli_error($link);
   }
   for ($x = 0; $x < $n_buckets; $x++) { // initialise history
     $b = "b".($x+1);
@@ -60,6 +49,10 @@ if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']
       $error_message = "Error updating record: " . mysqli_error($link) . " at bucket: " . $b;
       break;
     }
+  }
+  $sql = "UPDATE spending_saving SET b1=null,b2=null,b3=null,b4=null,b5=null,b6=null,b7=null,b8=null,b9=null,b10=null,n_buckets=null WHERE username='$name'";
+  if (!mysqli_query($link, $sql)) {  
+    $error_message = "Error deleting spending_saving: " . mysqli_error($link);
   }
 
 } else {

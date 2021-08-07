@@ -1,45 +1,42 @@
 class Server {
-  #directory;
   #history_found;
   constructor(){
-    this.#directory = "../scripts/server/";
     this.#history_found = false;
     this.ping();
   }
+  
+  signup_file = "../scripts/server/sign_up.php";
+  login_file = "../scripts/server/login.php";
+  
+  get_budget_file = "../scripts/server/load_budget.php"; 
+  set_budget_file = "../scripts/server/save_budget.php";
+  
+  get_spending_saving_file = "../scripts/server/get_spending_saving.php";
+  set_spending_saving_file = "../scripts/server/set_spending_saving.php";
 
+  get_history_file = "../scripts/server/load_history.php";
+  set_history_file = "../scripts/server/append_history.php";
+  
   get_user = () => sessionStorage.getItem('name');
   get_password = () => sessionStorage.getItem('password');
 
   found_history = (bool) => this.#history_found = bool;
   contains_history = () => this.#history_found;
 
-  sign_up(name, password_1, password_2) {
-    let data = {
-      name: name,
-      password: password_1,
-      confirm_password: password_2
-    };      
-    let response = this.send_data(data, `${this.#directory}sign_up.php`);
-    console.log(response);
-    if (response.includes('SUCCESS')){
-      this.save_session(name, password_1);
-      console.log("SERVER: Sign up SUCCESS.\n");
 
-    }    
-    return response;
+  signup_data(name, password1, password2) {
+    return {
+      name : name,
+      password: password1,
+      confirm_password: password2
+    };
   }
 
-  log_in(name, password) {
-    let data = {
+  login_data (name, password) {
+    return {
       name: name,
       password: password,
     };
-    let response = this.send_data(data, `${this.#directory}login.php`);
-    if (response.includes('SUCCESS')){
-      this.save_session(name, password);
-      console.log("SERVER: Log in SUCCESS.\n");
-    }
-    return response;
   }
 
   log_out() {
@@ -51,127 +48,31 @@ class Server {
   }
 
   delete_user() {
-
+    
   }
 
-  save_budget(income, bw_pairs) {
+  get_budget_data = {name: this.get_user(), password: this.get_password()};
+  set_budget_data(income, period, bw_pairs) {
     let data = this.get_bw_pair_data(bw_pairs);
+    data["period"] = period;
     data["income"] = income;
-    let server_response = this.send_data(data, `${this.#directory}save_budget.php`);
-    console.log("SERVER: Saving BUDGET: " + server_response + ".\n");  
-    return server_response;
+    return data;
   }
 
-  load_budget() {
-    let data = {
-      name: this.get_user(),
-      password: this.get_password()
-    };
-    let server_response = this.send_data(data, `${this.#directory}load_budget.php`);
-    let budget = JSON.parse(server_response);
-    let n_buckets = budget.length;
-    let bw_pairs = [];
-    let income = 0;
-    for (let i=0; i<n_buckets; i++){
-      let current_pair = budget[i].split(":");
-      if (current_pair[0].includes("income")) {
-        income = parseFloat(current_pair[1]);
-      } else {
-        let pair = {
-          bucket: current_pair[0],
-          weight: parseFloat(current_pair[1]),
-        };     
-        bw_pairs.push(pair);
-      }
-    }
-    console.log("SERVER: Received " + n_buckets + " pairs from BUDGET.\n");
-    return [income, bw_pairs];
-  }
+  get_spending_saving_data = (ss_pairs) => this.get_bw_pair_data(ss_pairs);
+  set_spending_saving_data = (ss_pairs) => this.get_bw_pair_data(ss_pairs);
 
-  append_history(bw_pairs) {
-    let data = this.get_bw_pair_data(bw_pairs);
-    let server_response = this.send_data(data, `${this.#directory}append_history.php`);
-    console.log("SERVER: Appending TRACKING history: " + server_response + ".\n");
-    return server_response;
-  }
-  
-  load_history(n_buckets) {
-    let data = {
-      name: this.get_user(),
+  get_history_data(bw_pairs){
+    return { 
+      name: this.get_user(), 
       password: this.get_password(),
-      n_buckets: n_buckets,
+      n_buckets: bw_pairs.length,
     };
-    let history_pairs = [];
-    let date_pair = [];
-    let server_response = this.send_data(data, `${this.#directory}load_history.php`);
-    if (!server_response.includes('FAIL')) {
-      let history = JSON.parse(server_response);
-      for (let i=0; i<history.length; i++){
-        if (history[i] !== null) {
-          if (history[i].includes(':')) { 
-            let current_pair = history[i].split(":");
-            let bucket = current_pair[0];
-            let history_strs = current_pair[1].split(",");
-            let history_array = [];
-            for (let j=0; j<history_strs.length; j++) {
-              if (history_strs[j]) {
-                history_array.push(parseFloat(history_strs[j]));
-              }
-            }
-            let pair = {
-              bucket: bucket,
-              weight: history_array,
-            };     
-            history_pairs.push(pair);
-          } else {
-            let dates_strs = history[i].split(",");
-            let dates_array = [];        
-            for (let j=0; j<dates_strs.length; j++) {
-              if (dates_strs[j]) {
-                dates_array.push(dates_strs[j]);
-              }
-            }
-            date_pair = [{
-              bucket: "dates",
-              weight: dates_array
-            }];
-          }
-        }
-      }
-      console.log("SERVER: Received " + history.length + " history pairs from TRACKING.\n");
-    } else {
-      console.log("SERVER: No history detected in TRACKING.\n");
-    }
-    return [history_pairs, date_pair];
   }
+  set_history_data = (bw_pairs) => this.get_bw_pair_data(bw_pairs);
 
   reset_history() {
 
-  }
-
-  set_spending_saving(bw_pairs) {
-    let data = this.get_bw_pair_data(bw_pairs);
-    let server_response = this.send_data(data, `${this.#directory}set_spending_saving.php`);
-    console.log("SERVER: Setting SPENDING_SAVING: " + server_response + ".\n");
-    return server_response;
-  }
-
-  get_spending_saving(bw_pairs) {
-    let data = this.get_bw_pair_data(bw_pairs);
-    let server_response = this.send_data(data, `${this.#directory}get_spending_saving.php`);
-    let spending_saving = JSON.parse(server_response);
-    let n_buckets = spending_saving.length;
-    let ss_pairs = [];
-    for (let i=0; i<n_buckets; i++){
-      let current_pair = spending_saving[i].split(":");
-      let pair = {
-        bucket: current_pair[0],
-        weight: current_pair[1],
-      };     
-      ss_pairs.push(pair);
-    }
-    console.log("SERVER: Received " + n_buckets + " pairs from SPENDING_SAVING.\n");
-    return ss_pairs;
   }
 
   get_bw_pair_data(bw_pairs) {
@@ -190,19 +91,16 @@ class Server {
     return data;
   }
 
-  send_data(data, file) {
+  async send(data, file, cb) {
     let response = "";
     $.ajax({
-      async: false,
+      async: true,
       type: "POST",
       url: file,
       data: data,
       cache: false,
       success: function(server_response) {
-        response = server_response;
-      },
-      error: function(server_response, status, error) {
-        response = server_response;
+        cb(server_response);
       }
     });
     return response;

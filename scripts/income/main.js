@@ -1,5 +1,5 @@
 console.log("main loaded!")
-let allBW_pairs = new BW_pairs();
+let budget_pairs = new BW_pairs();
 let aResult = new Result();
 let aBW_list = new BW_list();
 let aTally = new Tally('aTally');
@@ -17,7 +17,7 @@ $(document).ready(function(){
 
   function load() {
     let cEntries = aCookie.get();
-    let bw_pairs = [];
+    budget_pairs.delete();
     let cPair;
     
     if (server.is_logged_in()){
@@ -34,36 +34,47 @@ $(document).ready(function(){
         anIncome.reset_period(cPair[1]);
       } 
       else if ((!cPair[0].includes('undefined')) && (!cPair[0].includes('NaN')) && (!cPair[0].includes('PHP'))) {
-        allBW_pairs.append(bw_pairs, cPair[0], parseFloat(cPair[1]));
+        budget_pairs.append(cPair[0], parseFloat(cPair[1]));
       }
     }
     if ((anIncome.get() != 0) && (!isNaN(anIncome.get()))){ 
       console.log("cookie found!");
-      allBW_pairs.set(bw_pairs);
-      display_all(bw_pairs);
+      display_all(budget_pairs.get());
     }
   }
-
 
   function displayBucketTree(){
     $("#tree_box").fadeIn(1000); 
   }
 
   $('#load').click(function(event) {
-    let [income, bw_pairs] = server.load_budget();
-    anIncome.reset(parseFloat(income));
-    anIncome.reset_period("fortnight");
-    allBW_pairs.set(bw_pairs);
-    aCookie.set(allBW_pairs.get());
-    aCookie.set(allBW_pairs.convert('__income__', anIncome.get()));
-    aCookie.set(allBW_pairs.convert('__period__',anIncome.get_period()));
-    display_all(bw_pairs);
+    server.send(server.get_budget_data, server.get_budget_file, get_budget_cb);
   });
+
+  function get_budget_cb(server_response) {
+    let budget = JSON.parse(server_response);
+    budget_pairs.delete();
+    for (let i=0; i<budget.length; i++){
+      let current_pair = budget[i].split(":");
+      if (current_pair[0].includes("income")) {
+        anIncome.reset(parseFloat(current_pair[1]));
+      } else if (current_pair[0].includes("period")) {
+        anIncome.reset_period(current_pair[1]);
+      } else {
+        budget_pairs.append(current_pair[0], parseFloat(current_pair[1]));
+      }
+    }
+    aCookie.set(budget_pairs.get());
+    aCookie.set(budget_pairs.convert('__income__', anIncome.get()));
+    aCookie.set(budget_pairs.convert('__period__',anIncome.get_period()));
+    display_all(budget_pairs.get());
+  }
 
   function display_all(bw_pairs) {
     anIncome.display();   
     displayBucketTree();
     aBW_list.create(bw_pairs);
+    aBW_list.pie_chart(bw_pairs);
     aTally.create(bw_pairs);
     aResult.populate_table(bw_pairs, anIncome);
     aResult.plot(bw_pairs);
@@ -85,7 +96,6 @@ $(document).ready(function(){
   // button to set income
   $("#done_options").click(function(event) {
     anIncome.set(parseFloat($("#income").val()));
-    anIncome.check();
     anIncome.display();
     displayBucketTree();
   });
@@ -103,16 +113,15 @@ $(document).ready(function(){
   $("#chosenbuckets").click(function(){
     // get chosen buckets from the bucket tree
     let checkboxes = get_by_name('bucket');
-    let bw_pairs = [];
+    budget_pairs.delete();
     
     for (let i=0; i<checkboxes.length; i++) {
       if (checkboxes[i].checked) {
-        allBW_pairs.append(bw_pairs, checkboxes[i].value, 0);
+        budget_pairs.append(checkboxes[i].value, 0);
       }
     }
-    allBW_pairs.set(bw_pairs);
-    aTally.create(bw_pairs);
-    aBW_list.create(bw_pairs);
+    aTally.create(budget_pairs.get());
+    aBW_list.create(budget_pairs.get());
     return false;
   });
   
@@ -135,32 +144,29 @@ $(document).ready(function(){
 
   // button to reset tallies
   $("#tally_button").click(function(event){
-    aTally.reset(allBW_pairs.get());
+    aTally.reset(budget_pairs.get());
   });
 
   // button to finish assigning weights
   $("#bucket_button").click(function(event){
     let total_weight = 0;
     let new_bw_pairs = get_by_name("chosenBucket");  
-    let bw_pairs = [];
-    allBW_pairs.delete();
+    budget_pairs.delete();
     for (let i=0;i<new_bw_pairs.length;i++){
-      allBW_pairs.append(bw_pairs, new_bw_pairs[i].id, parseFloat(new_bw_pairs[i].value));
+      budget_pairs.append(new_bw_pairs[i].id, parseFloat(new_bw_pairs[i].value));
       total_weight = total_weight + parseFloat(new_bw_pairs[i].value);
     }
     let para = get_by_id("weightpara");
-    para.innerHTML = "<h3>Weight sum = " + total_weight.toFixed(2) + "</h3>";
-    allBW_pairs.set(bw_pairs);
-    allBW_pairs.check();
-    anIncome.check();
-    aCookie.set(allBW_pairs.get());
-    aCookie.set(allBW_pairs.convert('__income__', anIncome.get()));
-    aCookie.set(allBW_pairs.convert('__period__',anIncome.get_period()));
-    aResult.populate_table(allBW_pairs.get(), anIncome);
+    para.innerText = "Weight sum = " + total_weight.toFixed(2);
+    aCookie.set(budget_pairs.get());
+    aCookie.set(budget_pairs.convert('__income__', anIncome.get()));
+    aCookie.set(budget_pairs.convert('__period__',anIncome.get_period()));
+    aResult.populate_table(budget_pairs.get(), anIncome);
     $('#plot-container').show();
     $("#button_div").fadeIn(1000);
     aResult.show();
-    aResult.plot(allBW_pairs.get());
+    aResult.plot(budget_pairs.get());
+    aBW_list.pie_chart(budget_pairs.get());
   });
 
   // ensure only one plotting checkbox is selected
@@ -173,37 +179,45 @@ $(document).ready(function(){
     this.checked = true;
     $('#plot-container').show();
     aResult.show();
-    aResult.plot(allBW_pairs.get());
+    aResult.plot(budget_pairs.get());
   });
 
   $("#save").click(function() {
-    let note = "";
     delete_by_id("response");
     if (server.is_logged_in()){
       aUser.set_income(anIncome.get());
       aUser.set_period(anIncome.get_period());
-      aUser.set_bw_pairs(allBW_pairs.get());
+      aUser.set_bw_pairs(budget_pairs.get());
       aCookie.delete();
-      aCookie.set(allBW_pairs.get());
-      aCookie.set(allBW_pairs.convert("__income__", anIncome.get()));
-      aCookie.set(allBW_pairs.convert("__period__", anIncome.get_period()));
-      let server_response = server.save_budget(anIncome.get(),allBW_pairs.get());
-      if (server_response.includes("SUCCESS")) {
-        note = "Budget saved!";
-      }
-      else {
-        note = "Error! Budget not saved.";
-      }
+      aCookie.set(budget_pairs.get());
+      aCookie.set(budget_pairs.convert("__income__", anIncome.get()));
+      aCookie.set(budget_pairs.convert("__period__", anIncome.get_period()));
+      server.send(server.set_budget_data(anIncome.get(), anIncome.get_period(), budget_pairs.get()), server.set_budget_file, set_budget_cb);
+    } else {
+      let p = generate('p');
+      p.id = "response";
+      p.innerText = "You must be signed in to save your budget!";
+      let button_div = get_by_id('button_div');
+      button_div.appendChild(p);
+    }
+  });
+
+  function set_budget_cb(server_response) {
+    let note = "";
+    if (server_response.includes("SUCCESS")) {
+      print("SERVER: saving budget SUCCESS");
+      note = "Budget saved!";
     }
     else {
-      note = "You must be signed in to save your budget!";
+      print("SERVER: saving budget FAILED: " + server_response);
+      note = "Error! Budget not saved.";
     }
     let p = generate('p');
     p.id = "response";
     p.innerText = note;
     let button_div = get_by_id('button_div');
     button_div.appendChild(p);
-  });
+  }
 
   $('#logoutbtn').click(function(event) {
     event.preventDefault();

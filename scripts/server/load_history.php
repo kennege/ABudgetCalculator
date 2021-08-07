@@ -1,5 +1,4 @@
 <?php
-
 $name = $_POST['name'];
 $password = $_POST['password'];
 $n_buckets = intval($_POST['n_buckets']);
@@ -7,44 +6,21 @@ $history = array();
 $error_msg = "";
 
 require_once "config.php";
-
-// check user details
-$valid_user = false;
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-$sql = "SELECT id, username, password FROM users WHERE username='$name'";
-$result = mysqli_query($link, $sql);
-$row = mysqli_fetch_assoc($result);
-
-if((mysqli_num_rows($result)>=1) && (password_verify($password, $row['password']))) { // user exists
   
-  // get bucket/weight pairs
-  for ($x = 0; $x < $n_buckets; $x++) {
-    $b = "b".($x+1);
-    $sql = "SELECT $b FROM track WHERE username='$name'";
-    if (!mysqli_query($link, $sql)) {  
-      $error_msg = "FAIL: history not found";
-      break;
-    } else {
-      $result = mysqli_query($link, $sql);
-      $row = mysqli_fetch_assoc($result);  
-      array_push($history, $row["$b"]);
-    }
-  }
-  
-  // get dates
-  $sql = "SELECT dates FROM track WHERE username='$name'";
-  if (!mysqli_query($link, $sql)) {  
-    $error_msg = "FAIL: dates not found";
-  } else {
-    $result = mysqli_query($link, $sql);
-    $row = mysqli_fetch_assoc($result);  
-    array_push($history, $row["dates"]);
-  }
-  if (count($history)==0){
-    $error_msg = "FAIL: history not found";
-  }
-} else {
-  $error_msg = "FAIL: user does not exist";
+// get bucket/weight pairs
+$sql = "SELECT b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, dates FROM track WHERE username='$name'";
+if (!mysqli_query($link, $sql, MYSQLI_ASYNC)) {  
+  $error_msg = "FAIL: history not found";
+}
+$result = mysqli_reap_async_query($link);
+$row = mysqli_fetch_assoc($result); 
+for ($x = 0; $x < $n_buckets; $x++) {
+  $b = "b".($x+1); 
+  array_push($history, $row["$b"]);
+}
+array_push($history, $row["dates"]);
+if (count($history)==0){
+  $error_msg = "FAIL: history not found";
 }
 if (empty($error_msg)) {
   $json_data = json_encode($history);
@@ -52,6 +28,5 @@ if (empty($error_msg)) {
 } else {
   echo $error_msg;
 }
-mysqli_close($link);
 
 ?>
