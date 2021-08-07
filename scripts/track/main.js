@@ -5,6 +5,7 @@ let date_pair = new BW_pairs;
 let anIncome = new Income();
 let aCookie = new Cookie();
 let server = new Server();
+let data = [];
 
 $(document).ready(function(){
   
@@ -91,8 +92,11 @@ $(document).ready(function(){
       if (date_pair.length() != 0) {
         show_by_id('plot_box');
         server.found_history(true);
-        let data = sort_data(anIncome.get(), anIncome.get_period(), budget_pairs.get(), ss_pairs.get(), history_pairs.get(), date_pair.get());
+        data = sort_data(anIncome.get(), anIncome.get_period(), budget_pairs.get(), ss_pairs.get(), history_pairs.get(), date_pair.get());
         display_budget(data);
+        window.onresize = function(event) {
+          display_budget(data);
+        }
       } else {
         show_by_id('check_title');
         display_checkboxes();

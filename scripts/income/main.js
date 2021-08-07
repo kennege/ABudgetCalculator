@@ -72,7 +72,6 @@ $(document).ready(function(){
 
   function display_all(bw_pairs) {
     anIncome.display();   
-    displayBucketTree();
     aBW_list.create(bw_pairs);
     aBW_list.pie_chart(bw_pairs);
     aTally.create(bw_pairs);

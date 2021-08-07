@@ -1,4 +1,7 @@
-const PLOT_COLS = 2;
+let PLOT_COLS = (window.innerWidth < 800) ? 1 : 2;
+window.onresize = function(event) {
+  PLOT_COLS = (window.innerWidth < 800) ? 1 : 2;
+}
 
 function display_budget(data) { // also enter time
   if (document.contains(document.getElementById('category_plot_box'))) {
@@ -47,7 +50,9 @@ function plot_spending(data, plot_area_id) {
   let history_bins = bin_spending(dates, history, data.weight*data.income, period);
   let budget_data = [];
   let history_data = [];
-  for (let i=0; i<((365/scale)/period); i++) {
+  let n_bins = Math.floor(((365/scale)/period));
+  n_bins = (n_bins < 1) ? 1 : n_bins;
+  for (let i=0; i<n_bins; i++) {
     budget_data.push([i, (data.weight * data.income)/period]);
     if (history_bins.length > i) {
       history_data.push([i, history_bins[i]]);
@@ -66,19 +71,14 @@ function plot_spending(data, plot_area_id) {
   }];
   let xlabel = document.head.appendChild(generate('style'));
   xlabel.innerHTML = `#${plot_area_id}:after {content: 'Time (${data.period}s)'}`; 
-  $(`#${plot_area_id}`).width(0.45*$("#plot_row_0").width())  
-  $(`#${plot_area_id}`).height(0.2*$("#plot_row_0").width())   
+  $(`#${plot_area_id}`).width((0.9/PLOT_COLS)*$("#plot_row_0").width())  
+  $(`#${plot_area_id}`).height((0.4/PLOT_COLS)*$("#plot_row_0").width())   
   $.plot($(`#${plot_area_id}`), dataset, options);  
   let styleElem = generate('style');
   styleElem.style.position = "absolute";
   styleElem.style.left = "50%";
   styleElem.style.bottom = "-30px";
-  // styleElem.innerHTML = `#${plot_area_id}:after {content: '$'; position: absolute; bottom: -30px; left: 50%;}`; 
   document.getElementById(plot_area_id).appendChild(styleElem);
-  // ylabel.innerHTML = `#${plot_area_id}:after {content: '$'; position: absolute; bottom: -30px; left: 50%;}`; 
-  // window.onresize = function(event) {
-  //   $.plot($(`#${plot_area_id}`), dataset, options);  
-  // }
 }
 
 function plot_savings(data, plot_area_id) { 
@@ -116,14 +116,9 @@ function plot_savings(data, plot_area_id) {
   }]; 
   let xlabel = document.head.appendChild(generate('style'));
   xlabel.innerHTML = `#${plot_area_id}:after {content: 'Time (${time})'`;  
-  $(`#${plot_area_id}`).width(0.45*$("#plot_row_0").width())  
-  $(`#${plot_area_id}`).height(0.2*$("#plot_row_0").width())  
+  $(`#${plot_area_id}`).width((0.9/PLOT_COLS)*$("#plot_row_0").width())  
+  $(`#${plot_area_id}`).height((0.4/PLOT_COLS)*$("#plot_row_0").width())  
   $.plot($(`#${plot_area_id}`), plot_data, {legend : {position: "nw"}});
-//   window.onresize = function(event) {
-//     $(`#${plot_area_id}`).width(0.25*$("#plot_row_0").width())  
-//     $(`#${plot_area_id}`).height(0.2*$("#plot_row_0").width())      
-//     $.plot($(`#${plot_area_id}`), plot_data, {legend : {position: "nw"}});
-//   }
 }
 
 function bin_spending(dates, history, budget, period) {
