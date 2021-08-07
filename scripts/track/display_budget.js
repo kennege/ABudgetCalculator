@@ -1,6 +1,7 @@
 let PLOT_COLS = (window.innerWidth < 800) ? 1 : 2;
 window.onresize = function(event) {
   PLOT_COLS = (window.innerWidth < 800) ? 1 : 2;
+  display_budget(data);
 }
 
 function display_budget(data) { // also enter time

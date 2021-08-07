@@ -73,6 +73,8 @@ $(document).ready(function(){
   function display_all(bw_pairs) {
     anIncome.display();   
     aBW_list.create(bw_pairs);
+    let para = get_by_id("weightpara");
+    para.innerText = "";
     aBW_list.pie_chart(bw_pairs);
     aTally.create(bw_pairs);
     aResult.populate_table(bw_pairs, anIncome);

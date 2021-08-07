@@ -94,9 +94,6 @@ $(document).ready(function(){
         server.found_history(true);
         data = sort_data(anIncome.get(), anIncome.get_period(), budget_pairs.get(), ss_pairs.get(), history_pairs.get(), date_pair.get());
         display_budget(data);
-        window.onresize = function(event) {
-          display_budget(data);
-        }
       } else {
         show_by_id('check_title');
         display_checkboxes();
