@@ -44,12 +44,12 @@
 		</div>
 		<br>
 		<div class="flot-container">
-			<form>
-				<input type="text" placeholder="Enter Username" id=l_name required>
-				<input type="password" id="l_password" autocomplete='password' placeholder="Enter Password" required>
-				<button type="submit" id=l_login>Login</button>
-				<label>
-					<input type="checkbox" checked="checked" id="l_remember"> Remember me
+			<form id=login_form autocomplete=on>
+				<input type="text" placeholder="Enter Username" autocomplete=on id=l_name value=user required>
+				<input type="password" id="l_password" autocomplete=on placeholder="Enter Password" value=Password@1 required>
+				<input type="submit" id=login value="Login" >
+				<label style="display:none">
+					<input type="checkbox" checked="checked" id="l_remember" > Remember me
 				</label>
 			</form>
 		</div>	
@@ -58,8 +58,8 @@
 				<input type="text" placeholder="Enter Username" id=s_name required>
 				<input type="password" id="s_password1" autocomplete='password' placeholder="Enter Password" required>
 				<input type="password" id="s_password2" autocomplete='password' placeholder="Confirm Password" required>
-				<button type="submit" id=signup>Sign Up</button>
-				<label>
+				<input type="submit" id=signup value="Signup">
+				<label style="display:none">
 					<input type="checkbox" checked="checked" id="s_remember"> Remember me
 				</label>
 			</form>

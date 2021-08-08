@@ -33,7 +33,7 @@ $(document).ready(function(){
     }   
   }
 
-  $('#l_login').click(function(event) {
+  $('#login_form').submit(function(event) {
     event.preventDefault();
     hide_popup();
     let name = $("#l_name").val();

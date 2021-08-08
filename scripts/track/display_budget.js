@@ -51,7 +51,7 @@ function plot_spending(data, plot_area_id) {
   let history_bins = bin_spending(dates, history, data.weight*data.income, period);
   let budget_data = [];
   let history_data = [];
-  let n_bins = Math.floor(((365/scale)/period));
+  let n_bins = Math.round(period/scale);
   n_bins = (n_bins < 1) ? 1 : n_bins;
   for (let i=0; i<n_bins; i++) {
     budget_data.push([i, (data.weight * data.income)/period]);
