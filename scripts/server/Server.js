@@ -132,6 +132,10 @@ class Server {
     sessionStorage.setItem('logged_in', true);
     sessionStorage.setItem('name',name);
     sessionStorage.setItem('password',password);
+    if (window.PasswordCredential) {
+      let c = new PasswordCredential({id: name, password: password, name: name});
+      navigator.credentials.store(c);
+    }
     this.show_logout();
   }
 

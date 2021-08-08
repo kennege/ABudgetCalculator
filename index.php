@@ -39,7 +39,7 @@
 				<a href="index.php">Create Budget</a>
 				<a href="pages/track.html">Track Budget</a>
 				<a href="pages/compound_interest.html">Compound Interest <br>Calculator</a>
-        <a href="pages/how_to_use.html">How To Use</a>
+        <!-- <a href="pages/how_to_use.html">How To Use</a> -->
 				<a id=logout style="display:none"><button id=logoutbtn type="button" class="logoutbtn btn">Logout</button></a>
 				<a id=login href="pages/login.html">Login/<br>Sign up</a>
 			</ul>

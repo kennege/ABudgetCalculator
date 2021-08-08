@@ -1,4 +1,4 @@
-console.log("main loaded!")
+print("main loaded!")
 let user = new User();
 let aCookie = new Cookie();
 let server = new Server();
@@ -23,7 +23,7 @@ $(document).ready(function(){
   function signup_cb(server_response) {
     if (server_response.includes('SUCCESS')){
       this.save_session(name, password_1);
-      console.log("SERVER: Sign up SUCCESS.\n");
+      print("SERVER: Sign up SUCCESS.\n");
       let name = $("#s_name").val();
       let password_1 = $("#s_password1").val();
       let remember = document.getElementById('s_remember').checked;
@@ -42,13 +42,17 @@ $(document).ready(function(){
   }); 
 
   function login_cb(server_response) {
-    let name = $("#l_name").val();
-    let password = $("#l_password").val();
-    let remember = document.getElementById('l_remember').checked;
-    console.log("SERVER: Login SUCCESS.\n");
-    welcomer(server_response, name, password, remember);
-    server.save_session(name, password);
-    server.show_logout();
+    if (server_response.includes('SUCCESS')) {    
+      let name = $("#l_name").val();
+      let password = $("#l_password").val();
+      let remember = document.getElementById('l_remember').checked;
+      print("SERVER: Login SUCCESS.\n");
+      welcomer(server_response, name, password, remember);
+      server.save_session(name, password);
+      server.show_logout();
+    } else {
+      print("SERVER: Login FAILED.\n");
+    }
   }
 
   $('#logoutbtn').click(function(event) {
