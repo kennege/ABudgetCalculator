@@ -210,7 +210,7 @@ function sort_data(income, period, bw_pairs, spending_saving, history, dates) {
   total_savings.period = period;
   total_savings.id = bw_pairs.length;
   total_savings.spending_saving = "saving";
-  total_savings.history = new Array(history[0].length).fill(0);
+  total_savings.history = new Array(history[0].weight.length).fill(0);
 
   for (let i=0; i<bw_pairs.length; i++) {
     let bucket_info = {};
@@ -237,6 +237,7 @@ function sort_data(income, period, bw_pairs, spending_saving, history, dates) {
       total_savings.dates = bucket_info.dates;
       for (let j=0; j<bucket_info.history.length;j++){
         total_savings.history[j] = total_savings.history[j] + bucket_info.history[j];
+        print(bucket_info.history[j])
       }
     }
   }

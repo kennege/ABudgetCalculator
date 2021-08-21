@@ -125,7 +125,7 @@ function plot_savings(data, plot_area_id) {
 function bin_spending(dates, history, budget, period) {
   let bins = [];
   let bin = 0;
-  let bin_num = 0;
+  let bin_num = 1;
   let bin_size = 365/period;
   for (let i=0; i<history.length; i++) {
     bin = bin + history[i];
@@ -136,7 +136,7 @@ function bin_spending(dates, history, budget, period) {
       bin = 0;
     }
   }
-  bins.push((budget/period) - bin);
+  bins.push(bin);
   return bins;
 }
 
