@@ -11,12 +11,10 @@ function display_budget(data) { // also enter time
   let n_buckets = data.length;
   let row = -1;
   for (let i=0; i<n_buckets; i++) {
-    let plot_id = i - (PLOT_COLS * Math.floor(i / PLOT_COLS));
-    let plot_class = lookup_plot_class(plot_id);
     if ((i % PLOT_COLS) == 0) {
       row+=1;
     }
-    let plot_area_id = generate_plot_container(i, plot_class, row);
+    let plot_area_id = generate_plot_container(i, row);
     if (data[i].spending_saving == "spending") {
       plot_spending(data[i], plot_area_id);
     } else {
@@ -104,6 +102,12 @@ function plot_savings(data, plot_area_id) {
   for (let i=0; i<date_distances.length; i++) {
     history_data.push([date_distances[i], history[i]]);
   }
+  
+  let current_total = history[history.length-1];
+  let current_budget = history[0] + (((data.weight * data.income * multiplier)) * (date_distances[date_distances.length-1] / unit));
+  let current_diff = current_total - current_budget;
+  let status = (current_diff > 0) ? "up" : "down";
+  
   plot_data = [
   {
     label : data.bucket + " budget",
@@ -111,7 +115,7 @@ function plot_savings(data, plot_area_id) {
     color : 'black'
   }, 
   {
-    label : "Log",
+    label : "Log (" + status + " $" + current_diff.toFixed(2) + ")",
     data : history_data,
     color : '#375e97'
   }]; 
@@ -172,7 +176,7 @@ function convert_dates(dates, time) {
   return date_distances;
 }
 
-function generate_plot_container(plot_id, plot_class, plot_row) {
+function generate_plot_container(plot_id, plot_row) {
   let article = get_by_id("category_plot_box");
   let row_div = "";
   if ((plot_id % PLOT_COLS) == 0) {

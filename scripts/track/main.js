@@ -237,7 +237,6 @@ function sort_data(income, period, bw_pairs, spending_saving, history, dates) {
       total_savings.dates = bucket_info.dates;
       for (let j=0; j<bucket_info.history.length;j++){
         total_savings.history[j] = total_savings.history[j] + bucket_info.history[j];
-        print(bucket_info.history[j])
       }
     }
   }
